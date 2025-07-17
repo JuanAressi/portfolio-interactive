@@ -1,0 +1,30 @@
+{
+    "name": "portfolio-interactive",
+    "version": "1.0.0",
+    "description": "Interactive 3D portfolio built with Three.js",
+    "keywords": [
+        "threejs",
+        "3d",
+        "portfolio",
+        "interactive",
+        "webgl"
+    ],
+    "author": "Juancho",
+    "license": "MIT",
+    "devDependencies": {
+        "dat.gui": "^0.7.9",
+        "eslint": "^9.31.0",
+        "parcel": "^2.15.4"
+    },
+    "dependencies": {
+        "three": "^0.178.0"
+    },
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/yourusername/portfolio-interactive.git"
+    },
+    "bugs": {
+        "url": "https://github.com/yourusername/portfolio-interactive/issues"
+    },
+    "homepage": "https://yourusername.github.io/portfolio-interactive"
+}
