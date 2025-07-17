@@ -46,21 +46,6 @@ export function createDesk(x = 0, y = 0, z = 0) {
         rightWall.position.set(cajoneraWidth / 2 - cajoneraThickness / 2, cajoneraHeight / 2, 0);
         cajoneraGroup.add(rightWall);
 
-        // Front door.
-        const doorMaterial = new THREE.MeshBasicMaterial({ color: 0x8b4513 });
-        const frontDoorGeometry = new THREE.BoxGeometry(
-            cajoneraWidth - edgeOverhang * 2,
-            cajoneraHeight - 0.02 - edgeOverhang * 2,
-            cajoneraThickness
-        );
-        const frontDoor = new THREE.Mesh(frontDoorGeometry, doorMaterial);
-        frontDoor.position.set(
-            0,
-            (cajoneraHeight + 0.02) / 2,
-            cajoneraDepth / 2 - cajoneraThickness / 2
-        );
-        cajoneraGroup.add(frontDoor);
-
         // Back wall.
         const backWallGeometry = new THREE.BoxGeometry(
             cajoneraWidth,
@@ -72,14 +57,56 @@ export function createDesk(x = 0, y = 0, z = 0) {
         cajoneraGroup.add(backWall);
 
         // Floor of the drawer.
+        const dividerMaterial = new THREE.MeshBasicMaterial({ color: 0x666666 });
         const floorGeometry = new THREE.BoxGeometry(
-            cajoneraWidth,
+            cajoneraWidth - edgeOverhang * 2,
             cajoneraThickness,
             cajoneraDepth
         );
-        const floor = new THREE.Mesh(floorGeometry, deskMaterial);
+        const floor = new THREE.Mesh(floorGeometry, dividerMaterial);
         floor.position.set(0, cajoneraThickness / 2 + 0.02, 0);
         cajoneraGroup.add(floor);
+
+        // Upper door (1/3 height).
+        const upperDoorHeight = cajoneraHeight / 3;
+        const doorMaterial = new THREE.MeshBasicMaterial({ color: 0x8b4513 });
+        const upperDoorGeometry = new THREE.BoxGeometry(
+            cajoneraWidth - edgeOverhang * 2.5,
+            upperDoorHeight - edgeOverhang * 2,
+            cajoneraThickness
+        );
+        const upperDoor = new THREE.Mesh(upperDoorGeometry, doorMaterial);
+        upperDoor.position.set(
+            0,
+            cajoneraHeight - (upperDoorHeight + edgeOverhang / 2) / 2,
+            cajoneraDepth / 2 - cajoneraThickness / 2
+        );
+        cajoneraGroup.add(upperDoor);
+
+        // Lower door (2/3 height).
+        const lowerDoorHeight = cajoneraHeight * (2 / 3);
+        const lowerDoorGeometry = new THREE.BoxGeometry(
+            cajoneraWidth - edgeOverhang * 2.5,
+            lowerDoorHeight - edgeOverhang * 3,
+            cajoneraThickness
+        );
+        const lowerDoor = new THREE.Mesh(lowerDoorGeometry, doorMaterial);
+        lowerDoor.position.set(
+            0,
+            (lowerDoorHeight + edgeOverhang * 1.5) / 2,
+            cajoneraDepth / 2 - cajoneraThickness / 2
+        );
+        cajoneraGroup.add(lowerDoor);
+
+        // Horizontal divider (1/3 from top).
+        const dividerGeometry = new THREE.BoxGeometry(
+            cajoneraWidth - edgeOverhang * 2,
+            cajoneraThickness,
+            cajoneraDepth
+        );
+        const divider = new THREE.Mesh(dividerGeometry, dividerMaterial);
+        divider.position.set(0, cajoneraHeight * (2 / 3), 0);
+        cajoneraGroup.add(divider);
 
         // Position the drawer.
         cajoneraGroup.position.copy(position);
