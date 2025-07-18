@@ -3,6 +3,7 @@ import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 import { createDesk } from './desk.js';
 import { createRoom } from './room.js';
 import { setupLighting } from './lighting.js';
+import { createMonitor } from './monitor.js';
 
 // Scene configuration.
 const scene = new THREE.Scene();
@@ -14,8 +15,9 @@ renderer.shadowMap.type = THREE.PCFSoftShadowMap;
 document.body.appendChild(renderer.domElement);
 
 // Camera.
-camera.position.set(0, 3, 1);
+camera.position.set(0, 1, 1);
 camera.lookAt(0, 0, 0);
+camera.zoom = 2;
 
 // Controls.
 const controls = new OrbitControls(camera, renderer.domElement);
@@ -31,8 +33,13 @@ scene.add(gridHelper);
 // scene.add(room);
 
 // Desk.
-const desk = createDesk(0, 0, 0);
-scene.add(desk);
+// const desk = createDesk(0, 0, 0);
+// scene.add(desk);
+
+// Monitor on desk.
+// const monitor = createMonitor(0, 1.05, -0.2);
+const monitor = createMonitor(0, 0, 0);
+scene.add(monitor);
 
 // Lighting.
 const lighting = setupLighting();
