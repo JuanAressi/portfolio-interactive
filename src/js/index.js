@@ -16,7 +16,8 @@ renderer.physicallyCorrectLights = true; // Add this line
 document.body.appendChild(renderer.domElement);
 
 // Camera.
-camera.position.set(1, 1, 1);
+camera.position.set(0, 1, 1);
+camera.lookAt(0, 5, 0);
 camera.zoom = 1;
 
 // Controls.
@@ -33,16 +34,16 @@ const axesHelper = new THREE.AxesHelper(1);
 scene.add(axesHelper);
 
 // Room.
-// const room = createRoom();
-// scene.add(room);
+const room = createRoom(0, 0, 0);
+scene.add(room);
 
 // Desk.
-// const desk = createDesk(0, 0, 0);
-// scene.add(desk);
+const desk = createDesk(0, 0, 0);
+scene.add(desk);
 
 // Monitor on desk.
-// const monitor = createMonitor(0, 1.05, -0.2);
-const monitor = createMonitor(0, 0, 0);
+const monitor = createMonitor(0, 1.028, -0.255);
+// const monitor = createMonitor(0, 2, 0);
 scene.add(monitor);
 
 // Lighting.
