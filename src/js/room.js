@@ -1,4 +1,5 @@
 import * as THREE from 'three';
+import { createHorizontalLineLightWithHelper } from './lighting.js';
 
 export function createRoom(x = 0, y = 0, z = 0) {
     const roomGroup = new THREE.Group();
@@ -10,7 +11,7 @@ export function createRoom(x = 0, y = 0, z = 0) {
 
     const wallGeometry = new THREE.BoxGeometry(roomWidth, roomHeight, 0.1);
 
-    const backWallMaterial = new THREE.MeshBasicMaterial({
+    const backWallMaterial = new THREE.MeshStandardMaterial({
         color: 0xdddddd,
         side: THREE.DoubleSide,
     });
@@ -21,7 +22,7 @@ export function createRoom(x = 0, y = 0, z = 0) {
     backWall.receiveShadow = true;
     roomGroup.add(backWall);
 
-    const leftWallMaterial = new THREE.MeshBasicMaterial({
+    const leftWallMaterial = new THREE.MeshStandardMaterial({
         color: 0xcccccc,
         side: THREE.DoubleSide,
     });
@@ -87,7 +88,7 @@ export function createRoom(x = 0, y = 0, z = 0) {
 
     // Piso (color marrón) - ahora con material que responde a la luz
     const floorGeometry = new THREE.PlaneGeometry(roomWidth, roomDepth);
-    const floorMaterial = new THREE.MeshBasicMaterial({
+    const floorMaterial = new THREE.MeshStandardMaterial({
         color: 0x8b4513,
         side: THREE.DoubleSide,
     });
@@ -97,6 +98,11 @@ export function createRoom(x = 0, y = 0, z = 0) {
     floor.castShadow = true;
     floor.receiveShadow = true;
     roomGroup.add(floor);
+
+    // Create light.
+    const light = createHorizontalLineLightWithHelper(-10, 10, 10, 3, 3, 50, 0xffffff);
+    light.lookAt(0, 0, 0);
+    roomGroup.add(light);
 
     return roomGroup;
 }

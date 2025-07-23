@@ -13,14 +13,7 @@ export function createMonitor(x = 0, y = 0, z = 0) {
     const standWidth = 0.04;
 
     const bezel = createBezel(screenWidth, screenHeight, screenDepth, bezelThickness, bezelDepth);
-    const base = createBase(
-        screenWidth,
-        screenHeight,
-        screenDepth,
-        standWidth,
-        standHeight,
-        bezelThickness
-    );
+    const base = createBase(screenHeight, screenDepth, standWidth, standHeight, bezelThickness);
 
     // Position the monitor
     monitorGroup.position.set(x, y, z);
@@ -208,14 +201,7 @@ function createRightBezel(
     bezelGroup.add(rightLineLight);
 }
 
-function createBase(
-    screenWidth,
-    screenHeight,
-    screenDepth,
-    standWidth,
-    standHeight,
-    bezelThickness
-) {
+function createBase(screenHeight, screenDepth, standWidth, standHeight, bezelThickness) {
     const standMaterial = new THREE.MeshStandardMaterial({
         color: 0x444444,
         metalness: 0.3,
@@ -240,9 +226,10 @@ function createBase(
     base.position.set(0, -screenHeight / 2 - 0.2 / 2, -screenDepth);
     baseGroup.add(base);
 
+    // Vertical base.
     const verticalBaseGeometry = new THREE.BoxGeometry(0.1, 0.025, 0.005);
     const verticalBase = new THREE.Mesh(verticalBaseGeometry, bezelMaterial);
-    verticalBase.position.set(0, -screenHeight / 2 - 0.19 / 2, -0.02);
+    verticalBase.position.set(0, -screenHeight / 2 - 0.19 / 2, -0.015);
     baseGroup.add(verticalBase);
 
     return baseGroup;

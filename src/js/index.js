@@ -42,7 +42,7 @@ const desk = createDesk(0, 0, 0);
 scene.add(desk);
 
 // Monitor on desk.
-const monitor = createMonitor(0, 1.028, -0.255);
+const monitor = createMonitor(0, 1.028, -0.256);
 // const monitor = createMonitor(0, 2, 0);
 scene.add(monitor);
 

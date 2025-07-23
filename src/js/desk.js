@@ -4,7 +4,7 @@ export function createDesk(x = 0, y = 0, z = 0) {
     const deskGroup = new THREE.Group();
 
     // Desk material.
-    const deskMaterial = new THREE.MeshBasicMaterial({ color: 0xaaaaaa });
+    const deskMaterial = new THREE.MeshStandardMaterial({ color: 0xaaaaaa });
 
     // Dimensions of the drawer.
     const cajoneraWidth = 0.4;
@@ -57,7 +57,7 @@ export function createDesk(x = 0, y = 0, z = 0) {
         cajoneraGroup.add(backWall);
 
         // Floor of the drawer.
-        const dividerMaterial = new THREE.MeshBasicMaterial({ color: 0x666666 });
+        const dividerMaterial = new THREE.MeshStandardMaterial({ color: 0x666666 });
         const floorGeometry = new THREE.BoxGeometry(
             cajoneraWidth - edgeOverhang * 2,
             cajoneraThickness,
@@ -69,7 +69,7 @@ export function createDesk(x = 0, y = 0, z = 0) {
 
         // Upper door (1/3 height).
         const upperDoorHeight = cajoneraHeight / 3;
-        const doorMaterial = new THREE.MeshBasicMaterial({ color: 0x8b4513 });
+        const doorMaterial = new THREE.MeshStandardMaterial({ color: 0x8b4513 });
         const upperDoorGeometry = new THREE.BoxGeometry(
             cajoneraWidth - edgeOverhang * 2.5,
             upperDoorHeight - edgeOverhang * 2,
@@ -126,7 +126,7 @@ export function createDesk(x = 0, y = 0, z = 0) {
     const deskTopGeometry = new THREE.BoxGeometry(deskTopWidth, 0.05, deskTopDepth);
     const deskTop = new THREE.Mesh(
         deskTopGeometry,
-        new THREE.MeshBasicMaterial({ color: 0xcccccc })
+        new THREE.MeshStandardMaterial({ color: 0xcccccc })
     );
     deskTop.position.set(x, cajoneraHeight, z);
     deskGroup.add(deskTop);
