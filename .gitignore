@@ -6,3 +6,5 @@ dist/
 
 # Cache
 .parcel-cache/
+
+.vscode/

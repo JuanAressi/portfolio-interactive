@@ -2,7 +2,7 @@ import * as THREE from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 import { createDesk } from './desk.js';
 import { createRoom } from './room.js';
-import { setupLighting } from './lighting.js';
+import { setupLighting, createLineLightWithHelper } from './lighting.js';
 import { createMonitor } from './monitor.js';
 
 // Scene configuration.
@@ -12,12 +12,12 @@ const renderer = new THREE.WebGLRenderer();
 renderer.setSize(window.innerWidth, window.innerHeight);
 renderer.shadowMap.enabled = true;
 renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+renderer.physicallyCorrectLights = true; // Add this line
 document.body.appendChild(renderer.domElement);
 
 // Camera.
-camera.position.set(0, 1, 1);
-camera.lookAt(0, 0, 0);
-camera.zoom = 2;
+camera.position.set(1, 1, 1);
+camera.zoom = 1;
 
 // Controls.
 const controls = new OrbitControls(camera, renderer.domElement);
@@ -27,6 +27,10 @@ controls.dampingFactor = 0.05;
 // Grid.
 const gridHelper = new THREE.GridHelper(30);
 scene.add(gridHelper);
+
+// Axes helper para ver las líneas guías
+const axesHelper = new THREE.AxesHelper(1);
+scene.add(axesHelper);
 
 // Room.
 // const room = createRoom();
@@ -42,8 +46,13 @@ const monitor = createMonitor(0, 0, 0);
 scene.add(monitor);
 
 // Lighting.
-const lighting = setupLighting();
-scene.add(lighting);
+// const lighting = setupLighting();
+// scene.add(lighting);
+
+// Luz de línea que apunta al monitor
+// const lineLight = createLineLightWithHelper(0, 0.5, 0.3, 50, 0xffffff);
+// lineLight.lookAt(0, 0, 0); // Apunta directamente al monitor
+// scene.add(lineLight);
 
 // Render function.
 function animate() {
