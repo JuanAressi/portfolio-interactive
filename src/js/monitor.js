@@ -110,9 +110,9 @@ function createTopBezel(
         screenWidth,
         bezelDepth / 2,
         50,
-        0x00fa00
+        0xaaaaaa
     );
-    topLineLight.lookAt(0, screenHeight / 2 - 0.021 * 2 - 1, 0);
+    topLineLight.lookAt(0, screenHeight / 2 - 0.04, 0.1); // Apunta hacia el frente
     bezelGroup.add(topLineLight);
 }
 
@@ -141,8 +141,9 @@ function createBottomBezel(
         screenWidth,
         bezelDepth / 2,
         50,
-        0xfa0000
+        0xaaaaaa
     );
+    bottomLineLight.lookAt(0, -screenHeight / 2 - 0.022, 0.1); // Apunta hacia el frente
     bezelGroup.add(bottomLineLight);
 }
 
@@ -168,8 +169,9 @@ function createLeftBezel(
         bezelDepth / 2,
         screenHeight - 0.02,
         50,
-        0x0066ff
+        0xaaaaaa
     );
+    leftLineLight.lookAt(-screenWidth / 2 + 0.0001, -0.031, 0.1); // Apunta hacia el frente
     bezelGroup.add(leftLineLight);
 }
 
@@ -195,9 +197,9 @@ function createRightBezel(
         bezelDepth / 2,
         screenHeight - 0.02,
         50,
-        0x0066ff
+        0xaaaaaa
     );
-    rightLineLight.lookAt(-screenWidth / 2 - 0.0001, -0.031, 0);
+    rightLineLight.lookAt(screenWidth / 2 - 0.0001, -0.031, 0.1); // Apunta hacia el frente
     bezelGroup.add(rightLineLight);
 }
 
