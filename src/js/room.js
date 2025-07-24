@@ -99,10 +99,34 @@ export function createRoom(x = 0, y = 0, z = 0) {
     floor.receiveShadow = true;
     roomGroup.add(floor);
 
-    // Create light.
-    const light = createHorizontalLineLightWithHelper(-10, 10, 10, 3, 3, 50, 0xffffff);
+    // Create directional light instead of line light
+    const light = new THREE.DirectionalLight(0xffffff, 2);
+    light.position.set(-5, 5, 5);
+    light.castShadow = true;
+    light.shadow.mapSize.width = 2048;
+    light.shadow.mapSize.height = 2048;
+    light.shadow.camera.near = 0.5;
+    light.shadow.camera.far = 50;
+    light.shadow.camera.left = -10;
+    light.shadow.camera.right = 10;
+    light.shadow.camera.top = 10;
+    light.shadow.camera.bottom = -10;
     light.lookAt(0, 0, 0);
     roomGroup.add(light);
+
+    // Agregar luz direccional solo para sombras
+    const shadowLight = new THREE.DirectionalLight(0xffffff, 1);
+    shadowLight.position.set(-5, 8, 5);
+    shadowLight.castShadow = true;
+    shadowLight.shadow.mapSize.width = 1024;
+    shadowLight.shadow.mapSize.height = 1024;
+    shadowLight.shadow.camera.near = 0.5;
+    shadowLight.shadow.camera.far = 50;
+    shadowLight.shadow.camera.left = -10;
+    shadowLight.shadow.camera.right = 10;
+    shadowLight.shadow.camera.top = 10;
+    shadowLight.shadow.camera.bottom = -10;
+    roomGroup.add(shadowLight);
 
     return roomGroup;
 }

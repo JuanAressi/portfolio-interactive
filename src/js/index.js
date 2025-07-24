@@ -12,18 +12,18 @@ const renderer = new THREE.WebGLRenderer();
 renderer.setSize(window.innerWidth, window.innerHeight);
 renderer.shadowMap.enabled = true;
 renderer.shadowMap.type = THREE.PCFSoftShadowMap;
-renderer.physicallyCorrectLights = true; // Add this line
+renderer.physicallyCorrectLights = true;
 document.body.appendChild(renderer.domElement);
 
 // Camera.
-camera.position.set(0, 1, 1);
-camera.lookAt(0, 5, 0);
+camera.position.set(0.52, 1.028, 1 - 2.17 - 0.256);
 camera.zoom = 1;
 
 // Controls.
 const controls = new OrbitControls(camera, renderer.domElement);
 controls.enableDamping = true;
 controls.dampingFactor = 0.05;
+controls.target.set(1.52, 1.028, -2.17 - 0.256);
 
 // Grid.
 const gridHelper = new THREE.GridHelper(30);
@@ -38,12 +38,13 @@ const room = createRoom(0, 0, 0);
 scene.add(room);
 
 // Desk.
-const desk = createDesk(0, 0, 0);
+// const desk = createDesk(0, 0, 0);
+const desk = createDesk(1.52, 0, -2.17);
 scene.add(desk);
 
 // Monitor on desk.
-const monitor = createMonitor(0, 1.028, -0.256);
-// const monitor = createMonitor(0, 2, 0);
+// const monitor = createMonitor(0, 1.028, -0.256);
+const monitor = createMonitor(1.52, 1.028, -2.17 - 0.256);
 scene.add(monitor);
 
 // Lighting.

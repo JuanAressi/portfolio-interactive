@@ -34,6 +34,8 @@ export function createDesk(x = 0, y = 0, z = 0) {
         );
         const leftWall = new THREE.Mesh(leftWallGeometry, deskMaterial);
         leftWall.position.set(-cajoneraWidth / 2 + cajoneraThickness / 2, cajoneraHeight / 2, 0);
+        leftWall.castShadow = true;
+        leftWall.receiveShadow = true;
         cajoneraGroup.add(leftWall);
 
         // Right wall.
@@ -44,6 +46,8 @@ export function createDesk(x = 0, y = 0, z = 0) {
         );
         const rightWall = new THREE.Mesh(rightWallGeometry, deskMaterial);
         rightWall.position.set(cajoneraWidth / 2 - cajoneraThickness / 2, cajoneraHeight / 2, 0);
+        rightWall.castShadow = true;
+        rightWall.receiveShadow = true;
         cajoneraGroup.add(rightWall);
 
         // Back wall.
@@ -54,6 +58,8 @@ export function createDesk(x = 0, y = 0, z = 0) {
         );
         const backWall = new THREE.Mesh(backWallGeometry, deskMaterial);
         backWall.position.set(0, cajoneraHeight / 2, -cajoneraDepth / 2 + cajoneraThickness / 2);
+        backWall.castShadow = true;
+        backWall.receiveShadow = true;
         cajoneraGroup.add(backWall);
 
         // Floor of the drawer.
@@ -65,6 +71,8 @@ export function createDesk(x = 0, y = 0, z = 0) {
         );
         const floor = new THREE.Mesh(floorGeometry, dividerMaterial);
         floor.position.set(0, cajoneraThickness / 2 + 0.02, 0);
+        floor.castShadow = true;
+        floor.receiveShadow = true;
         cajoneraGroup.add(floor);
 
         // Upper door (1/3 height).
@@ -81,6 +89,8 @@ export function createDesk(x = 0, y = 0, z = 0) {
             cajoneraHeight - (upperDoorHeight + edgeOverhang / 2) / 2,
             cajoneraDepth / 2 - cajoneraThickness / 2
         );
+        upperDoor.castShadow = true;
+        upperDoor.receiveShadow = true;
         cajoneraGroup.add(upperDoor);
 
         // Lower door (2/3 height).
@@ -96,6 +106,8 @@ export function createDesk(x = 0, y = 0, z = 0) {
             (lowerDoorHeight + edgeOverhang * 1.5) / 2,
             cajoneraDepth / 2 - cajoneraThickness / 2
         );
+        lowerDoor.castShadow = true;
+        lowerDoor.receiveShadow = true;
         cajoneraGroup.add(lowerDoor);
 
         // Horizontal divider (1/3 from top).
@@ -106,6 +118,8 @@ export function createDesk(x = 0, y = 0, z = 0) {
         );
         const divider = new THREE.Mesh(dividerGeometry, dividerMaterial);
         divider.position.set(0, cajoneraHeight * (2 / 3), 0);
+        divider.castShadow = true;
+        divider.receiveShadow = true;
         cajoneraGroup.add(divider);
 
         // Position the drawer.
@@ -129,6 +143,8 @@ export function createDesk(x = 0, y = 0, z = 0) {
         new THREE.MeshStandardMaterial({ color: 0xcccccc })
     );
     deskTop.position.set(x, cajoneraHeight, z);
+    deskTop.castShadow = true;
+    deskTop.receiveShadow = true;
     deskGroup.add(deskTop);
 
     return deskGroup;
