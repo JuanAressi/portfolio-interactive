@@ -4,6 +4,11 @@ import { createDesk } from './desk.js';
 import { createRoom } from './room.js';
 import { setupLighting, createLineLightWithHelper } from './lighting.js';
 import { createMonitor } from './monitor.js';
+import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
+const keyboard = new URL('../assets/keyboard.glb', import.meta.url).href;
+const mouse = new URL('../assets/mouse.glb', import.meta.url).href;
+const books = new URL('../assets/books.glb', import.meta.url).href;
+const roundedChair = new URL('../assets/rounded_chair.glb', import.meta.url).href;
 
 // Scene configuration.
 const scene = new THREE.Scene();
@@ -47,7 +52,97 @@ scene.add(desk);
 const monitor = createMonitor(1.52, 1.028, -2.17 - 0.256);
 scene.add(monitor);
 
-// Lighting.
+// Items loader.
+const loader = new GLTFLoader();
+
+// Keyboard.
+loader.load(
+    keyboard,
+    gltf => {
+        gltf.scene.position.set(1.52 - 0.01, 1.028 - 0.235, 0.5 - 2.17 - 0.425);
+        gltf.scene.scale.set(1.25, 1.25, 1.25);
+        gltf.scene.traverse(child => {
+            if (child.isMesh) {
+                child.castShadow = true;
+                child.receiveShadow = true;
+            }
+        });
+
+        scene.add(gltf.scene);
+    },
+    undefined,
+    error => {
+        console.error('Error cargando GLB:', error);
+    }
+);
+
+// Mouse.
+loader.load(
+    mouse,
+    gltf => {
+        gltf.scene.position.set(1.52 + 0.25, 1.028 - 0.24, 0.5 - 2.17 - 0.425);
+        gltf.scene.scale.set(0.04, 0.04, 0.04);
+        gltf.scene.rotation.set(0, -1.25, 0);
+        gltf.scene.traverse(child => {
+            if (child.isMesh) {
+                child.castShadow = true;
+                child.receiveShadow = true;
+            }
+        });
+
+        scene.add(gltf.scene);
+    },
+    undefined,
+    error => {
+        console.error('Error cargando GLB:', error);
+    }
+);
+
+// Books.
+loader.load(
+    books,
+    gltf => {
+        gltf.scene.position.set(1.52 + 0.725, 1.028 - 0.2515, 0.5 - 2.17 - 0.425);
+        gltf.scene.scale.set(0.066, 0.066, 0.066);
+        gltf.scene.rotation.set(0, 0.5, 0);
+        gltf.scene.traverse(child => {
+            if (child.isMesh) {
+                child.castShadow = true;
+                child.receiveShadow = true;
+            }
+        });
+
+        scene.add(gltf.scene);
+    },
+    undefined,
+    error => {
+        console.error('Error cargando GLB:', error);
+    }
+);
+
+// Rounded chair.
+loader.load(
+    roundedChair,
+    gltf => {
+        gltf.scene.position.set(1.75, 0, -1.4);
+        gltf.scene.scale.set(0.35, 0.35, 0.35);
+        gltf.scene.rotation.set(0, -2.5, 0);
+        gltf.scene.traverse(child => {
+            if (child.isMesh) {
+                child.castShadow = true;
+                child.receiveShadow = true;
+            }
+        });
+
+        scene.add(gltf.scene);
+    },
+    undefined,
+    error => {
+        console.error('Error cargando GLB:', error);
+    }
+);
+
+// Lighting - DESCOMENTAR estas líneas
 // const lighting = setupLighting();
 // scene.add(lighting);
 
