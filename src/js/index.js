@@ -28,7 +28,7 @@ camera.zoom = 1;
 const controls = new OrbitControls(camera, renderer.domElement);
 controls.enableDamping = true;
 controls.dampingFactor = 0.05;
-controls.target.set(1.52, 1.028, -2.17 - 0.256);
+controls.target.set(1.79, 1.028, -2.17 - 0.256);
 
 // Grid.
 const gridHelper = new THREE.GridHelper(30);
@@ -43,13 +43,13 @@ const room = createRoom(0, 0, 0);
 scene.add(room);
 
 // Desk.
-// const desk = createDesk(0, 0, 0);
-const desk = createDesk(1.52, 0, -2.17);
+const desk = createDesk(1.79, 0, -2.44);
+desk.scale.set(0.9, 0.9, 0.9);
 scene.add(desk);
 
 // Monitor on desk.
-// const monitor = createMonitor(0, 1.028, -0.256);
-const monitor = createMonitor(1.52, 1.028, -2.17 - 0.256);
+const monitor = createMonitor(1.62, 0.988, -2.43);
+monitor.scale.set(1.15, 1.15, 1.15);
 scene.add(monitor);
 
 // Items loader.
@@ -59,7 +59,7 @@ const loader = new GLTFLoader();
 loader.load(
     keyboard,
     gltf => {
-        gltf.scene.position.set(1.52 - 0.01, 1.028 - 0.235, 0.5 - 2.17 - 0.425);
+        gltf.scene.position.set(1.62, 0.721, -2.095);
         gltf.scene.scale.set(1.25, 1.25, 1.25);
         gltf.scene.traverse(child => {
             if (child.isMesh) {
@@ -80,7 +80,7 @@ loader.load(
 loader.load(
     mouse,
     gltf => {
-        gltf.scene.position.set(1.52 + 0.25, 1.028 - 0.24, 0.5 - 2.17 - 0.425);
+        gltf.scene.position.set(1.9, 0.711, -2.095);
         gltf.scene.scale.set(0.04, 0.04, 0.04);
         gltf.scene.rotation.set(0, -1.25, 0);
         gltf.scene.traverse(child => {
@@ -102,7 +102,7 @@ loader.load(
 loader.load(
     books,
     gltf => {
-        gltf.scene.position.set(1.52 + 0.725, 1.028 - 0.2515, 0.5 - 2.17 - 0.425);
+        gltf.scene.position.set(2.25, 0.698, -2.25);
         gltf.scene.scale.set(0.066, 0.066, 0.066);
         gltf.scene.rotation.set(0, 0.5, 0);
         gltf.scene.traverse(child => {
@@ -124,8 +124,8 @@ loader.load(
 loader.load(
     roundedChair,
     gltf => {
-        gltf.scene.position.set(1.75, 0, -1.4);
-        gltf.scene.scale.set(0.35, 0.35, 0.35);
+        gltf.scene.position.set(1.9, 0, -1.66);
+        gltf.scene.scale.set(0.3, 0.3, 0.3);
         gltf.scene.rotation.set(0, -2.5, 0);
         gltf.scene.traverse(child => {
             if (child.isMesh) {
@@ -142,7 +142,6 @@ loader.load(
     }
 );
 
-// Lighting - DESCOMENTAR estas líneas
 // const lighting = setupLighting();
 // scene.add(lighting);
 
