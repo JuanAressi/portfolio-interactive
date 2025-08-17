@@ -11,12 +11,17 @@
     ],
     "author": "Juancho",
     "license": "MIT",
+    "scripts": {
+        "dev": "parcel src/index.html"
+    },
     "devDependencies": {
         "dat.gui": "^0.7.9",
         "eslint": "^9.31.0",
         "parcel": "^2.15.4"
     },
     "dependencies": {
+        "@tailwindcss/postcss": "^4.1.12",
+        "tailwindcss": "^4.1.12",
         "three": "^0.178.0"
     },
     "repository": {
