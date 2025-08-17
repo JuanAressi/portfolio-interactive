@@ -19,7 +19,6 @@ export function createMonitor(x = 0, y = 0, z = 0) {
     monitorGroup.position.set(x, y, z);
 
     monitorGroup.add(bezel);
-    monitorGroup.add(screen);
     monitorGroup.add(base);
 
     return monitorGroup;

@@ -1,5 +1,7 @@
 import * as THREE from 'three';
 import { createHorizontalLineLightWithHelper } from './lighting.js';
+const floorImage = new URL('../assets/diagonal_parquet.jpg', import.meta.url).href;
+const wallImage = new URL('../assets/wall.jpg', import.meta.url).href;
 
 export function createRoom(x = 0, y = 0, z = 0) {
     const roomGroup = new THREE.Group();
@@ -10,32 +12,37 @@ export function createRoom(x = 0, y = 0, z = 0) {
     const roomDepth = 5;
 
     const wallGeometry = new THREE.BoxGeometry(roomWidth, roomHeight, 0.1);
+    const wallTexture = new THREE.TextureLoader().load(wallImage);
+    wallTexture.wrapS = THREE.RepeatWrapping;
+    wallTexture.wrapT = THREE.RepeatWrapping;
+    wallTexture.repeat.set(2, 2);
+    wallTexture.rotation = Math.PI / 2.9;
+    wallTexture.center.set(0.5, 0.5);
 
     const backWallMaterial = new THREE.MeshStandardMaterial({
         color: 0xdddddd,
+        map: wallTexture,
         side: THREE.DoubleSide,
     });
     const backWall = new THREE.Mesh(wallGeometry, backWallMaterial);
     backWall.position.z = -roomDepth / 2;
-    backWall.position.y = roomHeight / 2; // Posicionar la pared trasera desde el piso
+    backWall.position.y = roomHeight / 2;
     backWall.castShadow = true;
     backWall.receiveShadow = true;
     roomGroup.add(backWall);
 
     const leftWallMaterial = new THREE.MeshStandardMaterial({
-        color: 0xcccccc,
+        color: 0xdddddd,
+        map: wallTexture,
         side: THREE.DoubleSide,
     });
 
-    // Crear pared izquierda con agujero usando geometría personalizada
-    const windowWidth = 2; // Ventana de 1.2m de ancho
-    const windowHeight = 1.2; // Ventana de 80cm de alto
-    const windowY = 1.0; // Posición Y de la ventana (1m del piso)
+    const windowWidth = 2;
+    const windowHeight = 1.2;
+    const windowY = 1.0;
 
-    // Crear la pared izquierda como un grupo con cuatro partes
     const leftWallGroup = new THREE.Group();
 
-    // Parte superior de la pared
     const topWallGeometry = new THREE.BoxGeometry(
         roomWidth,
         roomHeight - windowHeight - windowY,
@@ -86,47 +93,66 @@ export function createRoom(x = 0, y = 0, z = 0) {
     leftWallGroup.position.y = 0; // Alinear con el piso
     roomGroup.add(leftWallGroup);
 
-    // Piso (color marrón) - ahora con material que responde a la luz
-    const floorGeometry = new THREE.PlaneGeometry(roomWidth, roomDepth);
-    const floorMaterial = new THREE.MeshStandardMaterial({
-        color: 0x8b4513,
-        side: THREE.DoubleSide,
-    });
-    const floor = new THREE.Mesh(floorGeometry, floorMaterial);
-    floor.rotation.x = Math.PI / 2;
-    floor.position.y = 0; // El piso ahora está en la posición Y especificada
-    floor.castShadow = true;
-    floor.receiveShadow = true;
-    roomGroup.add(floor);
+    createFloor(roomGroup, roomWidth, roomDepth);
 
     // Create directional light instead of line light
     const light = new THREE.DirectionalLight(0xffffff, 2);
     light.position.set(-5, 5, 5);
     light.castShadow = true;
-    light.shadow.mapSize.width = 2048;
-    light.shadow.mapSize.height = 2048;
-    light.shadow.camera.near = 0.5;
-    light.shadow.camera.far = 50;
-    light.shadow.camera.left = -10;
-    light.shadow.camera.right = 10;
-    light.shadow.camera.top = 10;
-    light.shadow.camera.bottom = -10;
+    // light.shadow.mapSize.width = 2048;
+    // light.shadow.mapSize.height = 2048;
+    light.shadow.mapSize.width = 4096;
+    light.shadow.mapSize.height = 4096;
+    // light.shadow.camera.near = 0.5;
+    // light.shadow.camera.far = 50;
+    // light.shadow.camera.left = -10;
+    // light.shadow.camera.right = 10;
+    // light.shadow.camera.top = 10;
+    // light.shadow.camera.bottom = -10;
     light.lookAt(0, 0, 0);
     roomGroup.add(light);
 
-    // Agregar luz direccional solo para sombras
-    const shadowLight = new THREE.DirectionalLight(0xffffff, 1);
-    shadowLight.position.set(-5, 8, 5);
-    shadowLight.castShadow = true;
-    shadowLight.shadow.mapSize.width = 1024;
-    shadowLight.shadow.mapSize.height = 1024;
-    shadowLight.shadow.camera.near = 0.5;
-    shadowLight.shadow.camera.far = 50;
-    shadowLight.shadow.camera.left = -10;
-    shadowLight.shadow.camera.right = 10;
-    shadowLight.shadow.camera.top = 10;
-    shadowLight.shadow.camera.bottom = -10;
-    roomGroup.add(shadowLight);
+    // // Agregar luz direccional solo para sombras
+    // const shadowLight = new THREE.DirectionalLight(0xffffff, 1);
+    // shadowLight.position.set(-5, 8, 5);
+    // shadowLight.castShadow = true;
+    // shadowLight.shadow.mapSize.width = 1024;
+    // shadowLight.shadow.mapSize.height = 1024;
+    // shadowLight.shadow.camera.near = 0.5;
+    // shadowLight.shadow.camera.far = 50;
+    // shadowLight.shadow.camera.left = -10;
+    // shadowLight.shadow.camera.right = 10;
+    // shadowLight.shadow.camera.top = 10;
+    // shadowLight.shadow.camera.bottom = -10;
+    // roomGroup.add(shadowLight);
+
+    // const ambientLight = new THREE.AmbientLight(0xffffff, 1);
+    // roomGroup.add(ambientLight);
 
     return roomGroup;
+}
+
+function createFloor(roomGroup, roomWidth, roomDepth) {
+    const floorGeometry = new THREE.PlaneGeometry(roomWidth, roomDepth);
+    const textureLoader = new THREE.TextureLoader();
+    const floorTexture = textureLoader.load(floorImage);
+    floorTexture.wrapS = THREE.RepeatWrapping;
+    floorTexture.wrapT = THREE.RepeatWrapping;
+    floorTexture.repeat.set(2, 2);
+    floorTexture.rotation = Math.PI / 2.9;
+    floorTexture.center.set(0.5, 0.5);
+
+    const floorMaterial = new THREE.MeshStandardMaterial({
+        color: 0xcccccc,
+        map: floorTexture,
+        side: THREE.DoubleSide,
+        roughness: 0.8,
+        metalness: 0.1,
+    });
+    const floor = new THREE.Mesh(floorGeometry, floorMaterial);
+    floor.rotation.x = Math.PI / 2;
+    floor.position.y = 0;
+    floor.castShadow = true;
+    floor.receiveShadow = true;
+    roomGroup.add(floor);
 }

@@ -1,10 +1,12 @@
 import * as THREE from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
+import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 import { createDesk } from './desk.js';
 import { createRoom } from './room.js';
 import { setupLighting, createLineLightWithHelper } from './lighting.js';
 import { createMonitor } from './monitor.js';
-import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
+import curve from './camera-movement.js';
+
 const keyboard = new URL('../assets/keyboard.glb', import.meta.url).href;
 const mouse = new URL('../assets/mouse.glb', import.meta.url).href;
 const books = new URL('../assets/books.glb', import.meta.url).href;
@@ -18,10 +20,14 @@ renderer.setSize(window.innerWidth, window.innerHeight);
 renderer.shadowMap.enabled = true;
 renderer.shadowMap.type = THREE.PCFSoftShadowMap;
 renderer.physicallyCorrectLights = true;
-document.body.appendChild(renderer.domElement);
+
+// Agregar el canvas al contenedor correcto
+const canvasContainer = document.getElementById('canvas-container');
+canvasContainer.appendChild(renderer.domElement);
 
 // Camera.
 camera.position.set(0.52, 1.028, 1 - 2.17 - 0.256);
+camera.lookAt(1.62, 0.988, -2.43);
 camera.zoom = 1;
 
 // Controls.
@@ -29,6 +35,22 @@ const controls = new OrbitControls(camera, renderer.domElement);
 controls.enableDamping = true;
 controls.dampingFactor = 0.05;
 controls.target.set(1.79, 1.028, -2.17 - 0.256);
+
+// Configuraciones adicionales para los controles
+controls.enablePan = true;
+controls.enableZoom = true;
+controls.enableRotate = true;
+controls.panSpeed = 1.0;
+controls.zoomSpeed = 1.0;
+controls.rotateSpeed = 1.0;
+controls.maxDistance = 10;
+controls.minDistance = 0.5;
+
+const curvePoints = curve.getPoints(100);
+const curveGeometry = new THREE.BufferGeometry().setFromPoints(curvePoints);
+const curveMaterial = new THREE.LineBasicMaterial({ color: 0xffff00 });
+const curveLine = new THREE.Line(curveGeometry, curveMaterial);
+scene.add(curveLine);
 
 // Grid.
 const gridHelper = new THREE.GridHelper(30);
@@ -150,12 +172,66 @@ loader.load(
 // lineLight.lookAt(0, 0, 0); // Apunta directamente al monitor
 // scene.add(lineLight);
 
-// Render function.
+// Scroll tracking
+let targetScrollY = 0;
+let smoothScrollY = 0;
+const content = document.getElementById('content');
+const maxScroll = content.scrollHeight - window.innerHeight;
+
+window.addEventListener('wheel', e => {
+    targetScrollY += e.deltaY;
+    targetScrollY = Math.max(0, Math.min(targetScrollY, maxScroll));
+});
+
+// Mouse tracking
+let mouseX = 0;
+let targetMouseX = 0;
+
+window.addEventListener('mousemove', event => {
+    targetMouseX = (event.clientX / window.innerWidth) * 2 - 1;
+});
+
+const progressBar = document.getElementById('scroll-progress');
+
+// Actualización de scroll + mouse
+function updateInputs() {
+    // suavizado vertical
+    smoothScrollY += (targetScrollY - smoothScrollY) * 0.1;
+    content.style.transform = `translateY(${-smoothScrollY}px)`;
+
+    // suavizado horizontal
+    mouseX += (targetMouseX - mouseX) * 0.1;
+
+    // progreso
+    const progress = (smoothScrollY / maxScroll) * 100;
+    progressBar.style.height = `${progress}%`;
+}
+
+function updateCameraPosition() {
+    const point = Math.min(smoothScrollY / maxScroll, 1);
+    const position = curve.getPoint(point);
+    const easedPoint = point * point;
+
+    let horizontalOffset = 0;
+    if (point > 0.1) {
+        horizontalOffset = mouseX * 0.1 * easedPoint;
+        position.x += horizontalOffset;
+    }
+
+    camera.position.copy(position);
+
+    const monitorPosition = new THREE.Vector3(1.62, 0.988 - easedPoint * 0.66, -2.43);
+    camera.lookAt(monitorPosition);
+}
+
 function animate() {
     requestAnimationFrame(animate);
-    controls.update();
+    updateInputs();
+    updateCameraPosition();
     renderer.render(scene, camera);
 }
+
+animate();
 
 // Handle window resize.
 window.addEventListener('resize', () => {
@@ -163,5 +239,3 @@ window.addEventListener('resize', () => {
     camera.updateProjectionMatrix();
     renderer.setSize(window.innerWidth, window.innerHeight);
 });
-
-animate();

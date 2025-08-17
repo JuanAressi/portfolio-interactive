@@ -1,16 +1,266 @@
 <!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Portfolio</title>
-    <style>
-        body {
-            margin: 0;
-        }
-    </style>
-</head>
-<body>
-    <script type="module" src="./js/index.js"></script>
-</body>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Portfolio Interactive</title>
+        <link rel="stylesheet" href="./styles.css" />
+    </head>
+    <body>
+        <div id="canvas-container"></div>
+
+        <div id="scroll-wrapper">
+            <div id="content" class="text-white text-shadow-1 relative flex flex-col z-2 px-10">
+                <!-- Sección de entrada - Nombre y título -->
+                <div id="home" class="flex flex-col justify-center min-h-screen">
+                    <div class="flex gap-6">
+                        <!-- Vertical line -->
+                        <div class="flex flex-col items-center gap-3 py-2">
+                            <span class="little-dot"></span>
+                            <span class="vertical-line"></span>
+                            <span class="little-dot"></span>
+                        </div>
+
+                        <!-- Content -->
+                        <div class="flex flex-col gap-6">
+                            <!-- <div class="flex gap-4 w-full">
+                        <div class="flex gap-2">
+                            <span class="dot"></span>
+                            <span class="dot"></span>
+                            <span class="dot"></span>
+                        </div>
+    
+                        <div class="flex gap-2">
+                            <span class="line line-2"></span>
+                        </div>
+    
+                        <div class="flex gap-2">
+                            <span class="dot"></span>
+                            <span class="line line-2"></span>
+                        </div>
+    
+                        <div class="flex gap-2">
+                            <span class="line line-2"></span>
+                            <span class="dot"></span>
+                            <span class="line line-2"></span>
+                            <span class="line line-2"></span>
+                        </div>
+                    </div> -->
+
+                            <div class="flex flex-col gap-3">
+                                <div class="flex gap-4">
+                                    <span class="square"></span>
+                                    <span class="line line-4 gradient-green rotate-180"></span>
+                                    <span class="line line-3 gradient-blue"></span>
+                                </div>
+
+                                <div class="flex gap-4">
+                                    <span class="line line-2 gradient-gray rotate-180"></span>
+                                    <span class="dot"></span>
+                                    <span class="line line-4 gradient-orange"></span>
+                                    <span class="dot"></span>
+                                </div>
+
+                                <div class="flex gap-4">
+                                    <span class="line line-5 gradient-pink"></span>
+                                    <span class="square"></span>
+                                    <span class="line line-4 gradient-gray"></span>
+                                </div>
+                            </div>
+
+                            <div class="gap-1">
+                                <h1 class="text-7xl font-bold text-white text-shadow-1">
+                                    Juan Aressi
+                                </h1>
+                                <p class="text-2xl text-gray text-shadow-1 mb-2">
+                                    Systems Engineer
+                                </p>
+                            </div>
+
+                            <div class="flex flex-col gap-3">
+                                <div class="flex gap-4">
+                                    <span class="line line-5 gradient-gray"></span>
+                                    <span class="square"></span>
+                                    <span class="line line-2 gradient-blue rotate-180"></span>
+                                    <span class="dot"></span>
+                                </div>
+
+                                <div class="flex gap-4">
+                                    <span class="dot"></span>
+                                    <span class="line line-2 gradient-orange rotate-180"></span>
+                                    <span class="square"></span>
+                                    <span class="line line-3 gradient-green"></span>
+                                    <span class="dot"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flex flex-col justify-center min-h-screen">
+                    <div class="flex gap-6">
+                        <!-- Vertical line -->
+                        <div class="flex flex-col items-center gap-3 py-2">
+                            <span class="little-dot"></span>
+                            <span class="vertical-line"></span>
+                            <span class="little-dot"></span>
+                        </div>
+
+                        <div class="flex flex-col gap-6">
+                            <h2 class="m-0 text-4xl">Work Experience</h2>
+
+                            <div class="flex flex-col gap-3">
+                                <div class="flex gap-4">
+                                    <span class="line line-5 gradient-gray"></span>
+                                    <span class="square"></span>
+                                    <span class="line line-2 gradient-blue rotate-180"></span>
+                                    <span class="dot"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Sección de Work -->
+                <!-- <div class="section work-section">
+            <h2>Work Experience</h2>
+            <div class="work-list">
+                <div class="work-item">
+                    <h3>Senior Software Engineer</h3>
+                    <p class="company">TechCorp Solutions</p>
+                    <p class="description">Led development of scalable web applications using modern technologies. Implemented CI/CD pipelines and mentored junior developers.</p>
+                </div>
+                
+                <div class="work-item">
+                    <h3>Full Stack Developer</h3>
+                    <p class="company">InnovateLab</p>
+                    <p class="description">Built responsive web applications and RESTful APIs. Collaborated with design and product teams to deliver user-centric solutions.</p>
+                </div>
+                
+                <div class="work-item">
+                    <h3>Frontend Developer</h3>
+                    <p class="company">Digital Dynamics</p>
+                    <p class="description">Developed interactive user interfaces and optimized frontend performance. Worked with React, TypeScript, and modern CSS frameworks.</p>
+                </div>
+                
+                <div class="work-item">
+                    <h3>Software Engineer</h3>
+                    <p class="company">StartupHub</p>
+                    <p class="description">Contributed to early-stage product development. Built MVP features and participated in agile development processes.</p>
+                </div>
+                
+                <div class="work-item">
+                    <h3>Junior Developer</h3>
+                    <p class="company">CodeCraft Studio</p>
+                    <p class="description">Started career developing web applications and learning modern development practices. Contributed to team projects and code reviews.</p>
+                </div>
+            </div>
+        </div> -->
+
+                <!-- Sección de About -->
+                <div
+                    id="about"
+                    class="flex flex-col justify-center min-h-screen text-white text-shadow-1"
+                >
+                    <div class="flex gap-6">
+                        <!-- Vertical line -->
+                        <div class="flex flex-col items-center gap-3 pt-6 pb-2">
+                            <span class="little-dot"></span>
+                            <span class="vertical-line"></span>
+                            <span class="little-dot"></span>
+                        </div>
+
+                        <div class="flex flex-col gap-6">
+                            <h2 class="m-0 text-4xl">Hi, I'm Juan</h2>
+
+                            <div class="flex flex-col gap-3">
+                                <div class="flex gap-4">
+                                    <span class="line line-5 gradient-gray"></span>
+                                    <span class="square"></span>
+                                    <span class="line line-2 gradient-blue rotate-180"></span>
+                                    <span class="dot"></span>
+                                </div>
+
+                                <div class="flex gap-4">
+                                    <span class="dot"></span>
+                                    <span class="line line-2 gradient-orange rotate-180"></span>
+                                    <span class="square"></span>
+                                    <span class="line line-3 gradient-green"></span>
+                                    <span class="dot"></span>
+                                </div>
+                            </div>
+
+                            <div class="flex flex-col gap-1 text-lg w-50">
+                                <p class="m-0">
+                                    I’m a Systems Engineer / Full Stack Developer from Argentina.
+                                </p>
+
+                                <p class="m-0">
+                                    I'm a passionate Systems Engineer with a deep love for creating
+                                    innovative digital experiences and products.
+                                </p>
+                                <p class="m-0">
+                                    My journey in technology started with a curiosity about how
+                                    things work, which evolved into a career building solutions that
+                                    make a difference.
+                                </p>
+
+                                <p class="m-0">
+                                    With expertise in modern web technologies, I specialize in
+                                    developing scalable applications that combine beautiful design
+                                    with robust functionality, focusing on clean code, user-centered
+                                    design, and continuous learning.
+                                </p>
+                            </div>
+
+                            <div class="flex flex-col gap-3">
+                                <div class="flex gap-4">
+                                    <span class="square"></span>
+                                    <span class="line line-4 gradient-green rotate-180"></span>
+                                    <span class="line line-3 gradient-blue"></span>
+                                </div>
+
+                                <div class="flex gap-4">
+                                    <span class="line line-2 gradient-gray rotate-180"></span>
+                                    <span class="dot"></span>
+                                    <span class="line line-4 gradient-orange"></span>
+                                    <span class="dot"></span>
+                                </div>
+
+                                <div class="flex gap-4">
+                                    <span class="line line-5 gradient-pink"></span>
+                                    <span class="square"></span>
+                                    <span class="line line-4 gradient-gray"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Barra de navegación inferior -->
+        <nav id="bottom-nav">
+            <div class="nav-left">
+                <a href="#home" class="nav-link">Home</a>
+                <a href="#work" class="nav-link">Work</a>
+                <a href="#about" class="nav-link">About</a>
+            </div>
+            <div class="nav-right">
+                <a href="mailto:tu@email.com" class="social-link">Email</a>
+                <a href="https://github.com/tuusuario" target="_blank" class="social-link"
+                    >GitHub</a
+                >
+                <a href="https://linkedin.com/in/tuusuario" target="_blank" class="social-link"
+                    >LinkedIn</a
+                >
+            </div>
+        </nav>
+
+        <div id="scroll-bar">
+            <div id="scroll-progress"></div>
+        </div>
+
+        <script type="module" src="js/index.js"></script>
+    </body>
 </html>

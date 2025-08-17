@@ -1,0 +1,367 @@
+@font-face {
+    font-family: 'Manrope';
+    src: url('./assets/fonts/Manrope/Manrope-VariableFont_wght.ttf') format('truetype');
+    font-weight: 100 900;
+    font-style: normal;
+}
+
+/* styles.css */
+body {
+    overflow: hidden; /* desactiva scroll nativo del body */
+}
+
+#scroll-wrapper {
+    height: 100vh;
+    overflow: hidden;
+    position: relative;
+}
+
+#content {
+    will-change: transform;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    font-family: 'Manrope', Arial, sans-serif;
+}
+
+html,
+body {
+    height: 100%;
+}
+
+#content {
+    position: relative;
+}
+
+#canvas-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    z-index: 1;
+    pointer-events: auto;
+}
+
+#canvas-container canvas {
+    display: block;
+    width: 100%;
+    height: 100%;
+}
+
+#content {
+    z-index: 2;
+    padding: 0 50px;
+}
+
+/* Barra de navegación inferior */
+#bottom-nav {
+    position: fixed;
+    bottom: 30px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 10;
+    background: white;
+    padding: 15px 30px;
+    border-radius: 25px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    display: flex;
+    align-items: center;
+    gap: 40px;
+    min-width: 500px;
+}
+
+.nav-left {
+    display: flex;
+    gap: 30px;
+}
+
+.nav-right {
+    display: flex;
+    gap: 25px;
+    margin-left: auto;
+}
+
+.nav-link {
+    text-decoration: none;
+    color: #333;
+    font-weight: 500;
+    font-size: 14px;
+    transition: color 0.3s ease;
+}
+
+.nav-link:hover {
+    color: #007bff;
+}
+
+.social-link {
+    text-decoration: none;
+    color: #666;
+    font-size: 14px;
+    transition: color 0.3s ease;
+}
+
+.social-link:hover {
+    color: #007bff;
+}
+
+/* Sección de Work */
+.work-section h2 {
+    font-size: 2.5rem;
+    color: #333;
+    margin-bottom: 40px;
+    text-align: center;
+}
+
+.work-list {
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+}
+
+.work-item {
+    padding: 25px;
+    border-left: 4px solid #007bff;
+    border-radius: 8px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.work-item:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+}
+
+.work-item h3 {
+    font-size: 1.3rem;
+    color: #333;
+    margin: 0 0 10px 0;
+}
+
+.company {
+    font-weight: 600;
+    color: #007bff;
+    margin: 0 0 15px 0;
+    font-size: 1.1rem;
+}
+
+.description {
+    color: #666;
+    line-height: 1.6;
+    margin: 0;
+}
+
+#scroll-bar {
+    position: fixed;
+    top: 0;
+    right: 0;
+    width: 6px; /* ancho de la barra */
+    height: 100vh;
+    background: rgba(255, 255, 255, 0.1); /* fondo tenue */
+    z-index: 1000;
+}
+
+#scroll-progress {
+    width: 100%;
+    height: 0%;
+    background: linear-gradient(to top, #00f, #0ff); /* colores de progreso */
+    transition: height 0.1s linear; /* suaviza un poco */
+}
+
+/* Lines */
+.line {
+    height: 0.75rem;
+    border-radius: 0.125rem;
+}
+.line-1 {
+    width: 1.5rem;
+}
+.line-2 {
+    width: 3rem;
+}
+.line-3 {
+    width: 4.5rem;
+}
+.line-4 {
+    width: 6rem;
+}
+.line-5 {
+    width: 7.5rem;
+}
+
+.dot {
+    width: 0.75rem;
+    height: 0.75rem;
+    border-radius: 50%;
+    background-color: #999;
+}
+
+.square {
+    width: 0.75rem;
+    height: 0.75rem;
+    background-color: #ccc;
+    border-radius: 0.125rem;
+}
+
+/* Rotation */
+.rotate-180 {
+    transform: rotate(180deg);
+}
+
+/* Vertical line */
+.vertical-line {
+    width: 2px;
+    height: 100%;
+    background-color: rgba(255, 255, 255, 0.66);
+}
+
+.little-dot {
+    min-width: 6px;
+    min-height: 6px;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background-color: rgba(255, 255, 255, 0.66);
+}
+
+/* Display */
+.flex {
+    display: flex;
+}
+.flex-col {
+    flex-direction: column;
+}
+.justify-center {
+    justify-content: center;
+}
+.items-center {
+    align-items: center;
+}
+
+/* Gap */
+.gap-1 {
+    gap: 0.25rem;
+}
+.gap-2 {
+    gap: 0.5rem;
+}
+.gap-3 {
+    gap: 0.75rem;
+}
+.gap-4 {
+    gap: 1rem;
+}
+.gap-6 {
+    gap: 1.5rem;
+}
+
+/* Gradients */
+.gradient-gray {
+    background: linear-gradient(150deg, rgba(130, 130, 130, 1) 0%, rgba(220, 220, 220, 1) 100%);
+}
+.gradient-pink {
+    background: linear-gradient(-30deg, rgba(137, 155, 245, 1) 24%, rgba(242, 131, 153, 1) 100%);
+}
+.gradient-orange {
+    background: linear-gradient(195deg, rgba(217, 67, 67, 1) 0%, rgba(232, 177, 100, 1) 100%);
+}
+.gradient-green {
+    background: linear-gradient(125deg, #00c9ff 0%, #92fe9d 100%);
+}
+.gradient-blue {
+    background: linear-gradient(66deg, #00d2ff 0%, #3a47d5 100%);
+}
+
+/* Height */
+.min-h-screen {
+    min-height: 100vh;
+}
+
+/* Margin */
+.m-0 {
+    margin: 0;
+}
+.mb-2 {
+    margin-bottom: 0.5rem;
+}
+.my-6 {
+    margin-top: 1.5rem;
+    margin-bottom: 1.5rem;
+}
+.my-8 {
+    margin-top: 2rem;
+    margin-bottom: 2rem;
+}
+
+/* Padding */
+.pb-2 {
+    padding-bottom: 0.5rem;
+}
+.pt-6 {
+    padding-top: 1.5rem;
+}
+.px-10 {
+    padding-left: 2.5rem;
+    padding-right: 2.5rem;
+}
+.py-2 {
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
+}
+
+/* Position */
+.relative {
+    position: relative;
+}
+
+/* Text color */
+.text-white {
+    color: #eee;
+}
+.text-gray {
+    color: #aaa;
+}
+
+/* Text size*/
+.text-lg {
+    font-size: 1.125rem;
+}
+.text-xl {
+    font-size: 1.25rem;
+}
+.text-2xl {
+    font-size: 1.5rem;
+}
+.text-3xl {
+    font-size: 2rem;
+}
+.text-4xl {
+    font-size: 2.5rem;
+}
+.text-7xl {
+    font-size: 4rem;
+}
+
+/* Text shadow */
+.text-shadow-1 {
+    text-shadow: 0.125rem 0.125rem 0.25rem rgba(0, 0, 0, 0.25);
+}
+
+/* Text weight */
+.font-bold {
+    font-weight: 700;
+}
+
+/* Width */
+.w-full {
+    width: 100%;
+}
+.w-50 {
+    width: 50%;
+}
+
+/* Z-index */
+.z-2 {
+    z-index: 2;
+}
