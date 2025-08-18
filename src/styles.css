@@ -52,12 +52,13 @@
         inset 0 -1px 0 rgba(255, 255, 255, 0.1), inset 0 0 16px 4px rgba(255, 255, 255, 0.33);
     overflow: hidden;
 }
-
 /* Lines */
 .line {
     height: 0.75rem;
     border-radius: 0.125rem;
+    transition: width 0.3s ease-in-out, margin-right 0.3s ease-in-out;
 }
+
 .line-1 {
     width: 1.5rem;
 }
@@ -71,6 +72,31 @@
     width: 6rem;
 }
 .line-5 {
+    width: 7.5rem;
+}
+
+/* Hover effect for company items */
+.company-item .line {
+    width: 0;
+}
+
+.company-item:hover .line {
+    margin-right: 1rem;
+}
+
+.company-item:hover .line-1 {
+    width: 1.5rem;
+}
+.company-item:hover .line-2 {
+    width: 3rem;
+}
+.company-item:hover .line-3 {
+    width: 4.5rem;
+}
+.company-item:hover .line-4 {
+    width: 6rem;
+}
+.company-item:hover .line-5 {
     width: 7.5rem;
 }
 

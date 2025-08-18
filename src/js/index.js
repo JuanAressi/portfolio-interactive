@@ -210,7 +210,7 @@ function updateInputs() {
 function updateCameraPosition() {
     const point = Math.min(smoothScrollY / maxScroll, 1);
     const position = curve.getPoint(point);
-    const easedPoint = point * point;
+    const easedPoint = point * point * point;
 
     let horizontalOffset = 0;
     if (point > 0.1) {
