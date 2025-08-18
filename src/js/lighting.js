@@ -1,37 +1,4 @@
 import * as THREE from 'three';
-import { RectAreaLightHelper } from 'three/examples/jsm/helpers/RectAreaLightHelper.js';
-
-export function setupLighting() {
-    const lightingGroup = new THREE.Group();
-
-    // Fuente de luz solar (directional light) - comentado para desarrollo
-    // const sunLight = new THREE.DirectionalLight(0xffffff, 1);
-    // sunLight.position.set(-10, 5, 0); // Posicionada fuera de la habitación, a la izquierda
-    // sunLight.castShadow = true;
-    // sunLight.shadow.mapSize.width = 2048;
-    // sunLight.shadow.mapSize.height = 2048;
-    // sunLight.shadow.camera.near = 0.5;
-    // sunLight.shadow.camera.far = 50;
-    // sunLight.shadow.camera.left = -10;
-    // sunLight.shadow.camera.right = 10;
-    // sunLight.shadow.camera.top = 10;
-    // sunLight.shadow.camera.bottom = -10;
-    // lightingGroup.add(sunLight);
-
-    // Luz ambiental para evitar sombras completamente negras - comentado para desarrollo
-    // const ambientLight = new THREE.AmbientLight(0x404040, 0.3);
-    // lightingGroup.add(ambientLight);
-
-    // Helper para visualizar la luz direccional - comentado para desarrollo
-    // const sunLightHelper = new THREE.DirectionalLightHelper(sunLight, 2);
-    // lightingGroup.add(sunLightHelper);
-
-    // Helper para visualizar el frustum de la sombra - comentado para desarrollo
-    // const shadowHelper = new THREE.CameraHelper(sunLight.shadow.camera);
-    // lightingGroup.add(shadowHelper);
-
-    return lightingGroup;
-}
 
 export function createHorizontalLineLight(
     x = 0,
@@ -45,32 +12,6 @@ export function createHorizontalLineLight(
     const lineLight = new THREE.RectAreaLight(color, intensity, width, height);
     lineLight.position.set(x, y, z);
     lineLight.lookAt(x, y + 1, z);
-
-    return lineLight;
-}
-
-export function createHorizontalLineLightWithHelper(
-    x = 0,
-    y = 0,
-    z = 0,
-    width = 1,
-    height = 1,
-    intensity = 1,
-    color = 0xffffff
-) {
-    const lineLight = createHorizontalLineLight(x, y, z, width, height, intensity, color);
-
-    const helper = new RectAreaLightHelper(lineLight);
-    lineLight.add(helper);
-
-    const directionLine = new THREE.Line(
-        new THREE.BufferGeometry().setFromPoints([
-            new THREE.Vector3(0, 0, 0),
-            new THREE.Vector3(0, 0, -1),
-        ]),
-        new THREE.LineBasicMaterial({ color: 0xffff00 })
-    );
-    lineLight.add(directionLine);
 
     return lineLight;
 }
@@ -91,28 +32,40 @@ export function createVerticalLineLight(
     return lineLight;
 }
 
-export function createVerticalLineLightWithHelper(
-    x = 0,
-    y = 0,
-    z = 0,
-    width = 1,
-    height = 1,
-    intensity = 1,
-    color = 0xffffff
-) {
-    const lineLight = createVerticalLineLight(x, y, z, width, height, intensity, color);
+export function setupBlueTint(renderer) {
+    renderer.toneMapping = THREE.ACESFilmicToneMapping;
+    renderer.toneMappingExposure = 1.2;
 
-    const helper = new RectAreaLightHelper(lineLight);
-    lineLight.add(helper);
+    const blueTint = new THREE.Color(0x4a6fa5);
+    blueTint.multiplyScalar(0.1);
 
-    const directionLine = new THREE.Line(
-        new THREE.BufferGeometry().setFromPoints([
-            new THREE.Vector3(0, 0, 0),
-            new THREE.Vector3(0, 0, -1),
-        ]),
-        new THREE.LineBasicMaterial({ color: 0xffff00 })
-    );
-    lineLight.add(directionLine);
+    return blueTint;
+}
 
-    return lineLight;
+export function createHemisphereLight() {
+    const hemiLight = new THREE.HemisphereLight(0xffffff, 0x444444, 0.2);
+    hemiLight.position.set(0, 5, 0);
+    return hemiLight;
+}
+
+export function createSpotLights() {
+    // SpotLight principal
+    const spotLight = new THREE.SpotLight(0xffffff, 1, 100, Math.PI / 6, 0.3, 2);
+    spotLight.position.set(1.75, 1.5, 0);
+    spotLight.castShadow = true;
+
+    const target = new THREE.Object3D();
+    target.position.set(-1, -3, -12.5);
+    spotLight.target = target;
+
+    // SpotLight secundario
+    const spotLight2 = new THREE.SpotLight(0xaa3333, 5, 100, Math.PI / 6, 0.3, 2);
+    spotLight2.position.set(-5, 0.5, 1);
+    spotLight2.castShadow = true;
+
+    const target2 = new THREE.Object3D();
+    target2.position.set(5, 1, 0);
+    spotLight2.target = target2;
+
+    return { spotLight, spotLight2, target, target2 };
 }

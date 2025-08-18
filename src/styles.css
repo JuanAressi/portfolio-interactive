@@ -36,6 +36,7 @@
 #content {
     z-index: 2;
     padding: 0 50px;
+    /* display: none; */
 }
 
 /* Barra de navegación inferior */

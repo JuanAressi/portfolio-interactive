@@ -2,19 +2,19 @@ import * as THREE from 'three';
 
 const cameraMovement = [
     {
-        x: 1.62,
+        x: 1.12,
         y: 0.988,
         z: -2.27,
     },
     {
-        x: 1.62,
+        x: 1.12,
         y: 0.988,
         z: -2,
     },
     {
-        x: 1.62,
+        x: 1.12,
         y: 1.2,
-        z: -1,
+        z: -1.15,
     },
 ];
 

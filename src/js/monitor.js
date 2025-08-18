@@ -26,14 +26,15 @@ export function createMonitor(x = 0, y = 0, z = 0) {
 
 function createBezel(screenWidth, screenHeight, screenDepth, bezelThickness, bezelDepth) {
     const screenMaterial = new THREE.MeshStandardMaterial({
-        color: 0x1a1a1a,
+        color: 0xa2afb5,
         metalness: 0.2,
         roughness: 0.7,
     });
     const bezelMaterial = new THREE.MeshStandardMaterial({
-        color: 0x333333,
+        color: 0xacbac1,
         metalness: 0.1,
-        roughness: 0.9,
+        roughness: 0.8,
+        envMapIntensity: 0.2,
     });
     const bezelGroup = new THREE.Group();
 
@@ -106,12 +107,12 @@ function createTopBezel(
         0,
         screenHeight / 2 - 0.04,
         -bezelDepth / 2,
-        screenWidth,
+        screenWidth + 0.75,
         bezelDepth / 2,
-        50,
-        0xaaaaaa
+        1,
+        0xacbac1
     );
-    topLineLight.lookAt(0, screenHeight / 2 - 0.04, 0.1); // Apunta hacia el frente
+    topLineLight.lookAt(0, screenHeight / 2 - 0.04, 0.1);
     bezelGroup.add(topLineLight);
 }
 
@@ -137,12 +138,12 @@ function createBottomBezel(
         0,
         -screenHeight / 2 - 0.022,
         -bezelDepth / 2,
-        screenWidth,
+        screenWidth + 0.75,
         bezelDepth / 2,
-        50,
-        0xaaaaaa
+        1,
+        0xacbac1
     );
-    bottomLineLight.lookAt(0, -screenHeight / 2 - 0.022, 0.1); // Apunta hacia el frente
+    bottomLineLight.lookAt(0, -screenHeight / 2 - 0.022, 0.1);
     bezelGroup.add(bottomLineLight);
 }
 
@@ -166,11 +167,11 @@ function createLeftBezel(
         -0.031,
         -bezelDepth / 2,
         bezelDepth / 2,
-        screenHeight - 0.02,
-        50,
-        0xaaaaaa
+        screenHeight + 0.0125,
+        1,
+        0xacbac1
     );
-    leftLineLight.lookAt(-screenWidth / 2 + 0.0001, -0.031, 0.1); // Apunta hacia el frente
+    leftLineLight.lookAt(-screenWidth / 2 + 0.0001, -0.031, 0.1);
     bezelGroup.add(leftLineLight);
 }
 
@@ -194,22 +195,22 @@ function createRightBezel(
         -0.031,
         -bezelDepth / 2,
         bezelDepth / 2,
-        screenHeight - 0.02,
-        50,
-        0xaaaaaa
+        screenHeight + 0.0125,
+        1,
+        0xacbac1
     );
-    rightLineLight.lookAt(screenWidth / 2 - 0.0001, -0.031, 0.1); // Apunta hacia el frente
+    rightLineLight.lookAt(screenWidth / 2 - 0.0001, -0.031, 0.1);
     bezelGroup.add(rightLineLight);
 }
 
 function createBase(screenHeight, screenDepth, standWidth, standHeight, bezelThickness) {
     const standMaterial = new THREE.MeshStandardMaterial({
-        color: 0x444444,
+        color: 0xacbac1,
         metalness: 0.3,
         roughness: 0.6,
     });
     const bezelMaterial = new THREE.MeshStandardMaterial({
-        color: 0x333333,
+        color: 0xacbac1,
         metalness: 0.1,
         roughness: 0.9,
     });

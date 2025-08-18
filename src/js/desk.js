@@ -1,10 +1,83 @@
 import * as THREE from 'three';
+import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
+
+const doorHandle = new URL('../assets/models/door_handle.glb', import.meta.url).href;
+
+// Door handle.
+let doorHandleModel = null;
+let isLoading = false;
+let isLoaded = false;
+
+function loadDoorHandle() {
+    if (isLoading || isLoaded) return;
+
+    isLoading = true;
+    console.log('Intentando cargar door handle desde:', doorHandle);
+
+    const loader = new GLTFLoader();
+    loader.load(
+        doorHandle,
+        gltf => {
+            doorHandleModel = gltf.scene;
+            isLoaded = true;
+            isLoading = false;
+            console.log('Door handle cargado exitosamente:', doorHandleModel);
+
+            // Notify that the model is ready.
+            if (window.doorHandleReady) {
+                window.doorHandleReady();
+            }
+        },
+        progress => {
+            console.log('Progreso de carga:', progress);
+        },
+        error => {
+            console.error('Error cargando door handle:', error);
+            isLoading = false;
+        }
+    );
+}
+
+function createDoorHandleInstance(x, y, z, rotationX = 0, rotationY = 0, rotationZ = 0) {
+    if (doorHandleModel) {
+        const instance = doorHandleModel.clone();
+        instance.position.set(x, y, z);
+        instance.scale.set(0.05, 0.05, 0.05);
+        instance.rotation.set(rotationX, rotationY, rotationZ);
+
+        instance.traverse(child => {
+            if (child.isMesh) {
+                child.castShadow = true;
+                child.receiveShadow = true;
+
+                if (child.material) {
+                    const newMaterial = new THREE.MeshStandardMaterial({
+                        color: 0xacbac1,
+                        metalness: 0.1,
+                        roughness: 0.8,
+                    });
+                    newMaterial.needsUpdate = true;
+                    child.material = newMaterial;
+                }
+            }
+        });
+
+        return instance;
+    }
+
+    return null;
+}
 
 export function createDesk(x = 0, y = 0, z = 0) {
+    // Load door handle if not loaded.
+    if (!isLoaded && !isLoading) {
+        loadDoorHandle();
+    }
+
     const deskGroup = new THREE.Group();
 
     // Desk material.
-    const deskMaterial = new THREE.MeshStandardMaterial({ color: 0xaaaaaa });
+    const deskMaterial = new THREE.MeshStandardMaterial({ color: 0xacbac1 });
 
     // Dimensions of the drawer.
     const cajoneraWidth = 0.4;
@@ -63,7 +136,7 @@ export function createDesk(x = 0, y = 0, z = 0) {
         cajoneraGroup.add(backWall);
 
         // Floor of the drawer.
-        const dividerMaterial = new THREE.MeshStandardMaterial({ color: 0x666666 });
+        const dividerMaterial = new THREE.MeshStandardMaterial({ color: 0xacbac1 });
         const floorGeometry = new THREE.BoxGeometry(
             cajoneraWidth - edgeOverhang * 2,
             cajoneraThickness,
@@ -77,7 +150,7 @@ export function createDesk(x = 0, y = 0, z = 0) {
 
         // Upper door (1/3 height).
         const upperDoorHeight = cajoneraHeight / 3;
-        const doorMaterial = new THREE.MeshStandardMaterial({ color: 0x8b4513 });
+        const doorMaterial = new THREE.MeshStandardMaterial({ color: 0xacbac1 });
         const upperDoorGeometry = new THREE.BoxGeometry(
             cajoneraWidth - edgeOverhang * 2.5,
             upperDoorHeight - edgeOverhang * 2,
@@ -130,17 +203,39 @@ export function createDesk(x = 0, y = 0, z = 0) {
 
     // Create left drawer.
     const leftCajonera = createCajonera(new THREE.Vector3(x - cajoneraSpacing / 2, y, z));
+    const upperLeftDoorHandle = createDoorHandleInstance(
+        -0.095,
+        0.59,
+        0.261,
+        Math.PI / 2,
+        0,
+        -Math.PI / 2
+    );
+    const lowerLeftDoorHandle = createDoorHandleInstance(0.135, 0.175, 0.261, 0, Math.PI / 2, 0);
+    leftCajonera.add(upperLeftDoorHandle);
+    leftCajonera.add(lowerLeftDoorHandle);
     deskGroup.add(leftCajonera);
 
     // Create right drawer.
     const rightCajonera = createCajonera(new THREE.Vector3(x + cajoneraSpacing / 2, y, z));
+    const upperRightDoorHandle = createDoorHandleInstance(
+        -0.095,
+        0.59,
+        0.261,
+        Math.PI / 2,
+        0,
+        -Math.PI / 2
+    );
+    const lowerRightDoorHandle = createDoorHandleInstance(-0.085, 0.175, 0.261, 0, Math.PI / 2, 0);
+    rightCajonera.add(upperRightDoorHandle);
+    rightCajonera.add(lowerRightDoorHandle);
     deskGroup.add(rightCajonera);
 
     // Create desk top.
     const deskTopGeometry = new THREE.BoxGeometry(deskTopWidth, 0.05, deskTopDepth);
     const deskTop = new THREE.Mesh(
         deskTopGeometry,
-        new THREE.MeshStandardMaterial({ color: 0xcccccc })
+        new THREE.MeshStandardMaterial({ color: 0xacbac1 })
     );
     deskTop.position.set(x, cajoneraHeight, z);
     deskTop.castShadow = true;
