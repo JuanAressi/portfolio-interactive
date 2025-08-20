@@ -9,13 +9,13 @@ const lang = {
         },
         about: {
             title: "Hi, I'm Juan",
-            'paragraph-1': "I'm a Systems Engineer / Full Stack Developer from Argentina.",
+            'paragraph-1': "I'm a Systems Engineer / Full Stack Developer from Argentina",
             'paragraph-2':
-                "I'm a passionate Systems Engineer with a deep love for creating innovative digital experiences and products.",
+                'My journey in technology started with a curiosity about how things work, which evolved into a career building solutions that make a difference',
             'paragraph-3':
-                'My journey in technology started with a curiosity about how things work, which evolved into a career building solutions that make a difference.',
+                'I transform ideas into innovative digital solutions, creating products that combine functionality, design, and real value for users',
             'paragraph-4':
-                'With expertise in modern web technologies, I specialize in developing scalable applications that combine beautiful design with robust functionality, focusing on clean code, user-centered design, and continuous learning.',
+                'With expertise in modern web technologies, I specialize in developing scalable applications that combine beautiful design with robust functionality, focusing on clean code, user-centered design, and continuous learning',
         },
         navbar: {
             work: 'My Work',
@@ -34,13 +34,13 @@ const lang = {
         },
         about: {
             title: "Hi, I'm Juan",
-            'paragraph-1': 'Soy un Ingeniero de Sistemas / Desarrollador Full Stack de Argentina.',
+            'paragraph-1': 'Soy un Ingeniero de Sistemas / Desarrollador Full Stack de Argentina',
             'paragraph-2':
-                'Soy un ingeniero de sistemas apasionado por crear experiencias digitales innovadoras y productos.',
+                'Mi viaje en la tecnología comenzó con curiosidad sobre cómo funcionan las cosas, que evolucionó en una carrera construyendo soluciones que hagan una diferencia',
             'paragraph-3':
-                'Mi viaje en la tecnología comenzó con curiosidad sobre cómo funcionan las cosas, que evolucionó en una carrera construyendo soluciones que hagan una diferencia.',
+                'Transformo ideas en soluciones digitales innovadoras, creando productos que combinan funcionalidad, diseño y valor real para los usuarios',
             'paragraph-4':
-                'Con expertise en tecnologías web modernas, me especializo en desarrollar aplicaciones escalables que combinan diseño elegante con funcionalidad robusta, enfocándome en código limpio, diseño centrado en el usuario y aprendizaje continuo.',
+                'Con expertise en tecnologías web modernas, me especializo en desarrollar aplicaciones escalables que combinan diseño elegante con funcionalidad robusta, enfocándome en código limpio, diseño centrado en el usuario y aprendizaje continuo',
         },
         navbar: {
             work: 'Mi Trabajo',
@@ -127,18 +127,36 @@ const translatePage = (language: Language): void => {
     const navbarEmail = document.querySelector('[data-translate="navbar.email"]');
 
     // Translate the elements.
-    headerTitle!.textContent = lang[language as keyof typeof lang].header.title;
-    headerProfession!.textContent = lang[language as keyof typeof lang].header.profession;
-    workTitle!.textContent = lang[language as keyof typeof lang].work.title;
-    aboutTitle!.textContent = lang[language as keyof typeof lang].about.title;
-    aboutParagraph1!.textContent = lang[language as keyof typeof lang].about['paragraph-1'];
-    aboutParagraph2!.textContent = lang[language as keyof typeof lang].about['paragraph-2'];
-    aboutParagraph3!.textContent = lang[language as keyof typeof lang].about['paragraph-3'];
-    aboutParagraph4!.textContent = lang[language as keyof typeof lang].about['paragraph-4'];
-    navbarWork!.textContent = lang[language as keyof typeof lang].navbar.work;
-    navbarAbout!.textContent = lang[language as keyof typeof lang].navbar.about;
-    navbarTranslate!.textContent = lang[language as keyof typeof lang].navbar.translate;
-    navbarEmail!.textContent = lang[language as keyof typeof lang].navbar.email;
+    dramaticGlitch(headerTitle as HTMLElement, lang[language as keyof typeof lang].header.title);
+    dramaticGlitch(
+        headerProfession as HTMLElement,
+        lang[language as keyof typeof lang].header.profession
+    );
+    dramaticGlitch(workTitle as HTMLElement, lang[language as keyof typeof lang].work.title);
+    dramaticGlitch(aboutTitle as HTMLElement, lang[language as keyof typeof lang].about.title);
+    dramaticGlitch(
+        aboutParagraph1 as HTMLElement,
+        lang[language as keyof typeof lang].about['paragraph-1']
+    );
+    dramaticGlitch(
+        aboutParagraph2 as HTMLElement,
+        lang[language as keyof typeof lang].about['paragraph-2']
+    );
+    dramaticGlitch(
+        aboutParagraph3 as HTMLElement,
+        lang[language as keyof typeof lang].about['paragraph-3']
+    );
+    dramaticGlitch(
+        aboutParagraph4 as HTMLElement,
+        lang[language as keyof typeof lang].about['paragraph-4']
+    );
+    dramaticGlitch(navbarWork as HTMLElement, lang[language as keyof typeof lang].navbar.work);
+    dramaticGlitch(navbarAbout as HTMLElement, lang[language as keyof typeof lang].navbar.about);
+    dramaticGlitch(
+        navbarTranslate as HTMLElement,
+        lang[language as keyof typeof lang].navbar.translate
+    );
+    dramaticGlitch(navbarEmail as HTMLElement, lang[language as keyof typeof lang].navbar.email);
 };
 
 /**
@@ -163,3 +181,39 @@ const translatePageOnLoad = (): void => {
 };
 
 translatePageOnLoad();
+
+function dramaticGlitch(element: HTMLElement, text: string) {
+    const finalText = text;
+    const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz,./'               ";
+    let startTime = performance.now();
+    const correctPositions = new Set();
+    const frameDelay = 66;
+    const duration = 2000;
+
+    function frame(now: number) {
+        let progress = (now - startTime) / duration;
+        if (progress < 1) {
+            let output = '';
+            for (let i = 0; i < finalText.length; i++) {
+                if (correctPositions.has(i)) {
+                    output += finalText[i];
+                    continue;
+                }
+
+                let chance = Math.pow(1 - progress, 2);
+                if (Math.random() < chance) {
+                    output += chars.charAt(Math.floor(Math.random() * chars.length));
+                } else {
+                    output += finalText[i];
+                    correctPositions.add(i);
+                }
+            }
+            element.textContent = output;
+            setTimeout(() => requestAnimationFrame(frame), frameDelay);
+        } else {
+            element.textContent = finalText;
+        }
+    }
+
+    requestAnimationFrame(frame);
+}
