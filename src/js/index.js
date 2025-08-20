@@ -1,6 +1,7 @@
 import * as THREE from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
+// import { CSS3DRenderer, CSS3DObject } from 'three/examples/jsm/renderers/CSS3DRenderer.js';
 import { createDesk } from './desk.js';
 import { createRoom } from './room.js';
 import { setupBlueTint } from './lighting.js';
@@ -16,15 +17,22 @@ const roundedChair = new URL('../assets/models/rounded_chair.glb', import.meta.u
 // Scene configuration.
 const scene = new THREE.Scene();
 const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+
+// Renderers: WebGL (para geometría) + CSS3D (para HTML en 3D).
 const renderer = new THREE.WebGLRenderer();
 renderer.setSize(window.innerWidth, window.innerHeight);
 renderer.shadowMap.enabled = true;
 renderer.shadowMap.type = THREE.PCFSoftShadowMap;
 renderer.physicallyCorrectLights = true;
 
-// Add canvas to the correct container.
+// const cssRenderer = new CSS3DRenderer();
+// cssRenderer.setSize(window.innerWidth, window.innerHeight);
+// cssRenderer.domElement.style.position = 'absolute';
+// cssRenderer.domElement.style.top = 0;
+
 const canvasContainer = document.getElementById('canvas-container');
 canvasContainer.appendChild(renderer.domElement);
+// canvasContainer.appendChild(cssRenderer.domElement);
 
 // Camera.
 camera.position.set(0.52, 1.028, 1 - 2.17 - 0.256);
@@ -52,10 +60,45 @@ window.doorHandleReady = () => {
     scene.add(desk);
 };
 
-// Monitor on desk.
+// Monitor.
 const monitor = createMonitor(1.12, 0.988, -2.43);
 monitor.scale.set(1.15, 1.15, 1.15);
 scene.add(monitor);
+
+// // Monitor (pantalla HTML dentro del espacio 3D).
+// const monitorContent = document.createElement('div');
+
+// // tamaño en píxeles del div (alta resolución para nitidez)
+// const divWidth = 2048 * 0.75;
+// const divHeight = 1152 * 0.75;
+
+// monitorContent.style.width = `${divWidth}px`;
+// monitorContent.style.height = `${divHeight}px`;
+// monitorContent.style.background = 'black';
+// monitorContent.style.color = 'white';
+// monitorContent.style.display = 'flex';
+// monitorContent.style.alignItems = 'center';
+// monitorContent.style.justifyContent = 'center';
+// monitorContent.innerHTML = '<h2>Contenido HTML libre</h2>';
+
+// const cssObject = new CSS3DObject(monitorContent);
+
+// // posición: exactamente igual al plano negro definido en monitor.js
+// cssObject.position.set(
+//     1.12, // X = centro del monitor
+//     0.8, // Y = centro pantalla (-0.04)
+//     -2.43 + 0.011 // Z = mismo offset que el plane (0.011)
+//     // -2.7 // Z = mismo offset que el plane (0.011)
+// );
+
+// // escala calculada para encajar el div dentro del plano (0.5313 x 0.2989)
+// const planeWidth = 0.5313;
+// const planeHeight = 0.2989;
+// const scaleX = planeWidth / divWidth;
+// const scaleY = planeHeight / divHeight;
+// cssObject.scale.set(scaleX, scaleY, 1);
+
+// scene.add(cssObject);
 
 // Items loader.
 const loader = new GLTFLoader();
@@ -215,14 +258,11 @@ const progressBar = document.getElementById('scroll-progress');
 
 // Update scroll + mouse.
 function updateInputs() {
-    // Smooth vertical.
     smoothScrollY += (targetScrollY - smoothScrollY) * 0.1;
     content.style.transform = `translateY(${-smoothScrollY}px)`;
 
-    // Smooth horizontal.
     mouseX += (targetMouseX - mouseX) * 0.1;
 
-    // Progress.
     const progress = (smoothScrollY / maxScroll) * 100;
     progressBar.style.height = `${progress}%`;
 }
@@ -233,7 +273,7 @@ function updateCameraPosition() {
     const easedPoint = point * point * point;
     let horizontalOffset = 0;
     if (point > 0.1) {
-        horizontalOffset = mouseX * 0.1 * easedPoint;
+        horizontalOffset = mouseX * 0.2 * easedPoint;
         position.x += horizontalOffset;
     }
     camera.position.copy(position);
@@ -247,13 +287,14 @@ function animate() {
     updateCameraPosition();
     // controls.update(); // Enable free camera movement.
     renderer.render(scene, camera);
+    // cssRenderer.render(scene, camera);
 }
 
 animate();
 
-// Handle window resize.
 window.addEventListener('resize', () => {
     camera.aspect = window.innerWidth / window.innerHeight;
     camera.updateProjectionMatrix();
     renderer.setSize(window.innerWidth, window.innerHeight);
+    // cssRenderer.setSize(window.innerWidth, window.innerHeight);
 });

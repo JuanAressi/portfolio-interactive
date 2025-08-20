@@ -12,7 +12,6 @@ function loadDoorHandle() {
     if (isLoading || isLoaded) return;
 
     isLoading = true;
-    console.log('Intentando cargar door handle desde:', doorHandle);
 
     const loader = new GLTFLoader();
     loader.load(
@@ -21,15 +20,11 @@ function loadDoorHandle() {
             doorHandleModel = gltf.scene;
             isLoaded = true;
             isLoading = false;
-            console.log('Door handle cargado exitosamente:', doorHandleModel);
 
             // Notify that the model is ready.
             if (window.doorHandleReady) {
                 window.doorHandleReady();
             }
-        },
-        progress => {
-            console.log('Progreso de carga:', progress);
         },
         error => {
             console.error('Error cargando door handle:', error);
