@@ -190,3 +190,82 @@
     transform: translateY(0);
     pointer-events: auto;
 }
+
+.text-rotator h3 {
+    position: absolute;
+}
+
+.text-rotator h3:nth-child(1) {
+    animation: text1 12s infinite;
+}
+
+.text-rotator h3:nth-child(2) {
+    animation: text2 12s infinite;
+}
+
+/* Fade intermedio con blur suave */
+@keyframes text1 {
+    0% {
+        opacity: 0;
+        transform: translateY(1rem);
+        filter: blur(6px);
+    }
+    3.125% {
+        opacity: 1;
+        transform: translateY(0);
+        filter: blur(0px);
+    } /* fade in intermedio (0.375s) */
+    46.875% {
+        opacity: 1;
+        transform: translateY(0);
+        filter: blur(0px);
+    } /* visible 5.25s */
+    50% {
+        opacity: 0;
+        transform: translateY(-1rem);
+        filter: blur(6px);
+    } /* fade out intermedio (0.375s) */
+    96.875% {
+        opacity: 0;
+        transform: translateY(-1rem);
+        filter: blur(6px);
+    } /* oculto 5.625s */
+    96.876% {
+        opacity: 0;
+        transform: translateY(1rem);
+        filter: blur(6px);
+    } /* reset abajo */
+    100% {
+        opacity: 0;
+        transform: translateY(1rem);
+        filter: blur(6px);
+    }
+}
+
+@keyframes text2 {
+    0% {
+        opacity: 0;
+        transform: translateY(1rem);
+        filter: blur(6px);
+    }
+    50% {
+        opacity: 0;
+        transform: translateY(1rem);
+        filter: blur(6px);
+    } /* espera hasta que text1 termine fade out */
+    53.125% {
+        opacity: 1;
+        transform: translateY(0);
+        filter: blur(0px);
+    } /* fade in intermedio (0.375s) */
+    96.875% {
+        opacity: 1;
+        transform: translateY(0);
+        filter: blur(0px);
+    } /* visible 5.25s */
+    100% {
+        opacity: 0;
+        transform: translateY(-1rem);
+        filter: blur(6px);
+    } /* fade out intermedio (0.375s) */
+}
