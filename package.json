@@ -15,6 +15,7 @@
         "dev": "parcel src/index.html"
     },
     "devDependencies": {
+        "@types/three": "^0.179.0",
         "dat.gui": "^0.7.9",
         "eslint": "^9.31.0",
         "parcel": "^2.15.4"

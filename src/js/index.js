@@ -3,7 +3,7 @@ import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 // import { CSS3DRenderer, CSS3DObject } from 'three/examples/jsm/renderers/CSS3DRenderer.js';
 import { createDesk } from './desk.js';
-import { createRoom } from './room.js';
+import { createRoom } from './room.ts';
 import { setupBlueTint } from './lighting.js';
 import { createMonitor } from './monitor.js';
 import curve from './camera-movement.js';

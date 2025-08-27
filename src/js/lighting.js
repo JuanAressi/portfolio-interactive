@@ -59,12 +59,12 @@ export function createSpotLights() {
     spotLight.target = target;
 
     // SpotLight secundario
-    const spotLight2 = new THREE.SpotLight(0xaa3333, 5, 100, Math.PI / 6, 0.3, 2);
-    spotLight2.position.set(-5, 0.5, 1);
+    const spotLight2 = new THREE.SpotLight(0xa5804a, 2, 100, Math.PI / 6, 0.3, 2);
+    spotLight2.position.set(-2.66, 0.5, -1);
     spotLight2.castShadow = true;
 
     const target2 = new THREE.Object3D();
-    target2.position.set(5, 1, 0);
+    target2.position.set(5, 1, -2);
     spotLight2.target = target2;
 
     return { spotLight, spotLight2, target, target2 };

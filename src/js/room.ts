@@ -69,6 +69,16 @@ export function createRoom(x = 0, y = 0, z = 0) {
     rightWallGroup.position.y = 0;
     roomGroup.add(rightWallGroup);
 
+    // Left wall.
+    const leftWallGeometry = new THREE.BoxGeometry(roomWidth, roomHeight, 0.075);
+    const leftWall = new THREE.Mesh(leftWallGeometry, rightWallMaterial);
+    leftWall.position.x = -roomWidth / 2;
+    leftWall.position.y = roomHeight / 2;
+    leftWall.castShadow = true;
+    leftWall.receiveShadow = true;
+    leftWall.rotation.y = Math.PI / 2;
+    roomGroup.add(leftWall);
+
     createFloor(roomGroup, roomWidth, roomDepth);
 
     const windowLight = new THREE.DirectionalLight(0xffffff, 0.33);
