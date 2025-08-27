@@ -9,7 +9,12 @@ export function createHorizontalLineLight(
     intensity = 1,
     color = 0xffffff
 ) {
-    const lineLight = new THREE.RectAreaLight(color, intensity, width, height);
+    const lineLight = new THREE.RectAreaLight(
+        color as THREE.ColorRepresentation,
+        intensity,
+        width,
+        height
+    );
     lineLight.position.set(x, y, z);
     lineLight.lookAt(x, y + 1, z);
 
@@ -32,7 +37,7 @@ export function createVerticalLineLight(
     return lineLight;
 }
 
-export function setupBlueTint(renderer) {
+export function setupBlueTint(renderer: any) {
     renderer.toneMapping = THREE.ACESFilmicToneMapping;
     renderer.toneMappingExposure = 1.2;
 
@@ -49,7 +54,7 @@ export function createHemisphereLight() {
 }
 
 export function createSpotLights() {
-    // SpotLight principal
+    // Principal spotlight.
     const spotLight = new THREE.SpotLight(0xffffff, 1, 100, Math.PI / 6, 0.3, 2);
     spotLight.position.set(1.75, 1.5, 0);
     spotLight.castShadow = true;
@@ -58,7 +63,7 @@ export function createSpotLights() {
     target.position.set(-1, -3, -12.5);
     spotLight.target = target;
 
-    // SpotLight secundario
+    // Secondary spotlight-
     const spotLight2 = new THREE.SpotLight(0xa5804a, 2, 100, Math.PI / 6, 0.3, 2);
     spotLight2.position.set(-2.66, 0.5, -1);
     spotLight2.castShadow = true;

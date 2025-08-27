@@ -4,10 +4,9 @@ import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 // import { CSS3DRenderer, CSS3DObject } from 'three/examples/jsm/renderers/CSS3DRenderer.js';
 import { createDesk } from './desk.js';
 import { createRoom } from './room.ts';
-import { setupBlueTint } from './lighting.js';
+import { setupBlueTint, createHemisphereLight, createSpotLights } from './lighting.ts';
 import { createMonitor } from './monitor.js';
 import curve from './camera-movement.js';
-import { createHemisphereLight, createSpotLights } from './lighting.js';
 
 const keyboard = new URL('../assets/models/keyboard.glb', import.meta.url).href;
 const mouse = new URL('../assets/models/mouse.glb', import.meta.url).href;

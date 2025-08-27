@@ -22,6 +22,8 @@ const lang = {
             about: 'About Me',
             translate: 'Translate',
             email: 'Email',
+            github: 'GitHub',
+            linkedin: 'LinkedIn',
         },
     },
     es: {
@@ -47,6 +49,8 @@ const lang = {
             about: 'Sobre Mí',
             translate: 'Traducir',
             email: 'Correo',
+            github: 'GitHub',
+            linkedin: 'LinkedIn',
         },
     },
 };
@@ -184,7 +188,7 @@ translatePageOnLoad();
 
 function dramaticGlitch(element: HTMLElement, text: string) {
     const finalText = text;
-    const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz,./'               ";
+    const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz,./'ñó10               ";
     let startTime = performance.now();
     const correctPositions = new Set();
     const frameDelay = 66;

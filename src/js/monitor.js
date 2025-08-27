@@ -1,5 +1,5 @@
 import * as THREE from 'three';
-import { createHorizontalLineLight, createVerticalLineLight } from './lighting.js';
+import { createHorizontalLineLight, createVerticalLineLight } from './lighting.ts';
 
 export function createMonitor(x = 0, y = 0, z = 0) {
     const monitorGroup = new THREE.Group();
