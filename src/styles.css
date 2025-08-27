@@ -27,12 +27,6 @@
     pointer-events: auto;
 }
 
-#canvas-container canvas {
-    display: block;
-    width: 100%;
-    height: 100%;
-}
-
 #content {
     z-index: 2;
     padding: 0 50px;
@@ -118,10 +112,34 @@
 }
 
 /* Vertical line */
+.vertical-line-wrapper {
+    opacity: 0;
+    animation: vertical-line-wrapper 0.66s ease forwards 1.5s;
+}
+
 .vertical-line {
     width: 2px;
-    height: 100%;
-    background-color: rgba(255, 255, 255, 0.66);
+    height: 0;
+    background-color: rgba(255, 255, 255, 0.33);
+    animation: vertical-line 0.66s ease forwards 1.5s;
+}
+
+@keyframes vertical-line-wrapper {
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+
+@keyframes vertical-line {
+    0% {
+        height: 0;
+    }
+    100% {
+        height: 100%;
+    }
 }
 
 .little-dot {
@@ -130,7 +148,7 @@
     width: 6px;
     height: 6px;
     border-radius: 50%;
-    background-color: rgba(255, 255, 255, 0.66);
+    background-color: rgba(255, 255, 255, 0.33);
 }
 
 /* Gradients */
@@ -268,4 +286,70 @@
         transform: translateY(-1rem);
         filter: blur(6px);
     } /* fade out intermedio (0.375s) */
+}
+
+/* Loader */
+#loader .line {
+    width: 20rem;
+    height: 0.75rem;
+    animation: loader 1.33s ease-out forwards;
+}
+
+@keyframes loader {
+    0% {
+        width: 20rem;
+    }
+    100% {
+        width: 0rem;
+    }
+}
+
+.horizontal-fade-in {
+    opacity: 0;
+    transform: translateX(200px);
+}
+
+.horizontal-fade-in-1 {
+    animation: horizontal-fade-in 0.2s ease-in-out forwards 1s;
+}
+.horizontal-fade-in-2 {
+    animation: horizontal-fade-in 0.4s ease-in-out forwards 1s;
+}
+.horizontal-fade-in-3 {
+    animation: horizontal-fade-in 0.6s ease-in-out forwards 1s;
+}
+.horizontal-fade-in-4 {
+    animation: horizontal-fade-in 0.8s ease-in-out forwards 1s;
+}
+.horizontal-fade-in-5 {
+    animation: horizontal-fade-in 1s ease-in-out forwards 1s;
+}
+
+.home-content .title.horizontal-fade-in {
+    opacity: 0;
+    transform: translateX(100%);
+    animation: horizontal-fade-in 1s ease-in-out forwards 1.85s;
+}
+
+@keyframes horizontal-fade-in {
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+.delay-1 span {
+    animation-delay: 1.75s;
+}
+.delay-2 span {
+    animation-delay: 1.85s;
+}
+.delay-3 span {
+    animation-delay: 1.95s;
+}
+.delay-4 span {
+    animation-delay: 2.05s;
 }
