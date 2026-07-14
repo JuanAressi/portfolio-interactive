@@ -12,7 +12,8 @@
     "author": "Juancho",
     "license": "MIT",
     "scripts": {
-        "dev": "parcel src/index.html"
+        "dev": "parcel src/index.html",
+        "build": "parcel build src/index.html --dist-dir dist --public-url ./"
     },
     "devDependencies": {
         "@types/three": "^0.179.0",
@@ -27,10 +28,10 @@
     },
     "repository": {
         "type": "git",
-        "url": "https://github.com/yourusername/portfolio-interactive.git"
+        "url": "https://github.com/JuanAressi/portfolio-interactive.git"
     },
     "bugs": {
-        "url": "https://github.com/yourusername/portfolio-interactive/issues"
+        "url": "https://github.com/JuanAressi/portfolio-interactive/issues"
     },
-    "homepage": "https://yourusername.github.io/portfolio-interactive"
+    "homepage": "https://JuanAressi.github.io/portfolio-interactive"
 }
