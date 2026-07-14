@@ -19,9 +19,10 @@ const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerH
 
 // Renderers: WebGL (para geometría) + CSS3D (para HTML en 3D).
 const renderer = new THREE.WebGLRenderer();
+renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.5));
 renderer.setSize(window.innerWidth, window.innerHeight);
 renderer.shadowMap.enabled = true;
-renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+renderer.shadowMap.type = THREE.PCFShadowMap;
 renderer.physicallyCorrectLights = true;
 
 // const cssRenderer = new CSS3DRenderer();
@@ -38,8 +39,9 @@ camera.position.set(0.52, 1.028, 1 - 2.17 - 0.256);
 camera.lookAt(1.62, 0.988, -2.43);
 camera.zoom = 1;
 
-// Controls.
+// Controls (disabled — scroll is native FakeScroll; keep object for optional debug).
 const controls = new OrbitControls(camera, renderer.domElement);
+controls.enabled = false;
 controls.enableDamping = true;
 controls.dampingFactor = 0.05;
 controls.target.set(1.79, 1.028, -2.17 - 0.256);
@@ -234,16 +236,71 @@ scene.add(spotLight2);
 scene.add(target);
 scene.add(target2);
 
-// Scroll tracking.
+// Scroll tracking — Guillaume FakeScroll method:
+// native document scroll → lerp → content translateY + camera progress.
 let targetScrollY = 0;
 let smoothScrollY = 0;
 const content = document.getElementById('content');
-const maxScroll = content.scrollHeight - window.innerHeight;
+const fakeScroll = document.querySelector('.FakeScroll');
+const scrollWrapper = document.getElementById('scroll-wrapper');
+const progressBar = document.getElementById('scroll-progress');
+const lookAtTarget = new THREE.Vector3(1.12, 0.988, -2.43);
 
-window.addEventListener('wheel', e => {
-    targetScrollY += e.deltaY;
-    targetScrollY = Math.max(0, Math.min(targetScrollY, maxScroll));
+let maxScroll = 0;
+let useNativeLayout = false;
+let idleFrames = 0;
+const IDLE_SKIP_AFTER = 8;
+
+function isNativeLayout() {
+    return window.innerWidth < 768 || window.innerHeight < 600;
+}
+
+function updateFakeScroll() {
+    useNativeLayout = isNativeLayout();
+    if (scrollWrapper) {
+        scrollWrapper.style.position = useNativeLayout ? 'relative' : 'fixed';
+    }
+    if (useNativeLayout) {
+        if (content) content.style.transform = '';
+        if (fakeScroll) fakeScroll.style.height = '0px';
+        maxScroll = Math.max(0, document.documentElement.scrollHeight - window.innerHeight);
+        return;
+    }
+
+    if (fakeScroll && content) {
+        fakeScroll.style.height = `${content.offsetHeight}px`;
+    }
+    maxScroll = Math.max(0, (fakeScroll?.offsetHeight || 0) - window.innerHeight);
+}
+
+function readScrollY() {
+    return document.documentElement.scrollTop || document.body.scrollTop || 0;
+}
+
+function scrollToSection(id) {
+    const section = document.getElementById(id);
+    if (!section) return;
+    updateFakeScroll();
+    const top = useNativeLayout
+        ? section.getBoundingClientRect().top + readScrollY()
+        : section.offsetTop;
+    window.scrollTo({ top: Math.max(0, Math.min(top, maxScroll || top)), behavior: 'smooth' });
+}
+
+document.querySelectorAll('[data-nav="work"], [data-nav="about"]').forEach(button => {
+    button.addEventListener('click', () => {
+        const id = button.getAttribute('data-nav');
+        if (id) scrollToSection(id);
+    });
 });
+
+window.addEventListener(
+    'scroll',
+    () => {
+        targetScrollY = readScrollY();
+    },
+    { passive: true }
+);
 
 // Mouse tracking.
 let mouseX = 0;
@@ -253,40 +310,79 @@ window.addEventListener('mousemove', event => {
     targetMouseX = (event.clientX / window.innerWidth) * 2 - 1;
 });
 
-const progressBar = document.getElementById('scroll-progress');
+updateFakeScroll();
 
-// Update scroll + mouse.
+// Always start at top after reload (disable browser scroll restoration).
+if ('scrollRestoration' in history) {
+    history.scrollRestoration = 'manual';
+}
+
+function resetScrollToTop() {
+    window.scrollTo(0, 0);
+    targetScrollY = 0;
+    smoothScrollY = 0;
+    if (!useNativeLayout && content) {
+        content.style.transform = 'translateY(0px)';
+    }
+    if (progressBar) {
+        progressBar.style.height = '0%';
+    }
+}
+
+resetScrollToTop();
+window.addEventListener('pageshow', event => {
+    // bfcache / back-forward can restore scroll — force top again.
+    if (event.persisted) resetScrollToTop();
+});
+
+// Update scroll + mouse (Guillaume uses ~0.1 lerp on 60fps ticker).
 function updateInputs() {
-    smoothScrollY += (targetScrollY - smoothScrollY) * 0.1;
-    content.style.transform = `translateY(${-smoothScrollY}px)`;
+    targetScrollY = readScrollY();
+    smoothScrollY += (targetScrollY - smoothScrollY) * 0.16;
+
+    if (!useNativeLayout && content) {
+        content.style.transform = `translateY(${-smoothScrollY}px)`;
+    }
 
     mouseX += (targetMouseX - mouseX) * 0.1;
 
-    const progress = (smoothScrollY / maxScroll) * 100;
-    progressBar.style.height = `${progress}%`;
+    if (progressBar) {
+        const progress = maxScroll > 0 ? (smoothScrollY / maxScroll) * 100 : 0;
+        progressBar.style.height = `${progress}%`;
+    }
 }
 
 function updateCameraPosition() {
-    const point = Math.min(smoothScrollY / maxScroll, 1);
+    const point = Math.min(smoothScrollY / Math.max(maxScroll, 1), 1);
     const position = curve.getPoint(point);
+    // Cubic ease — keeps lookAt near the monitor through Work (matches live).
     const easedPoint = point * point * point;
-    let horizontalOffset = 0;
     if (point > 0.1) {
-        horizontalOffset = mouseX * 0.2 * easedPoint;
-        position.x += horizontalOffset;
+        position.x += mouseX * 0.35 * easedPoint;
     }
     camera.position.copy(position);
-    const monitorPosition = new THREE.Vector3(1.12, 0.988 - easedPoint * 0.66, -2.43);
-    camera.lookAt(monitorPosition);
+    lookAtTarget.set(1.12, 0.988 - easedPoint * 0.66, -2.43);
+    camera.lookAt(lookAtTarget);
 }
 
 function animate() {
     requestAnimationFrame(animate);
     updateInputs();
     updateCameraPosition();
-    // controls.update(); // Enable free camera movement.
-    renderer.render(scene, camera);
-    // cssRenderer.render(scene, camera);
+
+    const scrollDelta = Math.abs(targetScrollY - smoothScrollY);
+    const mouseDelta = Math.abs(targetMouseX - mouseX);
+    const isIdle = scrollDelta < 0.05 && mouseDelta < 0.001;
+
+    if (isIdle) {
+        idleFrames += 1;
+    } else {
+        idleFrames = 0;
+    }
+
+    if (idleFrames < IDLE_SKIP_AFTER) {
+        renderer.render(scene, camera);
+    }
 }
 
 animate();
@@ -294,6 +390,8 @@ animate();
 window.addEventListener('resize', () => {
     camera.aspect = window.innerWidth / window.innerHeight;
     camera.updateProjectionMatrix();
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.5));
     renderer.setSize(window.innerWidth, window.innerHeight);
+    updateFakeScroll();
     // cssRenderer.setSize(window.innerWidth, window.innerHeight);
 });

@@ -9,7 +9,7 @@ const lang = {
         },
         about: {
             title: "Hi, I'm Juan",
-            'paragraph-1': "I'm a Systems Engineer / Full Stack Developer from Argentina",
+            'paragraph-1': "I'm a Systems Engineer and Full Stack Developer from Argentina.",
             'paragraph-2':
                 'My journey in technology started with a curiosity about how things work, which evolved into a career building solutions that make a difference',
             'paragraph-3':
@@ -28,15 +28,15 @@ const lang = {
     },
     es: {
         header: {
-            title: 'Ingeniero de Sistemas',
+            title: 'Ingeniero en Sistemas',
             profession: 'Desarrollador Full Stack',
         },
         work: {
-            title: 'My Work Experience',
+            title: 'Experiencia laboral',
         },
         about: {
-            title: "Hi, I'm Juan",
-            'paragraph-1': 'Soy un Ingeniero de Sistemas / Desarrollador Full Stack de Argentina',
+            title: 'Hola, soy Juan',
+            'paragraph-1': 'Soy Ingeniero en Sistemas y Desarrollador Full Stack de Argentina.',
             'paragraph-2':
                 'Mi viaje en la tecnología comenzó con curiosidad sobre cómo funcionan las cosas, que evolucionó en una carrera construyendo soluciones que hagan una diferencia',
             'paragraph-3':
@@ -60,28 +60,31 @@ enum Language {
     EN = 'en',
 }
 
-// Add event listener to the translate button.
-const translateButton = document.querySelectorAll('.translate-button');
-translateButton.forEach((button: Element) => {
+const translateButtons = document.querySelectorAll('.translate-button');
+
+translateButtons.forEach((button: Element) => {
     button.addEventListener('click', (event: Event) => {
-        // Get the selected language from the button.
-        let selectedLanguage = (event.target as HTMLElement).getAttribute(
-            'data-language'
-        ) as Language;
+        event.stopPropagation();
 
-        // Get the language from the Local Storage.
+        const target = (event.currentTarget as HTMLElement) || (event.target as HTMLElement);
+        const selectedLanguage = (
+            target.closest('[data-language]') as HTMLElement | null
+        )?.getAttribute('data-language') as Language | null;
+
+        if (!selectedLanguage) return;
+
         const currentLanguage = localStorage.getItem('selectedLanguage');
+        if (currentLanguage === selectedLanguage) {
+            document.querySelector('.dropdown')?.classList.remove('active');
+            document.querySelector('.dropdown-trigger')?.setAttribute('aria-expanded', 'false');
+            return;
+        }
 
-        // If the selected language is the same as the current language, return.
-        if (currentLanguage === selectedLanguage) return;
-
-        // Translate the page.
         handlePageTranslation(selectedLanguage);
+        syncLanguageSelectedClass(selectedLanguage);
 
-        // Toggle the selected class.
-        translateButton.forEach((button: Element) => {
-            (button as HTMLElement).classList.toggle('selected');
-        });
+        document.querySelector('.dropdown')?.classList.remove('active');
+        document.querySelector('.dropdown-trigger')?.setAttribute('aria-expanded', 'false');
     });
 });
 
@@ -107,6 +110,7 @@ const handlePageTranslation = (selectedLanguage: Language): void => {
 
     // Translate the page.
     translatePage(selectedLanguage);
+    syncNavAriaLabels(selectedLanguage);
 };
 
 /**
@@ -116,7 +120,8 @@ const handlePageTranslation = (selectedLanguage: Language): void => {
  * @returns void
  */
 const translatePage = (language: Language): void => {
-    // Get the elements of the page to translate.
+    const strings = lang[language as keyof typeof lang];
+
     const headerTitle = document.querySelector('[data-translate="header.title"]');
     const headerProfession = document.querySelector('[data-translate="header.profession"]');
     const workTitle = document.querySelector('[data-translate="work.title"]');
@@ -129,38 +134,49 @@ const translatePage = (language: Language): void => {
     const navbarAbout = document.querySelector('[data-translate="navbar.about"]');
     const navbarTranslate = document.querySelector('[data-translate="navbar.translate"]');
     const navbarEmail = document.querySelector('[data-translate="navbar.email"]');
+    const navbarGithub = document.querySelector('[data-translate="navbar.github"]');
+    const navbarLinkedin = document.querySelector('[data-translate="navbar.linkedin"]');
 
-    // Translate the elements.
-    dramaticGlitch(headerTitle as HTMLElement, lang[language as keyof typeof lang].header.title);
-    dramaticGlitch(
-        headerProfession as HTMLElement,
-        lang[language as keyof typeof lang].header.profession
-    );
-    dramaticGlitch(workTitle as HTMLElement, lang[language as keyof typeof lang].work.title);
-    dramaticGlitch(aboutTitle as HTMLElement, lang[language as keyof typeof lang].about.title);
-    dramaticGlitch(
-        aboutParagraph1 as HTMLElement,
-        lang[language as keyof typeof lang].about['paragraph-1']
-    );
-    dramaticGlitch(
-        aboutParagraph2 as HTMLElement,
-        lang[language as keyof typeof lang].about['paragraph-2']
-    );
-    dramaticGlitch(
-        aboutParagraph3 as HTMLElement,
-        lang[language as keyof typeof lang].about['paragraph-3']
-    );
-    dramaticGlitch(
-        aboutParagraph4 as HTMLElement,
-        lang[language as keyof typeof lang].about['paragraph-4']
-    );
-    dramaticGlitch(navbarWork as HTMLElement, lang[language as keyof typeof lang].navbar.work);
-    dramaticGlitch(navbarAbout as HTMLElement, lang[language as keyof typeof lang].navbar.about);
-    dramaticGlitch(
-        navbarTranslate as HTMLElement,
-        lang[language as keyof typeof lang].navbar.translate
-    );
-    dramaticGlitch(navbarEmail as HTMLElement, lang[language as keyof typeof lang].navbar.email);
+    dramaticGlitch(headerTitle as HTMLElement | null, strings.header.title);
+    dramaticGlitch(headerProfession as HTMLElement | null, strings.header.profession);
+    dramaticGlitch(workTitle as HTMLElement | null, strings.work.title);
+    dramaticGlitch(aboutTitle as HTMLElement | null, strings.about.title);
+    dramaticGlitch(aboutParagraph1 as HTMLElement | null, strings.about['paragraph-1']);
+    dramaticGlitch(aboutParagraph2 as HTMLElement | null, strings.about['paragraph-2']);
+    dramaticGlitch(aboutParagraph3 as HTMLElement | null, strings.about['paragraph-3']);
+    dramaticGlitch(aboutParagraph4 as HTMLElement | null, strings.about['paragraph-4']);
+    dramaticGlitch(navbarWork as HTMLElement | null, strings.navbar.work);
+    dramaticGlitch(navbarAbout as HTMLElement | null, strings.navbar.about);
+    dramaticGlitch(navbarTranslate as HTMLElement | null, strings.navbar.translate);
+    dramaticGlitch(navbarEmail as HTMLElement | null, strings.navbar.email);
+    dramaticGlitch(navbarGithub as HTMLElement | null, strings.navbar.github);
+    dramaticGlitch(navbarLinkedin as HTMLElement | null, strings.navbar.linkedin);
+};
+
+const syncNavAriaLabels = (language: Language): void => {
+    const strings = lang[language as keyof typeof lang].navbar;
+    const map: Array<[string, string]> = [
+        ['[data-nav="work"]', strings.work],
+        ['[data-nav="about"]', strings.about],
+        ['[data-nav="translate"]', strings.translate],
+        ['.dropdown-trigger', strings.translate],
+        ['[data-nav="email"]', strings.email],
+        ['[data-nav="github"]', strings.github],
+        ['[data-nav="linkedin"]', strings.linkedin],
+    ];
+
+    map.forEach(([selector, label]) => {
+        const el = document.querySelector(selector);
+        if (el) {
+            el.setAttribute('aria-label', label);
+        }
+    });
+};
+
+const syncLanguageSelectedClass = (language: Language): void => {
+    document.querySelectorAll('.translate-button').forEach(button => {
+        button.classList.toggle('selected', button.getAttribute('data-language') === language);
+    });
 };
 
 /**
@@ -169,30 +185,32 @@ const translatePage = (language: Language): void => {
  * @returns void
  */
 const translatePageOnLoad = (): void => {
-    // Get the language from the Local Storage.
-    let language = localStorage.getItem('selectedLanguage');
-
-    // Translate the page.
-    handlePageTranslation(language as Language);
-
-    // Get the dropdown selected language.
-    const dropdownSelectedLanguage = document.querySelector(`[data-language="${language}"]`);
-
-    // If the dropdown selected language is found, add the selected class.
-    if (dropdownSelectedLanguage) {
-        (dropdownSelectedLanguage as HTMLElement).classList.add('selected');
+    let language = localStorage.getItem('selectedLanguage') as Language | null;
+    if (!language) {
+        language = Language.EN;
     }
+
+    handlePageTranslation(language);
+    syncLanguageSelectedClass(language);
 };
 
 translatePageOnLoad();
 
-function dramaticGlitch(element: HTMLElement, text: string) {
+function dramaticGlitch(element: HTMLElement | null, text: string) {
+    if (!element) return;
+
     const finalText = text;
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (prefersReducedMotion) {
+        element.textContent = finalText;
+        return;
+    }
+
     const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz,./'ñó10               ";
     let startTime = performance.now();
-    const correctPositions = new Set();
-    const frameDelay = 66;
-    const duration = 2000;
+    const correctPositions = new Set<number>();
+    const frameDelay = 32;
+    const duration = 450;
 
     function frame(now: number) {
         let progress = (now - startTime) / duration;
@@ -212,10 +230,10 @@ function dramaticGlitch(element: HTMLElement, text: string) {
                     correctPositions.add(i);
                 }
             }
-            element.textContent = output;
+            element!.textContent = output;
             setTimeout(() => requestAnimationFrame(frame), frameDelay);
         } else {
-            element.textContent = finalText;
+            element!.textContent = finalText;
         }
     }
 
