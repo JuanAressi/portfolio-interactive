@@ -15,11 +15,12 @@ export function createMonitor(x = 0, y = 0, z = 0) {
     const bezel = createBezel(screenWidth, screenHeight, screenDepth, bezelThickness, bezelDepth);
     const base = createBase(screenHeight, screenDepth, standWidth, standHeight, bezelThickness);
 
-    // Position the monitor
     monitorGroup.position.set(x, y, z);
-
     monitorGroup.add(bezel);
     monitorGroup.add(base);
+
+    monitorGroup.userData.bezelGroup = bezel;
+    monitorGroup.userData.screen = bezel.userData.screen;
 
     return monitorGroup;
 }
@@ -71,7 +72,6 @@ function createBezel(screenWidth, screenHeight, screenDepth, bezelThickness, bez
         bezelMaterial
     );
 
-    // Back panel.
     const backPanelGeometry = new THREE.BoxGeometry(
         screenWidth,
         screenHeight - bezelThickness * 2,
@@ -80,6 +80,26 @@ function createBezel(screenWidth, screenHeight, screenDepth, bezelThickness, bez
     const backPanel = new THREE.Mesh(backPanelGeometry, screenMaterial);
     backPanel.position.set(0, -0.035, -bezelDepth / 2 - bezelThickness);
     bezelGroup.add(backPanel);
+
+    // Glass aperture between bezels (bottom chin is thicker → shorter than screenHeight).
+    const apertureTop = screenHeight / 2 - 0.04;
+    const apertureBottom = -screenHeight / 2 - 0.04 + bezelThickness * 3.5;
+    const apertureHeight = apertureTop - apertureBottom;
+    const apertureY = (apertureTop + apertureBottom) / 2;
+    const screenZ = -bezelDepth / 2 + 0.002;
+
+    const screenGeometry = new THREE.PlaneGeometry(screenWidth, apertureHeight);
+    // Dark "powered off" screen; the CSS3D job card fades in over it to simulate power-on.
+    const screenMeshMaterial = new THREE.MeshBasicMaterial({
+        color: 0x141414,
+        toneMapped: false,
+    });
+    const screen = new THREE.Mesh(screenGeometry, screenMeshMaterial);
+    screen.position.set(0, apertureY, screenZ);
+    bezelGroup.add(screen);
+    bezelGroup.userData.screen = screen;
+    bezelGroup.userData.screenSize = { width: screenWidth, height: apertureHeight };
+
     bezelGroup.position.set(0, 0.015, 0.05);
 
     return bezelGroup;
@@ -93,7 +113,6 @@ function createTopBezel(
     bezelGroup,
     bezelMaterial
 ) {
-    // Top frame.
     const topBezelGeometry = new THREE.BoxGeometry(
         screenWidth + bezelThickness * 2,
         bezelThickness,
@@ -124,7 +143,6 @@ function createBottomBezel(
     bezelGroup,
     bezelMaterial
 ) {
-    // Bottom frame.
     const bottomBezelGeometry = new THREE.BoxGeometry(
         screenWidth + bezelThickness * 2,
         bezelThickness * 8,
@@ -155,13 +173,11 @@ function createLeftBezel(
     bezelGroup,
     bezelMaterial
 ) {
-    // Left frame.
     const leftBezelGeometry = new THREE.BoxGeometry(bezelThickness, screenHeight, bezelDepth / 2);
     const leftBezel = new THREE.Mesh(leftBezelGeometry, bezelMaterial);
     leftBezel.position.set(-screenWidth / 2 - bezelThickness / 2, -0.04, -bezelDepth / 2);
     bezelGroup.add(leftBezel);
 
-    // Left vertical line light.
     const leftLineLight = createVerticalLineLight(
         -screenWidth / 2 + 0.0001,
         -0.031,
@@ -183,13 +199,11 @@ function createRightBezel(
     bezelGroup,
     bezelMaterial
 ) {
-    // Right frame.
     const rightBezelGeometry = new THREE.BoxGeometry(bezelThickness, screenHeight, bezelDepth / 2);
     const rightBezel = new THREE.Mesh(rightBezelGeometry, bezelMaterial);
     rightBezel.position.set(screenWidth / 2 + bezelThickness / 2, -0.04, -bezelDepth / 2);
     bezelGroup.add(rightBezel);
 
-    // Right vertical line light.
     const rightLineLight = createVerticalLineLight(
         screenWidth / 2 - 0.0001,
         -0.031,
@@ -216,19 +230,16 @@ function createBase(screenHeight, screenDepth, standWidth, standHeight, bezelThi
     });
     const baseGroup = new THREE.Group();
 
-    // Stand.
     const standGeometry = new THREE.BoxGeometry(standWidth, standHeight, bezelThickness * 2);
     const stand = new THREE.Mesh(standGeometry, standMaterial);
     stand.position.set(0, -screenHeight / 2 - standHeight / 2, -screenDepth * 2.5);
     baseGroup.add(stand);
 
-    // Base.
     const baseGeometry = new THREE.BoxGeometry(0.1, 0.005, 0.025);
     const base = new THREE.Mesh(baseGeometry, bezelMaterial);
     base.position.set(0, -screenHeight / 2 - 0.2 / 2, -screenDepth);
     baseGroup.add(base);
 
-    // Vertical base.
     const verticalBaseGeometry = new THREE.BoxGeometry(0.1, 0.025, 0.005);
     const verticalBase = new THREE.Mesh(verticalBaseGeometry, bezelMaterial);
     verticalBase.position.set(0, -screenHeight / 2 - 0.19 / 2, -0.015);

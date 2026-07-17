@@ -1,13 +1,19 @@
 import * as THREE from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
-// import { CSS3DRenderer, CSS3DObject } from 'three/examples/jsm/renderers/CSS3DRenderer.js';
+import { CSS3DRenderer, CSS3DObject } from 'three/examples/jsm/renderers/CSS3DRenderer.js';
 import { createDesk } from './desk.js';
 import { createRoom } from './room.ts';
 import { setupBlueTint, createHemisphereLight, createSpotLights } from './lighting.ts';
 import { createMonitor } from './monitor.js';
 import curve from './camera-movement.js';
-
+import {
+    WORK_CARD_MONITOR_SIZE,
+    createMonitorJobCard,
+    applyMonitorJob,
+    setMonitorJobIdle,
+} from './work-card.ts';
+import { getJobPreview, getLangCode, isDenseJobPreview } from './jobs-data.ts';
 const keyboard = new URL('../assets/models/keyboard.glb', import.meta.url).href;
 const mouse = new URL('../assets/models/mouse.glb', import.meta.url).href;
 const books = new URL('../assets/models/books.glb', import.meta.url).href;
@@ -17,7 +23,7 @@ const roundedChair = new URL('../assets/models/rounded_chair.glb', import.meta.u
 const scene = new THREE.Scene();
 const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
 
-// Renderers: WebGL (para geometría) + CSS3D (para HTML en 3D).
+// Renderers: WebGL + CSS3D (job preview on the monitor).
 const renderer = new THREE.WebGLRenderer();
 renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.5));
 renderer.setSize(window.innerWidth, window.innerHeight);
@@ -25,14 +31,14 @@ renderer.shadowMap.enabled = true;
 renderer.shadowMap.type = THREE.PCFShadowMap;
 renderer.physicallyCorrectLights = true;
 
-// const cssRenderer = new CSS3DRenderer();
-// cssRenderer.setSize(window.innerWidth, window.innerHeight);
-// cssRenderer.domElement.style.position = 'absolute';
-// cssRenderer.domElement.style.top = 0;
+const cssRenderer = new CSS3DRenderer();
+cssRenderer.setSize(window.innerWidth, window.innerHeight);
+cssRenderer.domElement.id = 'css3d-root';
 
 const canvasContainer = document.getElementById('canvas-container');
 canvasContainer.appendChild(renderer.domElement);
-// canvasContainer.appendChild(cssRenderer.domElement);
+// Sibling of #canvas-container — z-index under #content so intro stays visible.
+canvasContainer.insertAdjacentElement('afterend', cssRenderer.domElement);
 
 // Camera.
 camera.position.set(0.52, 1.028, 1 - 2.17 - 0.256);
@@ -66,40 +72,81 @@ const monitor = createMonitor(1.12, 0.988, -2.43);
 monitor.scale.set(1.15, 1.15, 1.15);
 scene.add(monitor);
 
-// // Monitor (pantalla HTML dentro del espacio 3D).
-// const monitorContent = document.createElement('div');
+let cssWorkCard = null;
+let cssObject = null;
+let activeJobId = null;
+let forceRenderFrames = 0;
 
-// // tamaño en píxeles del div (alta resolución para nitidez)
-// const divWidth = 2048 * 0.75;
-// const divHeight = 1152 * 0.75;
+function mountCss3dWorkCard() {
+    const bezelGroup = monitor.userData.bezelGroup;
+    const screen = monitor.userData.screen;
+    const screenSize = bezelGroup?.userData.screenSize;
+    if (!bezelGroup || !screen || !screenSize || cssObject) return;
 
-// monitorContent.style.width = `${divWidth}px`;
-// monitorContent.style.height = `${divHeight}px`;
-// monitorContent.style.background = 'black';
-// monitorContent.style.color = 'white';
-// monitorContent.style.display = 'flex';
-// monitorContent.style.alignItems = 'center';
-// monitorContent.style.justifyContent = 'center';
-// monitorContent.innerHTML = '<h2>Contenido HTML libre</h2>';
+    cssWorkCard = createMonitorJobCard();
+    cssObject = new CSS3DObject(cssWorkCard);
+    cssObject.position.copy(screen.position);
+    // Nudge slightly into the chassis so CSS compositing doesn't read as above the glass.
+    cssObject.position.z -= 0.004;
+    cssObject.scale.set(
+        screenSize.width / WORK_CARD_MONITOR_SIZE.width,
+        screenSize.height / WORK_CARD_MONITOR_SIZE.height,
+        1
+    );
+    bezelGroup.add(cssObject);
+    forceRenderFrames = 2;
+}
 
-// const cssObject = new CSS3DObject(monitorContent);
+// hover → dense gate → apply (or idle). Pending employers stay blank.
+function showJobOnMonitor(jobId) {
+    if (!cssWorkCard || !jobId) return;
+    const job = getJobPreview(jobId, getLangCode());
+    if (!job || !isDenseJobPreview(job)) {
+        clearMonitorJob();
+        return;
+    }
+    activeJobId = jobId;
+    applyMonitorJob(cssWorkCard, job);
+    forceRenderFrames = 2;
+}
 
-// // posición: exactamente igual al plano negro definido en monitor.js
-// cssObject.position.set(
-//     1.12, // X = centro del monitor
-//     0.8, // Y = centro pantalla (-0.04)
-//     -2.43 + 0.011 // Z = mismo offset que el plane (0.011)
-//     // -2.7 // Z = mismo offset que el plane (0.011)
-// );
+function clearMonitorJob() {
+    if (!cssWorkCard) return;
+    activeJobId = null;
+    setMonitorJobIdle(cssWorkCard);
+    forceRenderFrames = 2;
+}
 
-// // escala calculada para encajar el div dentro del plano (0.5313 x 0.2989)
-// const planeWidth = 0.5313;
-// const planeHeight = 0.2989;
-// const scaleX = planeWidth / divWidth;
-// const scaleY = planeHeight / divHeight;
-// cssObject.scale.set(scaleX, scaleY, 1);
+function bindCompanyHoverPreview() {
+    const workSection = document.getElementById('work');
+    if (!workSection) return;
 
-// scene.add(cssObject);
+    workSection.querySelectorAll('.company-item[data-job-id]').forEach(item => {
+        item.setAttribute('tabindex', '0');
+        item.addEventListener('mouseenter', () => {
+            showJobOnMonitor(item.getAttribute('data-job-id'));
+        });
+        item.addEventListener('focusin', () => {
+            showJobOnMonitor(item.getAttribute('data-job-id'));
+        });
+    });
+
+    workSection.addEventListener('mouseleave', () => {
+        clearMonitorJob();
+    });
+    workSection.addEventListener('focusout', event => {
+        const next = event.relatedTarget;
+        if (next instanceof Node && workSection.contains(next)) return;
+        clearMonitorJob();
+    });
+}
+
+mountCss3dWorkCard();
+bindCompanyHoverPreview();
+
+window.addEventListener('portfolio:lang', () => {
+    if (activeJobId) showJobOnMonitor(activeJobId);
+});
 
 // Items loader.
 const loader = new GLTFLoader();
@@ -287,17 +334,57 @@ function scrollToSection(id) {
     window.scrollTo({ top: Math.max(0, Math.min(top, maxScroll || top)), behavior: 'smooth' });
 }
 
-document.querySelectorAll('[data-nav="work"], [data-nav="about"]').forEach(button => {
-    button.addEventListener('click', () => {
-        const id = button.getAttribute('data-nav');
-        if (id) scrollToSection(id);
+const sectionNavEntries = ['home', 'work', 'about']
+    .map(id => {
+        const section = document.getElementById(id);
+        const button = document.querySelector(`[data-nav="${id}"]`);
+        return section && button ? { id, section, button } : null;
+    })
+    .filter(Boolean);
+let activeNavSectionId = null;
+
+function setActiveNavSection(id) {
+    if (activeNavSectionId === id) return;
+    activeNavSectionId = id;
+
+    for (const entry of sectionNavEntries) {
+        const isActive = entry.id === id;
+        entry.button.classList.toggle('is-active', isActive);
+        if (isActive) {
+            entry.button.setAttribute('aria-current', 'page');
+        } else {
+            entry.button.removeAttribute('aria-current');
+        }
+    }
+}
+
+function updateActiveNavSection(scrollPosition) {
+    const referenceY = scrollPosition + window.innerHeight * 0.5;
+    let activeId = sectionNavEntries[0]?.id;
+
+    for (const entry of sectionNavEntries) {
+        if (entry.section.offsetTop <= referenceY) {
+            activeId = entry.id;
+        }
+    }
+
+    if (activeId) setActiveNavSection(activeId);
+}
+
+document
+    .querySelectorAll('[data-nav="home"], [data-nav="work"], [data-nav="about"]')
+    .forEach(button => {
+        button.addEventListener('click', () => {
+            const id = button.getAttribute('data-nav');
+            if (id) scrollToSection(id);
+        });
     });
-});
 
 window.addEventListener(
     'scroll',
     () => {
         targetScrollY = readScrollY();
+        updateActiveNavSection(targetScrollY);
     },
     { passive: true }
 );
@@ -327,6 +414,7 @@ function resetScrollToTop() {
     if (progressBar) {
         progressBar.style.height = '0%';
     }
+    setActiveNavSection('home');
 }
 
 resetScrollToTop();
@@ -350,6 +438,7 @@ function updateInputs() {
         const progress = maxScroll > 0 ? (smoothScrollY / maxScroll) * 100 : 0;
         progressBar.style.height = `${progress}%`;
     }
+    updateActiveNavSection(targetScrollY);
 }
 
 function updateCameraPosition() {
@@ -380,8 +469,14 @@ function animate() {
         idleFrames = 0;
     }
 
-    if (idleFrames < IDLE_SKIP_AFTER) {
+    const shouldRender =
+        idleFrames < IDLE_SKIP_AFTER || forceRenderFrames > 0 || Boolean(activeJobId);
+    if (shouldRender) {
         renderer.render(scene, camera);
+        if (cssObject) {
+            cssRenderer.render(scene, camera);
+        }
+        if (forceRenderFrames > 0) forceRenderFrames -= 1;
     }
 }
 
@@ -392,6 +487,7 @@ window.addEventListener('resize', () => {
     camera.updateProjectionMatrix();
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.5));
     renderer.setSize(window.innerWidth, window.innerHeight);
+    cssRenderer.setSize(window.innerWidth, window.innerHeight);
     updateFakeScroll();
-    // cssRenderer.setSize(window.innerWidth, window.innerHeight);
+    forceRenderFrames = 2;
 });

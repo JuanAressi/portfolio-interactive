@@ -7,6 +7,12 @@ const lang = {
         work: {
             title: 'My Work Experience',
         },
+        projects: {
+            title: 'Projects',
+            'item-1': 'Portfolio Interactive',
+            'item-2': 'Open Source Tools',
+            'item-3': 'Side Experiments',
+        },
         about: {
             title: "Hi, I'm Juan",
             'paragraph-1': "I'm a Systems Engineer and Full Stack Developer from Argentina.",
@@ -18,6 +24,7 @@ const lang = {
                 'With expertise in modern web technologies, I specialize in developing scalable applications that combine beautiful design with robust functionality, focusing on clean code, user-centered design, and continuous learning',
         },
         navbar: {
+            home: 'Home',
             work: 'My Work',
             about: 'About Me',
             translate: 'Translate',
@@ -34,6 +41,12 @@ const lang = {
         work: {
             title: 'Experiencia laboral',
         },
+        projects: {
+            title: 'Proyectos',
+            'item-1': 'Portfolio Interactive',
+            'item-2': 'Herramientas open source',
+            'item-3': 'Experimentos',
+        },
         about: {
             title: 'Hola, soy Juan',
             'paragraph-1': 'Soy Ingeniero en Sistemas y Desarrollador Full Stack de Argentina.',
@@ -45,6 +58,7 @@ const lang = {
                 'Con expertise en tecnologías web modernas, me especializo en desarrollar aplicaciones escalables que combinan diseño elegante con funcionalidad robusta, enfocándome en código limpio, diseño centrado en el usuario y aprendizaje continuo',
         },
         navbar: {
+            home: 'Inicio',
             work: 'Mi Trabajo',
             about: 'Sobre Mí',
             translate: 'Traducir',
@@ -88,48 +102,40 @@ translateButtons.forEach((button: Element) => {
     });
 });
 
-/**
- * Handle the page translation and set the selected language in the Local Storage.
- *
- * @param selectedLanguage - The selected language.
- * @returns void
- */
 const handlePageTranslation = (selectedLanguage: Language): void => {
-    // If the selected language is not found, set the default language to Spanish.
     if (!selectedLanguage) {
         selectedLanguage = Language.EN;
     }
 
-    // Verify that the selected language is valid.
     if (selectedLanguage !== Language.ES && selectedLanguage !== Language.EN) {
         selectedLanguage = Language.EN;
     }
 
-    // Set the selected language in the Local Storage.
     localStorage.setItem('selectedLanguage', selectedLanguage);
 
-    // Translate the page.
     translatePage(selectedLanguage);
     syncNavAriaLabels(selectedLanguage);
+    window.dispatchEvent(
+        new CustomEvent('portfolio:lang', { detail: { language: selectedLanguage } })
+    );
 };
 
-/**
- * Translate the elements of the page.
- *
- * @param language - The language to translate the page to.
- * @returns void
- */
 const translatePage = (language: Language): void => {
     const strings = lang[language as keyof typeof lang];
 
     const headerTitle = document.querySelector('[data-translate="header.title"]');
     const headerProfession = document.querySelector('[data-translate="header.profession"]');
     const workTitle = document.querySelector('[data-translate="work.title"]');
+    const projectsTitle = document.querySelector('[data-translate="projects.title"]');
+    const projectsItem1 = document.querySelector('[data-translate="projects.item-1"]');
+    const projectsItem2 = document.querySelector('[data-translate="projects.item-2"]');
+    const projectsItem3 = document.querySelector('[data-translate="projects.item-3"]');
     const aboutTitle = document.querySelector('[data-translate="about.title"]');
     const aboutParagraph1 = document.querySelector('[data-translate="about.paragraph-1"]');
     const aboutParagraph2 = document.querySelector('[data-translate="about.paragraph-2"]');
     const aboutParagraph3 = document.querySelector('[data-translate="about.paragraph-3"]');
     const aboutParagraph4 = document.querySelector('[data-translate="about.paragraph-4"]');
+    const navbarHome = document.querySelector('[data-translate="navbar.home"]');
     const navbarWork = document.querySelector('[data-translate="navbar.work"]');
     const navbarAbout = document.querySelector('[data-translate="navbar.about"]');
     const navbarTranslate = document.querySelector('[data-translate="navbar.translate"]');
@@ -140,11 +146,16 @@ const translatePage = (language: Language): void => {
     dramaticGlitch(headerTitle as HTMLElement | null, strings.header.title);
     dramaticGlitch(headerProfession as HTMLElement | null, strings.header.profession);
     dramaticGlitch(workTitle as HTMLElement | null, strings.work.title);
+    dramaticGlitch(projectsTitle as HTMLElement | null, strings.projects.title);
+    dramaticGlitch(projectsItem1 as HTMLElement | null, strings.projects['item-1']);
+    dramaticGlitch(projectsItem2 as HTMLElement | null, strings.projects['item-2']);
+    dramaticGlitch(projectsItem3 as HTMLElement | null, strings.projects['item-3']);
     dramaticGlitch(aboutTitle as HTMLElement | null, strings.about.title);
     dramaticGlitch(aboutParagraph1 as HTMLElement | null, strings.about['paragraph-1']);
     dramaticGlitch(aboutParagraph2 as HTMLElement | null, strings.about['paragraph-2']);
     dramaticGlitch(aboutParagraph3 as HTMLElement | null, strings.about['paragraph-3']);
     dramaticGlitch(aboutParagraph4 as HTMLElement | null, strings.about['paragraph-4']);
+    dramaticGlitch(navbarHome as HTMLElement | null, strings.navbar.home);
     dramaticGlitch(navbarWork as HTMLElement | null, strings.navbar.work);
     dramaticGlitch(navbarAbout as HTMLElement | null, strings.navbar.about);
     dramaticGlitch(navbarTranslate as HTMLElement | null, strings.navbar.translate);
@@ -156,6 +167,7 @@ const translatePage = (language: Language): void => {
 const syncNavAriaLabels = (language: Language): void => {
     const strings = lang[language as keyof typeof lang].navbar;
     const map: Array<[string, string]> = [
+        ['[data-nav="home"]', strings.home],
         ['[data-nav="work"]', strings.work],
         ['[data-nav="about"]', strings.about],
         ['[data-nav="translate"]', strings.translate],
@@ -179,11 +191,6 @@ const syncLanguageSelectedClass = (language: Language): void => {
     });
 };
 
-/**
- * Translate the page on load.
- *
- * @returns void
- */
 const translatePageOnLoad = (): void => {
     let language = localStorage.getItem('selectedLanguage') as Language | null;
     if (!language) {

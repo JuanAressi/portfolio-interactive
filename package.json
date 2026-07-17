@@ -13,13 +13,21 @@
     "license": "MIT",
     "scripts": {
         "dev": "parcel src/index.html",
-        "build": "parcel build src/index.html --dist-dir dist --public-url ./"
+        "build": "parcel build src/index.html --dist-dir dist --public-url ./",
+        "test": "vitest run",
+        "test:watch": "vitest",
+        "test:e2e": "playwright test",
+        "verify": "npm test && npm run build && npm run test:e2e"
     },
     "devDependencies": {
+        "@playwright/test": "^1.61.1",
         "@types/three": "^0.179.0",
         "dat.gui": "^0.7.9",
         "eslint": "^9.31.0",
-        "parcel": "^2.15.4"
+        "jsdom": "^26.1.0",
+        "parcel": "^2.15.4",
+        "serve": "^14.2.6",
+        "vitest": "^3.2.4"
     },
     "dependencies": {
         "@tailwindcss/postcss": "^4.1.12",

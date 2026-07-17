@@ -30,7 +30,7 @@
                         class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
                     >
                         <div class="flex flex-col items-center justify-center">
-                            <div class="line bg-gradient-to-r from-blue-500 to-purple-500"></div>
+                            <div class="line bg-gradient-to-r from-sky-400 to-indigo-500"></div>
                         </div>
                     </div>
 
@@ -144,7 +144,7 @@
 
                 <!-- Work Experience -->
                 <div id="work" class="flex flex-col justify-center min-h-screen">
-                    <div class="flex gap-6">
+                    <div class="work-panel flex gap-6">
                         <!-- Vertical line -->
                         <div
                             class="vertical-line-wrapper flex flex-col items-center gap-3 pt-4 pb-2"
@@ -197,37 +197,37 @@
 
                             <div class="flex flex-col gap-3">
                                 <!-- Persiscal -->
-                                <div class="flex items-center company-item">
+                                <div class="flex items-center company-item" data-job-id="persiscal">
                                     <span class="line line-5 gradient-pink w-0"></span>
                                     <span class="text-2xl">Persiscal</span>
                                 </div>
 
                                 <!-- Patatag -->
-                                <div class="flex items-center company-item">
+                                <div class="flex items-center company-item" data-job-id="patatag">
                                     <span class="line line-2 gradient-orange w-0"></span>
                                     <span class="text-2xl">Patatag</span>
                                 </div>
 
                                 <!-- Ignitix -->
-                                <div class="flex items-center company-item">
+                                <div class="flex items-center company-item" data-job-id="ignitix">
                                     <span class="line line-4 gradient-green w-0"></span>
                                     <span class="text-2xl">Ignitix</span>
                                 </div>
 
                                 <!-- Capgemini -->
-                                <div class="flex items-center company-item">
+                                <div class="flex items-center company-item" data-job-id="capgemini">
                                     <span class="line line-5 gradient-blue w-0"></span>
                                     <span class="text-2xl">Capgemini</span>
                                 </div>
 
                                 <!-- Secco -->
-                                <div class="flex items-center company-item">
+                                <div class="flex items-center company-item" data-job-id="secco">
                                     <span class="line line-3 gradient-pink w-0"></span>
                                     <span class="text-2xl">Secco</span>
                                 </div>
 
                                 <!-- SACSI -->
-                                <div class="flex items-center company-item">
+                                <div class="flex items-center company-item" data-job-id="sacsi">
                                     <span class="line line-4 gradient-orange w-0"></span>
                                     <span class="text-2xl">SACSI</span>
                                 </div>
@@ -235,6 +235,104 @@
                         </div>
                     </div>
                 </div>
+
+                <!--
+                Projects (disabled for now)
+                <div id="projects" class="flex flex-col justify-center min-h-screen">
+                    <div class="flex gap-6">
+                        <div
+                            class="vertical-line-wrapper flex flex-col items-center gap-3 pt-4 pb-2"
+                        >
+                            <span class="little-dot"></span>
+                            <span class="vertical-line"></span>
+                            <span class="little-dot"></span>
+                        </div>
+
+                        <div class="flex flex-col gap-6">
+                            <h2
+                                data-translate="projects.title"
+                                class="m-0 text-5xl horizontal-fade-in horizontal-fade-in-1"
+                            ></h2>
+
+                            <div class="flex flex-col gap-3">
+                                <div class="flex gap-4 delay-1">
+                                    <span
+                                        class="line line-5 gradient-green horizontal-fade-in horizontal-fade-in-1"
+                                    ></span>
+                                    <span
+                                        class="square horizontal-fade-in horizontal-fade-in-2"
+                                    ></span>
+                                    <span
+                                        class="line line-2 gradient-blue horizontal-fade-in horizontal-fade-in-3"
+                                    ></span>
+                                    <span
+                                        class="dot horizontal-fade-in horizontal-fade-in-4"
+                                    ></span>
+                                </div>
+
+                                <div class="flex gap-4 delay-2">
+                                    <span
+                                        class="dot horizontal-fade-in horizontal-fade-in-1"
+                                    ></span>
+                                    <span
+                                        class="line line-2 gradient-gray horizontal-fade-in horizontal-fade-in-2"
+                                    ></span>
+                                    <span
+                                        class="square horizontal-fade-in horizontal-fade-in-3"
+                                    ></span>
+                                    <span
+                                        class="line line-3 gradient-orange horizontal-fade-in horizontal-fade-in-4"
+                                    ></span>
+                                    <span
+                                        class="dot horizontal-fade-in horizontal-fade-in-5"
+                                    ></span>
+                                </div>
+                            </div>
+
+                            <div class="flex flex-col gap-3">
+                                <a
+                                    class="flex items-center company-item"
+                                    href="https://github.com/JuanAressi"
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                >
+                                    <span class="line line-4 gradient-blue w-0"></span>
+                                    <span
+                                        class="text-2xl"
+                                        data-translate="projects.item-1"
+                                    ></span>
+                                </a>
+
+                                <a
+                                    class="flex items-center company-item"
+                                    href="https://github.com/JuanAressi"
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                >
+                                    <span class="line line-3 gradient-pink w-0"></span>
+                                    <span
+                                        class="text-2xl"
+                                        data-translate="projects.item-2"
+                                    ></span>
+                                </a>
+
+                                <a
+                                    class="flex items-center company-item"
+                                    href="https://github.com/JuanAressi"
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                >
+                                    <span class="line line-5 gradient-green w-0"></span>
+                                    <span
+                                        class="text-2xl"
+                                        data-translate="projects.item-3"
+                                    ></span>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                -->
 
                 <!-- About Me -->
                 <div id="about" class="flex flex-col justify-center min-h-screen text-slate-200">
@@ -291,7 +389,10 @@
                                 </div>
                             </div>
 
-                            <div class="flex flex-col gap-2 text-xl w-1/2">
+                            <div
+                                class="flex w-full max-w-2xl flex-col gap-2 text-xl"
+                                data-about-copy
+                            >
                                 <p data-translate="about.paragraph-1"></p>
 
                                 <p data-translate="about.paragraph-2"></p>
@@ -351,6 +452,17 @@
         <nav id="bottom-nav" class="glass fixed py-4 px-10 rounded-4xl min-w-[500px]">
             <div class="relative flex justify-between items-center w-full">
                 <div class="flex gap-[2rem]">
+                    <!-- Home -->
+                    <button
+                        type="button"
+                        data-nav="home"
+                        class="group relative cursor-pointer bg-transparent border-0 p-0 flex items-center justify-center size-6"
+                        aria-label="Home"
+                    >
+                        <span class="nav-home-circle" aria-hidden="true"></span>
+                        <span class="nav-label" data-translate="navbar.home"></span>
+                    </button>
+
                     <!-- My Work -->
                     <button
                         type="button"
@@ -407,7 +519,7 @@
                     <div class="dropdown relative">
                         <button
                             type="button"
-                            class="dropdown-trigger bg-transparent border-0 p-0 cursor-pointer"
+                            class="dropdown-trigger flex size-6 cursor-pointer items-center justify-center border-0 bg-transparent p-0"
                             aria-haspopup="listbox"
                             aria-expanded="false"
                             aria-label="Translate"
@@ -437,7 +549,7 @@
                         >
                             <button
                                 type="button"
-                                class="translate-button flex items-center justify-center w-full py-1 transition-all hover:bg-gray-100 cursor-pointer text-slate-200 hover:text-indigo-500 bg-transparent border-0"
+                                class="translate-button flex items-center justify-center w-full py-1 transition-all cursor-pointer bg-transparent border-0"
                                 data-language="en"
                                 role="option"
                             >
@@ -446,7 +558,7 @@
 
                             <button
                                 type="button"
-                                class="translate-button flex items-center justify-center w-full py-1 transition-all hover:bg-gray-100 cursor-pointer text-slate-200 hover:text-indigo-500 bg-transparent border-0"
+                                class="translate-button flex items-center justify-center w-full py-1 transition-all cursor-pointer bg-transparent border-0"
                                 data-language="es"
                                 role="option"
                             >
