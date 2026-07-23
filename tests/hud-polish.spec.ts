@@ -1,7 +1,7 @@
 import { expect, test, type Page } from '@playwright/test';
 
 const CARD_SELECTOR = '[data-work-card="monitor"]';
-const DENSE_JOB_IDS = ['ignitix', 'capgemini', 'secco'] as const;
+const DENSE_JOB_IDS = ['ignitix', 'capgemini', 'secco', 'persiscal', 'sacsi'] as const;
 const LANGUAGES = ['en', 'es'] as const;
 
 async function openPortfolio(page: Page): Promise<void> {
@@ -181,13 +181,16 @@ test.describe('HUD polish', () => {
         expect(layout.lineLeft).toBeGreaterThanOrEqual(layout.labelRight);
     });
 
-    test('scroll position updates the active section and aria-current', async ({ page }) => {
+    test('scroll position updates the active section and aria-current (incl. Contact)', async ({
+        page,
+    }) => {
         await page.setViewportSize({ width: 1280, height: 800 });
         await openPortfolio(page);
 
         const home = page.locator('[data-nav="home"]');
         const work = page.locator('[data-nav="work"]');
         const about = page.locator('[data-nav="about"]');
+        const contact = page.locator('[data-nav="contact"]');
 
         await expect(home).toHaveAttribute('aria-current', 'page');
 
@@ -205,6 +208,96 @@ test.describe('HUD polish', () => {
         });
         await expect(about).toHaveAttribute('aria-current', 'page');
         await expect(page.locator('#bottom-nav [aria-current="page"]')).toHaveCount(1);
+
+        // Regression: NAV_SECTION_IDS single-source refactor (index.js) — Contact
+        // must scroll+activate exactly like Home/Work/About did before the refactor.
+        await page.evaluate(() => {
+            window.scrollTo(0, document.getElementById('contact')!.offsetTop);
+        });
+        await expect(contact).toHaveAttribute('aria-current', 'page');
+        await expect(page.locator('#bottom-nav [aria-current="page"]')).toHaveCount(1);
+    });
+
+    test('regression: all pre-existing translation keys still render after the generic-loop refactor', async ({
+        page,
+    }) => {
+        await page.setViewportSize({ width: 1280, height: 800 });
+        await openPortfolio(page);
+
+        // projects.* excluded — #projects is HTML-commented-out, never in the live DOM.
+        const keys = [
+            'header.title',
+            'header.profession',
+            'work.title',
+            'about.title',
+            'about.paragraph-1',
+            'about.paragraph-2',
+            'about.paragraph-3',
+            'about.paragraph-4',
+            'navbar.home',
+            'navbar.work',
+            'navbar.about',
+            'navbar.translate',
+        ];
+
+        for (const language of LANGUAGES) {
+            await setLanguage(page, language);
+            for (const key of keys) {
+                const locator = page.locator(`[data-translate="${key}"]`);
+                await expect(locator, `${key} (${language}) should not be empty`).not.toBeEmpty();
+            }
+        }
+    });
+
+    test('new contact section and nav keys render in both languages', async ({ page }) => {
+        await page.setViewportSize({ width: 1280, height: 800 });
+        await openPortfolio(page);
+
+        const keys = [
+            'contact.title',
+            'contact.email',
+            'contact.github',
+            'contact.linkedin',
+            'contact.cv',
+            'navbar.contact',
+        ];
+
+        for (const language of LANGUAGES) {
+            await setLanguage(page, language);
+            for (const key of keys) {
+                const locator = page.locator(`[data-translate="${key}"]`);
+                await expect(locator, `${key} (${language}) should not be empty`).not.toBeEmpty();
+            }
+        }
+    });
+
+    test('regression: bottom nav fits without overlap at mobile width (4 icons, not 6)', async ({
+        page,
+    }) => {
+        await page.setViewportSize({ width: 390, height: 700 });
+        await openPortfolio(page);
+
+        const navButtons = page.locator(
+            '[data-nav="home"], [data-nav="work"], [data-nav="about"], [data-nav="contact"]'
+        );
+        const boxes = await navButtons.evaluateAll(elements =>
+            elements.map(element => element.getBoundingClientRect())
+        );
+
+        expect(boxes.length).toBe(4);
+
+        for (let i = 1; i < boxes.length; i++) {
+            const prev = boxes[i - 1];
+            const curr = boxes[i];
+            // No horizontal overlap between adjacent nav icon boxes.
+            expect(curr.left).toBeGreaterThanOrEqual(prev.right - 1);
+        }
+
+        const nav = page.locator('#bottom-nav');
+        const navBox = await nav.boundingBox();
+        expect(navBox).not.toBeNull();
+        expect(navBox!.x).toBeGreaterThanOrEqual(0);
+        expect(navBox!.x + navBox!.width).toBeLessThanOrEqual(391);
     });
 
     for (const width of [1280, 1024]) {

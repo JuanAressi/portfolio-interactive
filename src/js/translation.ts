@@ -23,14 +23,19 @@ const lang = {
             'paragraph-4':
                 'With expertise in modern web technologies, I specialize in developing scalable applications that combine beautiful design with robust functionality, focusing on clean code, user-centered design, and continuous learning',
         },
+        contact: {
+            title: "Let's get in touch",
+            email: 'Email',
+            github: 'GitHub',
+            linkedin: 'LinkedIn',
+            cv: 'Download CV',
+        },
         navbar: {
             home: 'Home',
             work: 'My Work',
             about: 'About Me',
+            contact: 'Contact',
             translate: 'Translate',
-            email: 'Email',
-            github: 'GitHub',
-            linkedin: 'LinkedIn',
         },
     },
     es: {
@@ -57,14 +62,19 @@ const lang = {
             'paragraph-4':
                 'Con expertise en tecnologías web modernas, me especializo en desarrollar aplicaciones escalables que combinan diseño elegante con funcionalidad robusta, enfocándome en código limpio, diseño centrado en el usuario y aprendizaje continuo',
         },
+        contact: {
+            title: 'Hablemos',
+            email: 'Correo',
+            github: 'GitHub',
+            linkedin: 'LinkedIn',
+            cv: 'Descargar CV',
+        },
         navbar: {
             home: 'Inicio',
             work: 'Mi Trabajo',
             about: 'Sobre Mí',
+            contact: 'Contacto',
             translate: 'Traducir',
-            email: 'Correo',
-            github: 'GitHub',
-            linkedin: 'LinkedIn',
         },
     },
 };
@@ -120,48 +130,30 @@ const handlePageTranslation = (selectedLanguage: Language): void => {
     );
 };
 
+const getByPath = (strings: Record<string, unknown>, path: string): string => {
+    const value = path.split('.').reduce<unknown>((acc, key) => {
+        if (acc && typeof acc === 'object' && key in acc) {
+            return (acc as Record<string, unknown>)[key];
+        }
+        return undefined;
+    }, strings);
+
+    if (typeof value !== 'string') {
+        console.warn(`[translation] missing key: ${path}`);
+        return '';
+    }
+
+    return value;
+};
+
 const translatePage = (language: Language): void => {
     const strings = lang[language as keyof typeof lang];
 
-    const headerTitle = document.querySelector('[data-translate="header.title"]');
-    const headerProfession = document.querySelector('[data-translate="header.profession"]');
-    const workTitle = document.querySelector('[data-translate="work.title"]');
-    const projectsTitle = document.querySelector('[data-translate="projects.title"]');
-    const projectsItem1 = document.querySelector('[data-translate="projects.item-1"]');
-    const projectsItem2 = document.querySelector('[data-translate="projects.item-2"]');
-    const projectsItem3 = document.querySelector('[data-translate="projects.item-3"]');
-    const aboutTitle = document.querySelector('[data-translate="about.title"]');
-    const aboutParagraph1 = document.querySelector('[data-translate="about.paragraph-1"]');
-    const aboutParagraph2 = document.querySelector('[data-translate="about.paragraph-2"]');
-    const aboutParagraph3 = document.querySelector('[data-translate="about.paragraph-3"]');
-    const aboutParagraph4 = document.querySelector('[data-translate="about.paragraph-4"]');
-    const navbarHome = document.querySelector('[data-translate="navbar.home"]');
-    const navbarWork = document.querySelector('[data-translate="navbar.work"]');
-    const navbarAbout = document.querySelector('[data-translate="navbar.about"]');
-    const navbarTranslate = document.querySelector('[data-translate="navbar.translate"]');
-    const navbarEmail = document.querySelector('[data-translate="navbar.email"]');
-    const navbarGithub = document.querySelector('[data-translate="navbar.github"]');
-    const navbarLinkedin = document.querySelector('[data-translate="navbar.linkedin"]');
-
-    dramaticGlitch(headerTitle as HTMLElement | null, strings.header.title);
-    dramaticGlitch(headerProfession as HTMLElement | null, strings.header.profession);
-    dramaticGlitch(workTitle as HTMLElement | null, strings.work.title);
-    dramaticGlitch(projectsTitle as HTMLElement | null, strings.projects.title);
-    dramaticGlitch(projectsItem1 as HTMLElement | null, strings.projects['item-1']);
-    dramaticGlitch(projectsItem2 as HTMLElement | null, strings.projects['item-2']);
-    dramaticGlitch(projectsItem3 as HTMLElement | null, strings.projects['item-3']);
-    dramaticGlitch(aboutTitle as HTMLElement | null, strings.about.title);
-    dramaticGlitch(aboutParagraph1 as HTMLElement | null, strings.about['paragraph-1']);
-    dramaticGlitch(aboutParagraph2 as HTMLElement | null, strings.about['paragraph-2']);
-    dramaticGlitch(aboutParagraph3 as HTMLElement | null, strings.about['paragraph-3']);
-    dramaticGlitch(aboutParagraph4 as HTMLElement | null, strings.about['paragraph-4']);
-    dramaticGlitch(navbarHome as HTMLElement | null, strings.navbar.home);
-    dramaticGlitch(navbarWork as HTMLElement | null, strings.navbar.work);
-    dramaticGlitch(navbarAbout as HTMLElement | null, strings.navbar.about);
-    dramaticGlitch(navbarTranslate as HTMLElement | null, strings.navbar.translate);
-    dramaticGlitch(navbarEmail as HTMLElement | null, strings.navbar.email);
-    dramaticGlitch(navbarGithub as HTMLElement | null, strings.navbar.github);
-    dramaticGlitch(navbarLinkedin as HTMLElement | null, strings.navbar.linkedin);
+    document.querySelectorAll<HTMLElement>('[data-translate]').forEach(element => {
+        const key = element.getAttribute('data-translate');
+        if (!key) return;
+        dramaticGlitch(element, getByPath(strings, key));
+    });
 };
 
 const syncNavAriaLabels = (language: Language): void => {
@@ -170,11 +162,9 @@ const syncNavAriaLabels = (language: Language): void => {
         ['[data-nav="home"]', strings.home],
         ['[data-nav="work"]', strings.work],
         ['[data-nav="about"]', strings.about],
+        ['[data-nav="contact"]', strings.contact],
         ['[data-nav="translate"]', strings.translate],
         ['.dropdown-trigger', strings.translate],
-        ['[data-nav="email"]', strings.email],
-        ['[data-nav="github"]', strings.github],
-        ['[data-nav="linkedin"]', strings.linkedin],
     ];
 
     map.forEach(([selector, label]) => {

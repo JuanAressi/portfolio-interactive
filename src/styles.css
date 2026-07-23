@@ -1,5 +1,9 @@
 @import 'tailwindcss';
 
+:root {
+    --color-primary: oklch(58.5% 0.233 277.117);
+}
+
 @font-face {
     font-family: 'Manrope';
     src: url('./assets/fonts/Manrope/Manrope-VariableFont_wght.ttf') format('truetype');
@@ -101,7 +105,7 @@ body::-webkit-scrollbar {
     z-index: 30;
     opacity: 0;
     pointer-events: none;
-    animation: bottom-nav-enter 700ms cubic-bezier(0.22, 1, 0.36, 1) forwards 2.4s;
+    animation: bottom-nav-enter 700ms cubic-bezier(0.22, 1, 0.36, 1) forwards 1.3s;
 }
 
 @keyframes bottom-nav-enter {
@@ -168,6 +172,25 @@ body::-webkit-scrollbar {
     outline: none;
 }
 
+.company-item:visited {
+    color: rgba(226, 232, 240, 0.55);
+}
+
+/* Subtle lift on icons — nav row and contact-row glyphs. */
+#bottom-nav svg,
+.company-item svg {
+    filter: drop-shadow(0 1px 1.5px rgba(0, 0, 0, 0.45));
+}
+
+/* #work's heading/company names can visually sit over the monitor's white
+   screen when a dense job is active — same dark shadow the icons above use,
+   so the light text keeps contrast against a white background, not just the
+   dark room. Invisible against the dark room, load-bearing against the screen. */
+#work h2,
+#work .company-item {
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.45);
+}
+
 .company-item .line {
     width: 0;
 }
@@ -198,28 +221,28 @@ body::-webkit-scrollbar {
     width: 10rem;
 }
 
-/* Work: mirrored layout — everything hugs the right edge, dots/line on the
-   right, and hovered items grow leftwards. */
-#work .work-panel {
+/* Right-aligned panel: everything hugs the right edge, dots/line on the
+   right, and hovered items grow leftwards. Shared by #work and #contact. */
+.right-aligned-panel {
     flex-direction: row-reverse;
 }
 
-#work .work-panel h2 {
+.right-aligned-panel h2 {
     text-align: right;
 }
 
-#work .work-panel .delay-1,
-#work .work-panel .delay-2,
-#work .work-panel .delay-3 {
+.right-aligned-panel .delay-1,
+.right-aligned-panel .delay-2,
+.right-aligned-panel .delay-3 {
     justify-content: flex-end;
 }
 
-#work .company-item {
+.right-aligned-panel .company-item {
     flex-direction: row-reverse;
 }
 
-#work .company-item:hover .line,
-#work .company-item:focus-visible .line {
+.right-aligned-panel .company-item:hover .line,
+.right-aligned-panel .company-item:focus-visible .line {
     margin-right: 0;
     margin-left: 1rem;
 }
@@ -309,18 +332,18 @@ body::-webkit-scrollbar {
     box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
 }
 
-.dropdown-menu .selected {
-    position: relative;
-    color: oklch(58.5% 0.233 277.117);
-}
-
 .dropdown-menu .translate-button {
     color: #e2e8f0;
 }
 
 .dropdown-menu .translate-button:hover {
     background-color: rgba(255, 255, 255, 0.08);
-    color: oklch(58.5% 0.233 277.117);
+    color: var(--color-primary);
+}
+
+.dropdown-menu .selected {
+    position: relative;
+    color: var(--color-primary);
 }
 
 .dropdown-menu .selected::before {
@@ -330,7 +353,7 @@ body::-webkit-scrollbar {
     left: 5%;
     width: 10%;
     height: 1px;
-    background-color: oklch(58.5% 0.233 277.117);
+    background-color: var(--color-primary);
     transform: translateY(-50%);
 }
 
@@ -341,7 +364,7 @@ body::-webkit-scrollbar {
     right: 5%;
     width: 10%;
     height: 1px;
-    background-color: oklch(58.5% 0.233 277.117);
+    background-color: var(--color-primary);
     transform: translateY(-50%);
 }
 
@@ -430,22 +453,6 @@ body::-webkit-scrollbar {
     } /* fade out intermedio (0.375s) */
 }
 
-/* Loader */
-#loader .line {
-    width: 20rem;
-    height: 0.75rem;
-    animation: loader 1.33s ease-out forwards;
-}
-
-@keyframes loader {
-    0% {
-        width: 20rem;
-    }
-    100% {
-        width: 0rem;
-    }
-}
-
 .nav-label {
     position: absolute;
     top: calc(100% + 0.25rem);
@@ -468,6 +475,14 @@ body::-webkit-scrollbar {
     transition: opacity 220ms cubic-bezier(0.16, 1, 0.3, 1);
 }
 
+/* Home/Work/About/Contact icons sit inside a 44px tap target with the icon
+   centered (10px padding). Pull the tooltip closer to the visible icon
+   rather than the padded button edge. Translate's tooltip isn't a button
+   child (its trigger stayed 24px), so it keeps the default offset above. */
+#bottom-nav button > .nav-label {
+    top: calc(100% - 6px);
+}
+
 .nav-home-circle {
     display: block;
     width: 14px;
@@ -479,29 +494,30 @@ body::-webkit-scrollbar {
 }
 
 .group:hover .nav-home-circle {
-    background: oklch(58.5% 0.233 277.117);
+    background: var(--color-primary);
 }
 
 #bottom-nav [data-nav].is-active > svg {
-    color: oklch(58.5% 0.233 277.117);
+    color: var(--color-primary);
 }
 
 #bottom-nav [data-nav].is-active .nav-home-circle {
-    background: oklch(58.5% 0.233 277.117);
+    background: var(--color-primary);
     box-shadow: 0 0 0 4px oklch(58.5% 0.233 277.117 / 0.18);
 }
 
 @media (min-width: 1024px) {
-    #work {
+    #work,
+    #contact {
         align-items: flex-end;
     }
 
-    #work .work-panel {
+    .right-aligned-panel {
         width: clamp(17rem, 28vw, 22rem);
         margin-right: clamp(0rem, 2vw, 2rem);
     }
 
-    #work .work-panel h2 {
+    .right-aligned-panel h2 {
         font-size: clamp(2.25rem, 3.5vw, 3rem);
     }
 }
@@ -515,7 +531,9 @@ body::-webkit-scrollbar {
     justify-content: flex-start;
     gap: 0.55rem;
     padding: 1.75rem 2rem;
-    background: #f5f5f0;
+    background-color: #f5f5f0;
+    background-image: radial-gradient(rgba(15, 23, 42, 0.08) 1px, transparent 1px);
+    background-size: 16px 16px;
     color: #111827;
     border: none;
     margin: 0;
@@ -556,7 +574,7 @@ body::-webkit-scrollbar {
 .monitor-job-card__years {
     margin: 0;
     font-size: 16px;
-    color: oklch(58.5% 0.233 277.117);
+    color: var(--color-primary);
 }
 
 .monitor-job-card__outcome {
@@ -592,17 +610,36 @@ body::-webkit-scrollbar {
     overflow: hidden;
 }
 
+.monitor-job-card__techs-section {
+    margin: auto 0 0;
+    padding-top: 0.75rem;
+    flex-shrink: 0;
+}
+
+.monitor-job-card__techs-section--empty {
+    display: none;
+}
+
+.monitor-job-card__techs-label {
+    margin: 0 0 0.5rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid oklch(58.5% 0.233 277.117 / 0.22);
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: #64748b;
+}
+
 .monitor-job-card__techs {
     list-style: none;
-    margin: auto 0 0;
-    padding: 0.75rem 0 0;
+    margin: 0;
+    padding: 0;
     min-height: 48px;
     display: flex;
     align-items: center;
     gap: 1rem;
-    flex-shrink: 0;
-    border-top: 1px solid oklch(58.5% 0.233 277.117 / 0.22);
-    color: oklch(58.5% 0.233 277.117);
+    color: var(--color-primary);
 }
 
 .monitor-job-card__techs:empty {
@@ -619,9 +656,10 @@ body::-webkit-scrollbar {
 }
 
 .monitor-job-card__tech-icon {
-    width: 30px;
-    height: 30px;
+    width: 40px;
+    height: 40px;
     display: block;
+    filter: drop-shadow(0 1px 1.5px rgba(0, 0, 0, 0.225));
 }
 
 #css3d-root {
@@ -682,49 +720,50 @@ body::-webkit-scrollbar {
     animation-delay: 1.85s;
 }
 
-/* Hero: entrance paced to loader 1.33s (scaled from 2s timing set) */
+/* Hero: entrance timing (no more loader gate — starts ~1.1s earlier than the
+   old loader-paced sequence so the name appears promptly on load). */
 #home .vertical-line-wrapper {
     animation-duration: 0.66s;
-    animation-delay: 1.46s;
+    animation-delay: 0.36s;
 }
 #home .vertical-line {
     animation-duration: 0.66s;
-    animation-delay: 1.46s;
+    animation-delay: 0.36s;
 }
 
 .home-content .horizontal-fade-in-1 {
-    animation: horizontal-fade-in 530ms cubic-bezier(0.22, 1, 0.36, 1) forwards 1.2s;
+    animation: horizontal-fade-in 530ms cubic-bezier(0.22, 1, 0.36, 1) forwards 0.1s;
 }
 .home-content .horizontal-fade-in-2 {
-    animation: horizontal-fade-in 570ms cubic-bezier(0.22, 1, 0.36, 1) forwards 1.33s;
+    animation: horizontal-fade-in 570ms cubic-bezier(0.22, 1, 0.36, 1) forwards 0.23s;
 }
 .home-content .horizontal-fade-in-3 {
-    animation: horizontal-fade-in 600ms cubic-bezier(0.22, 1, 0.36, 1) forwards 1.43s;
+    animation: horizontal-fade-in 600ms cubic-bezier(0.22, 1, 0.36, 1) forwards 0.33s;
 }
 .home-content .horizontal-fade-in-4 {
-    animation: horizontal-fade-in 600ms cubic-bezier(0.22, 1, 0.36, 1) forwards 1.53s;
+    animation: horizontal-fade-in 600ms cubic-bezier(0.22, 1, 0.36, 1) forwards 0.43s;
 }
 .home-content .horizontal-fade-in-5 {
-    animation: horizontal-fade-in 530ms cubic-bezier(0.22, 1, 0.36, 1) forwards 1.26s;
+    animation: horizontal-fade-in 530ms cubic-bezier(0.22, 1, 0.36, 1) forwards 0.16s;
 }
 
 .home-content .title.horizontal-fade-in {
     opacity: 0;
     transform: translateX(100%);
-    animation: horizontal-fade-in 670ms cubic-bezier(0.22, 1, 0.36, 1) forwards 1.66s;
+    animation: horizontal-fade-in 670ms cubic-bezier(0.22, 1, 0.36, 1) forwards 0.56s;
 }
 
 .home-content .delay-1 span {
-    animation-delay: 1.8s;
+    animation-delay: 0.7s;
 }
 .home-content .delay-2 span {
-    animation-delay: 1.9s;
+    animation-delay: 0.8s;
 }
 .home-content .delay-3 span {
-    animation-delay: 2s;
+    animation-delay: 0.9s;
 }
 .home-content .delay-4 span {
-    animation-delay: 2.09s;
+    animation-delay: 0.99s;
 }
 
 @media (prefers-reduced-motion: reduce) {

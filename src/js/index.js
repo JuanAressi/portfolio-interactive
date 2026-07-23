@@ -1,6 +1,7 @@
 import * as THREE from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
+import { MeshoptDecoder } from 'three/examples/jsm/libs/meshopt_decoder.module.js';
 import { CSS3DRenderer, CSS3DObject } from 'three/examples/jsm/renderers/CSS3DRenderer.js';
 import { createDesk } from './desk.js';
 import { createRoom } from './room.ts';
@@ -77,6 +78,42 @@ let cssObject = null;
 let activeJobId = null;
 let forceRenderFrames = 0;
 
+// Screen power-on glow: same 350ms window as the CSS3D card's opacity fade
+// (.monitor-job-card transition in styles.css), driven off the same show/clear hooks.
+const SCREEN_IDLE_COLOR = new THREE.Color(0x141414);
+const SCREEN_ACTIVE_COLOR = new THREE.Color(0xf5f5f0);
+const GLOW_ACTIVE_INTENSITY = 0.12;
+const GLOW_FADE_MS = 350;
+let glowAnimFrame = null;
+
+function setScreenGlow(active) {
+    const bezelGroup = monitor.userData.bezelGroup;
+    const screen = monitor.userData.screen;
+    const glowLight = bezelGroup?.userData.glowLight;
+    if (!screen || !glowLight) return;
+
+    if (glowAnimFrame !== null) cancelAnimationFrame(glowAnimFrame);
+
+    const startColor = screen.material.color.clone();
+    const startIntensity = glowLight.intensity;
+    const targetColor = active ? SCREEN_ACTIVE_COLOR : SCREEN_IDLE_COLOR;
+    const targetIntensity = active ? GLOW_ACTIVE_INTENSITY : 0;
+    const start = performance.now();
+
+    function tick(now) {
+        const t = Math.min((now - start) / GLOW_FADE_MS, 1);
+        screen.material.color.copy(startColor).lerp(targetColor, t);
+        glowLight.intensity = startIntensity + (targetIntensity - startIntensity) * t;
+        forceRenderFrames = 2;
+        if (t < 1) {
+            glowAnimFrame = requestAnimationFrame(tick);
+        } else {
+            glowAnimFrame = null;
+        }
+    }
+    glowAnimFrame = requestAnimationFrame(tick);
+}
+
 function mountCss3dWorkCard() {
     const bezelGroup = monitor.userData.bezelGroup;
     const screen = monitor.userData.screen;
@@ -107,6 +144,7 @@ function showJobOnMonitor(jobId) {
     }
     activeJobId = jobId;
     applyMonitorJob(cssWorkCard, job);
+    setScreenGlow(true);
     forceRenderFrames = 2;
 }
 
@@ -114,6 +152,7 @@ function clearMonitorJob() {
     if (!cssWorkCard) return;
     activeJobId = null;
     setMonitorJobIdle(cssWorkCard);
+    setScreenGlow(false);
     forceRenderFrames = 2;
 }
 
@@ -148,8 +187,9 @@ window.addEventListener('portfolio:lang', () => {
     if (activeJobId) showJobOnMonitor(activeJobId);
 });
 
-// Items loader.
+// Items loader. Models are meshopt-compressed (gltf-transform) — needs the decoder.
 const loader = new GLTFLoader();
+loader.setMeshoptDecoder(MeshoptDecoder);
 
 // Keyboard.
 loader.load(
@@ -334,13 +374,13 @@ function scrollToSection(id) {
     window.scrollTo({ top: Math.max(0, Math.min(top, maxScroll || top)), behavior: 'smooth' });
 }
 
-const sectionNavEntries = ['home', 'work', 'about']
-    .map(id => {
-        const section = document.getElementById(id);
-        const button = document.querySelector(`[data-nav="${id}"]`);
-        return section && button ? { id, section, button } : null;
-    })
-    .filter(Boolean);
+const NAV_SECTION_IDS = ['home', 'work', 'about', 'contact'];
+
+const sectionNavEntries = NAV_SECTION_IDS.map(id => {
+    const section = document.getElementById(id);
+    const button = document.querySelector(`[data-nav="${id}"]`);
+    return section && button ? { id, section, button } : null;
+}).filter(Boolean);
 let activeNavSectionId = null;
 
 function setActiveNavSection(id) {
@@ -372,7 +412,7 @@ function updateActiveNavSection(scrollPosition) {
 }
 
 document
-    .querySelectorAll('[data-nav="home"], [data-nav="work"], [data-nav="about"]')
+    .querySelectorAll(NAV_SECTION_IDS.map(id => `[data-nav="${id}"]`).join(', '))
     .forEach(button => {
         button.addEventListener('click', () => {
             const id = button.getAttribute('data-nav');

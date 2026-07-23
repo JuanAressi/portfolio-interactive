@@ -29,18 +29,10 @@ describe('getJobPreview', () => {
 });
 
 describe('isDenseJobPreview', () => {
-    it('is true for Ignitix / Capgemini / Secco', () => {
-        for (const id of ['ignitix', 'capgemini', 'secco'] as const) {
+    it('is true for Ignitix / Capgemini / Secco / Persiscal / SACSI', () => {
+        for (const id of ['ignitix', 'capgemini', 'secco', 'persiscal', 'sacsi'] as const) {
             expect(isDenseJobPreview(getJobPreview(id, 'en')!)).toBe(true);
             expect(isDenseJobPreview(getJobPreview(id, 'es')!)).toBe(true);
-        }
-    });
-
-    it('is false for pending employers', () => {
-        for (const id of ['persiscal', 'patatag', 'sacsi'] as const) {
-            const job = getJobPreview(id, 'en')!;
-            expect(job.techs).toEqual([]);
-            expect(isDenseJobPreview(job)).toBe(false);
         }
     });
 });
@@ -70,11 +62,21 @@ describe('authored soft maxes', () => {
             'laravel',
         ]);
     });
+
+    it('Persiscal has nextjs+laravel; SACSI has wordpress+php+javascript+react', () => {
+        expect(getJobPreview('persiscal', 'en')!.techs).toEqual(['nextjs', 'laravel']);
+        expect(getJobPreview('sacsi', 'en')!.techs).toEqual([
+            'wordpress',
+            'php',
+            'javascript',
+            'react',
+        ]);
+    });
 });
 
 describe('tech-icons', () => {
-    it('exports the four known slugs', () => {
-        expect(TECH_SLUGS).toEqual(['javascript', 'php', 'laravel', 'react']);
+    it('exports the six known slugs', () => {
+        expect(TECH_SLUGS).toEqual(['javascript', 'php', 'laravel', 'react', 'nextjs', 'wordpress']);
         expect(isTechSlug('javascript')).toBe(true);
         expect(isTechSlug('cobol')).toBe(false);
     });
@@ -98,7 +100,7 @@ describe('monitor job card', () => {
 
         expect(el.querySelector('[data-work-field="role"]')?.textContent).toBe(job.role);
         expect(el.querySelector('[data-work-field="outcome"]')?.textContent).toBe(job.outcome);
-        expect(el.querySelectorAll('[data-work-field="bullets"] li')).toHaveLength(3);
+        expect(el.querySelectorAll('[data-work-field="bullets"] li')).toHaveLength(4);
         expect(el.querySelectorAll('[data-work-field="techs"] svg')).toHaveLength(3);
         expect(el.dataset.activeJob).toBe('ignitix');
         expect(el.style.opacity).toBe('1');
@@ -125,14 +127,5 @@ describe('monitor job card', () => {
 
         applyMonitorJob(el, getJobPreview('capgemini', 'en')!);
         expect(el.querySelectorAll('[data-work-field="techs"] svg')).toHaveLength(2);
-    });
-
-    it('pending job apply leaves empty tech rail (gate tested via isDense)', () => {
-        const el = createMonitorJobCard();
-        const job = getJobPreview('persiscal', 'en')!;
-        expect(isDenseJobPreview(job)).toBe(false);
-        applyMonitorJob(el, job);
-        expect(el.querySelectorAll('[data-work-field="techs"] svg')).toHaveLength(0);
-        expect(el.querySelectorAll('[data-work-field="bullets"] li')).toHaveLength(0);
     });
 });

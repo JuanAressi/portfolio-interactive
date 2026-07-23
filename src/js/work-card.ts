@@ -1,9 +1,15 @@
 import type { JobPreview } from './jobs-data.ts';
+import { getLangCode } from './jobs-data.ts';
 import { createTechIconSvg, techTitlesLabel } from './tech-icons.ts';
 
 // Aspect matches monitor glass aperture (~screenWidth / apertureHeight), not 16:9.
 const CARD_WIDTH = 960;
 const CARD_HEIGHT = 508;
+
+const TECHS_LABEL: Record<'en' | 'es', string> = {
+    en: 'Technologies used',
+    es: 'Tecnologías utilizadas',
+};
 
 /**
  * Build a monitor preview DOM node (fixed 960×508 for CSS3D scale math).
@@ -27,7 +33,10 @@ export function createMonitorJobCard(): HTMLElement {
       </div>
       <p class="monitor-job-card__outcome" data-work-field="outcome"></p>
       <ul class="monitor-job-card__bullets" data-work-field="bullets"></ul>
-      <ul class="monitor-job-card__techs" data-work-field="techs"></ul>
+      <div class="monitor-job-card__techs-section" data-work-field="techs-section">
+        <p class="monitor-job-card__techs-label" data-work-field="techs-label"></p>
+        <ul class="monitor-job-card__techs" data-work-field="techs"></ul>
+      </div>
     `;
 
     setMonitorJobIdle(root);
@@ -68,6 +77,8 @@ export function applyMonitorJob(root: HTMLElement, data: JobPreview): void {
     const years = root.querySelector('[data-work-field="years"]');
     const outcome = root.querySelector('[data-work-field="outcome"]');
     const bullets = root.querySelector<HTMLUListElement>('[data-work-field="bullets"]');
+    const techsSection = root.querySelector('[data-work-field="techs-section"]');
+    const techsLabel = root.querySelector('[data-work-field="techs-label"]');
     const techs = root.querySelector<HTMLUListElement>('[data-work-field="techs"]');
 
     if (company) company.textContent = data.company;
@@ -75,6 +86,8 @@ export function applyMonitorJob(root: HTMLElement, data: JobPreview): void {
     if (years) years.textContent = data.years;
     if (outcome) outcome.textContent = data.outcome;
     if (bullets) fillBullets(bullets, data.bullets);
+    if (techsLabel) techsLabel.textContent = TECHS_LABEL[getLangCode()];
+    techsSection?.classList.toggle('monitor-job-card__techs-section--empty', data.techs.length === 0);
     if (techs) fillTechs(techs, data.techs);
 
     root.classList.toggle('monitor-job-card--empty-body', !data.outcome && data.bullets.length === 0);
@@ -90,6 +103,8 @@ export function setMonitorJobIdle(root: HTMLElement): void {
     const years = root.querySelector('[data-work-field="years"]');
     const outcome = root.querySelector('[data-work-field="outcome"]');
     const bullets = root.querySelector<HTMLUListElement>('[data-work-field="bullets"]');
+    const techsSection = root.querySelector('[data-work-field="techs-section"]');
+    const techsLabel = root.querySelector('[data-work-field="techs-label"]');
     const techs = root.querySelector<HTMLUListElement>('[data-work-field="techs"]');
 
     if (company) company.textContent = '';
@@ -97,6 +112,8 @@ export function setMonitorJobIdle(root: HTMLElement): void {
     if (years) years.textContent = '';
     if (outcome) outcome.textContent = '';
     if (bullets) bullets.replaceChildren();
+    if (techsLabel) techsLabel.textContent = '';
+    techsSection?.classList.add('monitor-job-card__techs-section--empty');
     if (techs) {
         techs.replaceChildren();
         techs.removeAttribute('aria-label');

@@ -100,6 +100,22 @@ function createBezel(screenWidth, screenHeight, screenDepth, bezelThickness, bez
     bezelGroup.userData.screen = screen;
     bezelGroup.userData.screenSize = { width: screenWidth, height: apertureHeight };
 
+    // Real light source for the power-on glow (intensity ramped 0→N in index.js,
+    // in sync with the CSS3D job-card fade) — makes the screen actually illuminate
+    // the bezel/desk around it instead of only changing color on its own plane.
+    // SpotLight (not PointLight): the monitor sits only centimeters from the room's
+    // back wall, so an omnidirectional light bleeds backward/over the bezel onto the
+    // wall behind it. Aimed forward (+z, away from the wall, toward the desk/viewer)
+    // with a capped `distance` so it can't reach past the desk it's meant to light.
+    const glowLight = new THREE.SpotLight(0xf5f5f0, 0, 1.2, Math.PI / 3, 0.5, 2);
+    glowLight.position.set(0, apertureY, screenZ + 0.01);
+    const glowTarget = new THREE.Object3D();
+    glowTarget.position.set(0, apertureY, screenZ + 0.5);
+    bezelGroup.add(glowTarget);
+    glowLight.target = glowTarget;
+    bezelGroup.add(glowLight);
+    bezelGroup.userData.glowLight = glowLight;
+
     bezelGroup.position.set(0, 0.015, 0.05);
 
     return bezelGroup;

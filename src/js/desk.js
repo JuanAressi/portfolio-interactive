@@ -1,5 +1,6 @@
 import * as THREE from 'three';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
+import { MeshoptDecoder } from 'three/examples/jsm/libs/meshopt_decoder.module.js';
 
 const doorHandle = new URL('../assets/models/door_handle.glb', import.meta.url).href;
 
@@ -14,6 +15,7 @@ function loadDoorHandle() {
     isLoading = true;
 
     const loader = new GLTFLoader();
+    loader.setMeshoptDecoder(MeshoptDecoder);
     loader.load(
         doorHandle,
         gltf => {
