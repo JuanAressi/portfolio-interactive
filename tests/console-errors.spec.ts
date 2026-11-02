@@ -6,13 +6,14 @@ const VIEWPORTS = [
 ];
 
 for (const viewport of VIEWPORTS) {
-    test(`page loads without console errors at ${viewport.width}×${viewport.height}`, async ({
+    test(`page loads without console errors or warnings at ${viewport.width}×${viewport.height}`, async ({
         page,
     }) => {
-        // Warnings (KHR_materials_pbrSpecularGlossiness, tracked in T3) are not collected.
         const errors: string[] = [];
         page.on('console', message => {
-            if (message.type() === 'error') errors.push(`console.error: ${message.text()}`);
+            if (message.type() === 'error' || message.type() === 'warning') {
+                errors.push(`console.${message.type()}: ${message.text()}`);
+            }
         });
         page.on('pageerror', error => {
             errors.push(`pageerror: ${error.message}`);

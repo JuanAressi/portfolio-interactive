@@ -12,7 +12,7 @@ export function createMonitor(x = 0, y = 0, z = 0) {
     const standHeight = 0.1;
     const standWidth = 0.04;
 
-    const bezel = createBezel(screenWidth, screenHeight, screenDepth, bezelThickness, bezelDepth);
+    const bezel = createBezel(screenWidth, screenHeight, bezelThickness, bezelDepth);
     const base = createBase(screenHeight, screenDepth, standWidth, standHeight, bezelThickness);
 
     monitorGroup.position.set(x, y, z);
@@ -25,7 +25,7 @@ export function createMonitor(x = 0, y = 0, z = 0) {
     return monitorGroup;
 }
 
-function createBezel(screenWidth, screenHeight, screenDepth, bezelThickness, bezelDepth) {
+function createBezel(screenWidth, screenHeight, bezelThickness, bezelDepth) {
     const screenMaterial = new THREE.MeshStandardMaterial({
         color: 0xa2afb5,
         metalness: 0.2,

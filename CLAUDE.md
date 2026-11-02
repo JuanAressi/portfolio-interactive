@@ -50,6 +50,12 @@ Requires Node >= 22.23 (Astro 7). The site is served under `/portfolio-interacti
 - `npm run test:e2e` — Playwright against `astro preview` (needs a fresh build)
 - `npm run check` — `astro check` (types for `.astro` and `.ts` files)
 - `npm run verify` — unit tests, build and e2e
+- `npm run models:optimize` — rebuilds `rounded_chair`, `mouse` and `door_handle` in
+  `src/assets/models` from the originals in `assets-src/models` (out of the bundle)
+
+`src/assets/fonts/Manrope/Manrope-Variable-latin.woff2` is generated from the TTF in
+`assets-src/fonts/Manrope` with `pyftsubset` (needs `fonttools` and `brotli`):
+`--unicodes` set to Google Fonts' latin range, `--layout-features='*' --flavor=woff2`.
 
 Under a coding agent (`AI_AGENT` set), `astro dev` and `astro preview` detach as background
 servers; stop them with `astro dev stop` / `astro preview stop`, or pass `--ignore-lock` to
@@ -81,7 +87,8 @@ Phase A — base (no visual changes)
 
 - [x] T1 Migrate build to Astro 1:1
 - [x] T2 Scene bugs and cleanup (duplicated desk, loader onError, dead code, source maps)
-- [ ] T3 Performance (woff2 font, lighter models, deferred 3D, light mobile scene)
+- [x] T3a Assets and render-on-demand (requestRender, lighter models, woff2 font)
+- [ ] T3b Deferred 3D and light mobile scene
 - [ ] T4 i18n routes, SEO/OG, favicon, 404
 - [ ] T5 Deploy to Cloudflare, private repo, custom domain later
 
