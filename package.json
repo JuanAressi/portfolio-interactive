@@ -18,15 +18,18 @@
         "test": "vitest run",
         "test:watch": "vitest",
         "test:e2e": "playwright test",
-        "verify": "npm test && npm run build && npm run test:e2e"
+        "verify": "npm test && npm run build && npm run test:e2e",
+        "check": "astro check"
     },
     "devDependencies": {
+        "@astrojs/check": "^0.9.12",
         "@playwright/test": "^1.61.1",
+        "@types/node": "^24.19.2",
         "@types/three": "^0.179.0",
-        "dat.gui": "^0.7.9",
         "eslint": "^9.31.0",
         "jsdom": "^26.1.0",
-        "vitest": "^3.2.4"
+        "typescript": "^6.0.3",
+        "vitest": "^5.1.0"
     },
     "dependencies": {
         "@tailwindcss/vite": "^4.3.3",

@@ -48,6 +48,7 @@ Requires Node >= 22.23 (Astro 7). The site is served under `/portfolio-interacti
 - `npm run preview` — serve `dist/`
 - `npm test` — Vitest unit tests
 - `npm run test:e2e` — Playwright against `astro preview` (needs a fresh build)
+- `npm run check` — `astro check` (types for `.astro` and `.ts` files)
 - `npm run verify` — unit tests, build and e2e
 
 Under a coding agent (`AI_AGENT` set), `astro dev` and `astro preview` detach as background
@@ -79,7 +80,7 @@ keep them in the foreground (Playwright's `webServer` relies on this).
 Phase A — base (no visual changes)
 
 - [x] T1 Migrate build to Astro 1:1
-- [ ] T2 Scene bugs and cleanup (duplicated desk, loader onError, dead code, source maps)
+- [x] T2 Scene bugs and cleanup (duplicated desk, loader onError, dead code, source maps)
 - [ ] T3 Performance (woff2 font, lighter models, deferred 3D, light mobile scene)
 - [ ] T4 i18n routes, SEO/OG, favicon, 404
 - [ ] T5 Deploy to Cloudflare, private repo, custom domain later

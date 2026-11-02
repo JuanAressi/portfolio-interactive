@@ -90,7 +90,7 @@ export function createRoom(x = 0, y = 0, z = 0) {
     return roomGroup;
 }
 
-function createFloor(roomGroup, roomWidth, roomDepth) {
+function createFloor(roomGroup: THREE.Group, roomWidth: number, roomDepth: number) {
     const floorGeometry = new THREE.PlaneGeometry(roomWidth, roomDepth);
 
     const floorMaterial = new THREE.MeshStandardMaterial({

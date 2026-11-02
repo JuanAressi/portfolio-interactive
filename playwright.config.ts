@@ -9,11 +9,11 @@ export default defineConfig({
     fullyParallel: false,
     forbidOnly: Boolean(process.env.CI),
     retries: process.env.CI ? 1 : 0,
-    workers: process.env.CI ? 1 : undefined,
+    workers: process.env.CI ? 1 : 2,
     reporter: process.env.CI ? 'line' : 'list',
     use: {
         baseURL,
-        reducedMotion: 'reduce',
+        contextOptions: { reducedMotion: 'reduce' },
         trace: 'retain-on-failure',
         screenshot: 'only-on-failure',
     },

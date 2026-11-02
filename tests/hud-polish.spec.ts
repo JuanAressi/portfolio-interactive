@@ -4,7 +4,19 @@ const CARD_SELECTOR = '[data-work-card="monitor"]';
 const DENSE_JOB_IDS = ['ignitix', 'capgemini', 'secco', 'persiscal', 'sacsi'] as const;
 const LANGUAGES = ['en', 'es'] as const;
 
+// This suite only reads the DOM. Under software WebGL a frame takes seconds, enough to starve
+// the main thread and time tests out, so draw calls are skipped. The render loop still runs.
+async function skipWebGLDraws(page: Page): Promise<void> {
+    await page.addInitScript(() => {
+        for (const context of [WebGLRenderingContext, WebGL2RenderingContext]) {
+            context.prototype.drawArrays = () => {};
+            context.prototype.drawElements = () => {};
+        }
+    });
+}
+
 async function openPortfolio(page: Page): Promise<void> {
+    await skipWebGLDraws(page);
     await page.goto('./');
     await page.addStyleTag({
         content: `
@@ -224,7 +236,7 @@ test.describe('HUD polish', () => {
         await page.setViewportSize({ width: 1280, height: 800 });
         await openPortfolio(page);
 
-        // projects.* excluded — #projects is HTML-commented-out, never in the live DOM.
+        // projects.* excluded — there is no #projects section until T9.
         const keys = [
             'header.title',
             'header.profession',
