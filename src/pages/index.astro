@@ -1,3 +1,7 @@
+---
+import '../styles/global.css';
+---
+
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -5,13 +9,12 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <title>Portfolio Interactive</title>
         <!-- Match scene.background (0x4a6fa5 * 0.1) so hard reload is not white -->
-        <style>
+        <style is:inline>
             html,
             body {
                 background: #070b10;
             }
         </style>
-        <link rel="stylesheet" href="./styles.css" />
     </head>
     <body>
         <div class="FakeScroll" aria-hidden="true"></div>
@@ -572,7 +575,7 @@
                                 <!-- Download CV -->
                                 <a
                                     class="flex items-center company-item"
-                                    href="assets/Juan-Aressi-CV.pdf"
+                                    href={`${import.meta.env.BASE_URL}assets/Juan-Aressi-CV.pdf`}
                                     download
                                 >
                                     <span class="text-2xl flex items-center gap-2 flex-row-reverse">
@@ -749,10 +752,10 @@
             <div id="scroll-progress" class="w-full h-0 bg-indigo-500"></div>
         </div>
 
-        <script type="module" src="js/index.js"></script>
-        <script type="module" src="js/translation.ts"></script>
+        <script src="../js/index.js"></script>
+        <script src="../js/translation.ts"></script>
 
-        <script>
+        <script is:inline>
             document.addEventListener('DOMContentLoaded', function () {
                 const dropdown = document.querySelector('.dropdown');
                 const trigger = document.querySelector('.dropdown-trigger');

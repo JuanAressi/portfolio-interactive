@@ -5,7 +5,7 @@ const DENSE_JOB_IDS = ['ignitix', 'capgemini', 'secco', 'persiscal', 'sacsi'] as
 const LANGUAGES = ['en', 'es'] as const;
 
 async function openPortfolio(page: Page): Promise<void> {
-    await page.goto('/');
+    await page.goto('./');
     await page.addStyleTag({
         content: `
             *, *::before, *::after {

@@ -12,8 +12,9 @@
     "author": "Juancho",
     "license": "MIT",
     "scripts": {
-        "dev": "parcel src/index.html",
-        "build": "parcel build src/index.html --dist-dir dist --public-url ./",
+        "dev": "astro dev",
+        "build": "astro build",
+        "preview": "astro preview",
         "test": "vitest run",
         "test:watch": "vitest",
         "test:e2e": "playwright test",
@@ -25,12 +26,11 @@
         "dat.gui": "^0.7.9",
         "eslint": "^9.31.0",
         "jsdom": "^26.1.0",
-        "parcel": "^2.15.4",
-        "serve": "^14.2.6",
         "vitest": "^3.2.4"
     },
     "dependencies": {
-        "@tailwindcss/postcss": "^4.1.12",
+        "@tailwindcss/vite": "^4.3.3",
+        "astro": "^7.4.5",
         "tailwindcss": "^4.1.12",
         "three": "^0.178.0"
     },

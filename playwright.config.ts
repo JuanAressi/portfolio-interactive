@@ -1,7 +1,7 @@
 import { defineConfig, devices } from '@playwright/test';
 
 const PORT = 4173;
-const baseURL = `http://127.0.0.1:${PORT}`;
+const baseURL = `http://127.0.0.1:${PORT}/portfolio-interactive/`;
 
 export default defineConfig({
     testDir: './tests',
@@ -24,7 +24,7 @@ export default defineConfig({
         },
     ],
     webServer: {
-        command: `serve dist -l ${PORT} --no-clipboard`,
+        command: `npm run preview -- --host 127.0.0.1 --port ${PORT} --ignore-lock`,
         url: baseURL,
         reuseExistingServer: !process.env.CI,
         timeout: 30_000,

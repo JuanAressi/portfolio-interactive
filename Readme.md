@@ -14,14 +14,18 @@ An interactive 3D portfolio: a virtual desk scene built with Three.js, where scr
 
 ## Stack
 
-Three.js · TypeScript · Tailwind CSS v4 · Parcel
+Three.js · TypeScript · Tailwind CSS v4 · Astro
 
 ## Development
+
+Requires Node >= 22.23.
 
 ```bash
 npm install
 npm run dev
 ```
+
+The site is served under `/portfolio-interactive/`.
 
 ## Production build
 
