@@ -51,7 +51,7 @@ scene.add(room);
 const desk = createDesk(1.29, 0, -2.44);
 desk.scale.set(0.9, 0.9, 0.9);
 scene.add(desk);
-addDoorHandles(desk);
+addDoorHandles(desk).then(requestRender);
 
 // Monitor.
 const monitor = createMonitor(1.12, 0.988, -2.43);
@@ -61,7 +61,14 @@ scene.add(monitor);
 let cssWorkCard = null;
 let cssObject = null;
 let activeJobId = null;
-let forceRenderFrames = 0;
+
+// The loop stops drawing while idle, so anything that changes the picture without scroll or
+// mouse input has to ask for a render.
+let pendingRenderFrames = 0;
+
+function requestRender() {
+    pendingRenderFrames = 2;
+}
 
 // Screen power-on glow: same 350ms window as the CSS3D card's opacity fade
 // (.monitor-job-card transition in styles.css), driven off the same show/clear hooks.
@@ -89,7 +96,7 @@ function setScreenGlow(active) {
         const t = Math.min((now - start) / GLOW_FADE_MS, 1);
         screen.material.color.copy(startColor).lerp(targetColor, t);
         glowLight.intensity = startIntensity + (targetIntensity - startIntensity) * t;
-        forceRenderFrames = 2;
+        requestRender();
         if (t < 1) {
             glowAnimFrame = requestAnimationFrame(tick);
         } else {
@@ -116,7 +123,7 @@ function mountCss3dWorkCard() {
         1
     );
     bezelGroup.add(cssObject);
-    forceRenderFrames = 2;
+    requestRender();
 }
 
 // hover → dense gate → apply (or idle). Pending employers stay blank.
@@ -130,7 +137,7 @@ function showJobOnMonitor(jobId) {
     activeJobId = jobId;
     applyMonitorJob(cssWorkCard, job);
     setScreenGlow(true);
-    forceRenderFrames = 2;
+    requestRender();
 }
 
 function clearMonitorJob() {
@@ -138,7 +145,7 @@ function clearMonitorJob() {
     activeJobId = null;
     setMonitorJobIdle(cssWorkCard);
     setScreenGlow(false);
-    forceRenderFrames = 2;
+    requestRender();
 }
 
 function bindCompanyHoverPreview() {
@@ -191,7 +198,10 @@ const MATTE_ITEM = { replace: { color: ITEM_COLOR, metalness: 0.1, roughness: 0.
 
 function addModel(url, options) {
     loadModel(url, options)
-        .then(model => scene.add(model))
+        .then(model => {
+            scene.add(model);
+            requestRender();
+        })
         .catch(error => {
             console.error('Error cargando GLB:', error);
         });
@@ -419,13 +429,13 @@ function animate() {
     }
 
     const shouldRender =
-        idleFrames < IDLE_SKIP_AFTER || forceRenderFrames > 0 || Boolean(activeJobId);
+        idleFrames < IDLE_SKIP_AFTER || pendingRenderFrames > 0 || Boolean(activeJobId);
     if (shouldRender) {
         renderer.render(scene, camera);
         if (cssObject) {
             cssRenderer.render(scene, camera);
         }
-        if (forceRenderFrames > 0) forceRenderFrames -= 1;
+        if (pendingRenderFrames > 0) pendingRenderFrames -= 1;
     }
 }
 
@@ -438,5 +448,5 @@ window.addEventListener('resize', () => {
     renderer.setSize(window.innerWidth, window.innerHeight);
     cssRenderer.setSize(window.innerWidth, window.innerHeight);
     updateFakeScroll();
-    forceRenderFrames = 2;
+    requestRender();
 });
