@@ -10,5 +10,17 @@ export default defineConfig({
     devToolbar: { enabled: false },
     vite: {
         plugins: [tailwindcss()],
+        build: {
+            // three.js alone is 590 kB. The limit applies to every chunk, so keep it tight.
+            chunkSizeWarningLimit: 600,
+            rolldownOptions: {
+                output: {
+                    // Its own file, so a deploy that doesn't update three.js keeps it cached.
+                    codeSplitting: {
+                        groups: [{ name: 'three', test: /node_modules[\\/]three[\\/]/ }],
+                    },
+                },
+            },
+        },
     },
 });
