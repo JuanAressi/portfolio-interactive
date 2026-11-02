@@ -204,31 +204,30 @@ function dramaticGlitch(element: HTMLElement | null, text: string) {
     }
 
     const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz,./'ñó10               ";
-    let startTime = performance.now();
-    const correctPositions = new Set<number>();
-    const frameDelay = 32;
-    const duration = 450;
+    const startTime = performance.now();
+    const duration = 650;
+
+    // Each character gets its own reveal threshold, biased left-to-right with jitter,
+    // so the text resolves as a cascading decrypt instead of every char settling at once.
+    const revealThresholds = Array.from({ length: finalText.length }, (_, i) => {
+        const base = finalText.length > 1 ? i / (finalText.length - 1) : 0;
+        const jitter = (Math.random() - 0.5) * 0.35;
+        return Math.min(1, Math.max(0, base * 0.7 + jitter));
+    });
 
     function frame(now: number) {
-        let progress = (now - startTime) / duration;
+        const progress = (now - startTime) / duration;
         if (progress < 1) {
             let output = '';
             for (let i = 0; i < finalText.length; i++) {
-                if (correctPositions.has(i)) {
+                if (progress >= revealThresholds[i]) {
                     output += finalText[i];
-                    continue;
-                }
-
-                let chance = Math.pow(1 - progress, 2);
-                if (Math.random() < chance) {
-                    output += chars.charAt(Math.floor(Math.random() * chars.length));
                 } else {
-                    output += finalText[i];
-                    correctPositions.add(i);
+                    output += chars.charAt(Math.floor(Math.random() * chars.length));
                 }
             }
             element!.textContent = output;
-            setTimeout(() => requestAnimationFrame(frame), frameDelay);
+            requestAnimationFrame(frame);
         } else {
             element!.textContent = finalText;
         }
