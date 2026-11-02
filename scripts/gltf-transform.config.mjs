@@ -1,5 +1,5 @@
 // Custom gltf-transform commands, loaded with --config by optimize-models.mjs.
-import { compactPrimitive } from '@gltf-transform/functions';
+import { compactPrimitive, prune } from '@gltf-transform/functions';
 import { MeshoptSimplifier } from 'meshoptimizer';
 
 const GEOMETRY_ATTRIBUTES = ['POSITION', 'NORMAL'];
@@ -31,6 +31,12 @@ function stripMaterials(document) {
     for (const extension of root.listExtensionsUsed()) {
         if (!GEOMETRY_EXTENSIONS.includes(extension.extensionName)) extension.dispose();
     }
+}
+
+// three.js never plays them: nothing in the scene creates an AnimationMixer.
+async function stripAnimations(document) {
+    for (const animation of document.getRoot().listAnimations()) animation.dispose();
+    await document.transform(prune());
 }
 
 function readVec3(accessor) {
@@ -84,6 +90,7 @@ export default {
             'Remove materials, textures and their vertex attributes',
             stripMaterials
         );
+        addCommand('strip-animations', 'Remove animations and their data', stripAnimations);
         addCommand(
             'simplify-with-normals',
             'Simplify meshes weighing positions and normals',
