@@ -450,3 +450,11 @@ window.addEventListener('resize', () => {
     updateFakeScroll();
     requestRender();
 });
+
+// font-display: swap can change the height of the content once Manrope replaces the fallback.
+function onFontSettled() {
+    updateFakeScroll();
+    requestRender();
+}
+
+document.fonts.load('1em Manrope').then(onFontSettled, onFontSettled);

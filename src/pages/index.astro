@@ -1,5 +1,6 @@
 ---
 import '../styles/global.css';
+import manropeUrl from '../assets/fonts/Manrope/Manrope-Variable-latin.woff2?url';
 ---
 
 <!DOCTYPE html>
@@ -8,6 +9,7 @@ import '../styles/global.css';
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <title>Portfolio Interactive</title>
+        <link rel="preload" href={manropeUrl} as="font" type="font/woff2" crossorigin />
         <!-- Match scene.background (0x4a6fa5 * 0.1) so hard reload is not white -->
         <style is:inline>
             html,
