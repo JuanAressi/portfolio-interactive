@@ -1,9 +1,7 @@
 import * as THREE from 'three';
-import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
-import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
-import { MeshoptDecoder } from 'three/examples/jsm/libs/meshopt_decoder.module.js';
 import { CSS3DRenderer, CSS3DObject } from 'three/examples/jsm/renderers/CSS3DRenderer.js';
 import { addDoorHandles, createDesk } from './desk.js';
+import { loadModel } from './load-model.ts';
 import { createRoom } from './room.ts';
 import { setupBlueTint, createHemisphereLight, createSpotLights } from './lighting.ts';
 import { createMonitor } from './monitor.js';
@@ -30,7 +28,6 @@ renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.5));
 renderer.setSize(window.innerWidth, window.innerHeight);
 renderer.shadowMap.enabled = true;
 renderer.shadowMap.type = THREE.PCFShadowMap;
-renderer.physicallyCorrectLights = true;
 
 const cssRenderer = new CSS3DRenderer();
 cssRenderer.setSize(window.innerWidth, window.innerHeight);
@@ -45,13 +42,6 @@ canvasContainer.insertAdjacentElement('afterend', cssRenderer.domElement);
 camera.position.set(0.52, 1.028, 1 - 2.17 - 0.256);
 camera.lookAt(1.62, 0.988, -2.43);
 camera.zoom = 1;
-
-// Controls (disabled — scroll is native FakeScroll; keep object for optional debug).
-const controls = new OrbitControls(camera, renderer.domElement);
-controls.enabled = false;
-controls.enableDamping = true;
-controls.dampingFactor = 0.05;
-controls.target.set(1.79, 1.028, -2.17 - 0.256);
 
 // Room.
 const room = createRoom(0, 0, 0);
@@ -194,126 +184,38 @@ window.addEventListener('portfolio:lang', () => {
     }, LANG_FLICKER_MS);
 });
 
-// Items loader. Models are meshopt-compressed (gltf-transform) — needs the decoder.
-const loader = new GLTFLoader();
-loader.setMeshoptDecoder(MeshoptDecoder);
+// Items.
+const ITEM_COLOR = 0xacbac1;
+const TINTED_ITEM = { tint: ITEM_COLOR };
+const MATTE_ITEM = { replace: { color: ITEM_COLOR, metalness: 0.1, roughness: 0.8 } };
 
-// Keyboard.
-loader.load(
-    keyboard,
-    gltf => {
-        gltf.scene.position.set(1.12, 0.721, -2.095);
-        gltf.scene.scale.set(1.25, 1.25, 1.25);
-        gltf.scene.traverse(child => {
-            if (child.isMesh) {
-                child.castShadow = true;
-                child.receiveShadow = true;
-            }
-
-            if (child.material) {
-                child.material.color.setHex(0xacbac1);
-                child.material.needsUpdate = true;
-            }
+function addModel(url, options) {
+    loadModel(url, options)
+        .then(model => scene.add(model))
+        .catch(error => {
+            console.error('Error cargando GLB:', error);
         });
+}
 
-        scene.add(gltf.scene);
-    },
-    undefined,
-    error => {
-        console.error('Error cargando GLB:', error);
-    }
-);
-
-// Mouse.
-loader.load(
-    mouse,
-    gltf => {
-        gltf.scene.position.set(1.4, 0.711, -2.095);
-        gltf.scene.scale.set(0.04, 0.04, 0.04);
-        gltf.scene.rotation.set(0, -1.25, 0);
-        gltf.scene.traverse(child => {
-            if (child.isMesh) {
-                child.castShadow = true;
-                child.receiveShadow = true;
-
-                if (child.material) {
-                    const newMaterial = new THREE.MeshStandardMaterial({
-                        color: 0xacbac1,
-                        metalness: 0.1,
-                        roughness: 0.8,
-                    });
-                    newMaterial.needsUpdate = true;
-                    child.material = newMaterial;
-                }
-            }
-        });
-
-        scene.add(gltf.scene);
-    },
-    undefined,
-    error => {
-        console.error('Error cargando GLB:', error);
-    }
-);
-
-// Books.
-loader.load(
-    books,
-    gltf => {
-        gltf.scene.position.set(1.75, 0.698, -2.25);
-        gltf.scene.scale.set(0.066, 0.066, 0.066);
-        gltf.scene.rotation.set(0, 0.5, 0);
-        gltf.scene.traverse(child => {
-            if (child.isMesh) {
-                child.castShadow = true;
-                child.receiveShadow = true;
-
-                if (child.material) {
-                    child.material.color.setHex(0xacbac1);
-                    child.material.needsUpdate = true;
-                }
-            }
-        });
-
-        scene.add(gltf.scene);
-    },
-    undefined,
-    error => {
-        console.error('Error cargando GLB:', error);
-    }
-);
-
-// Rounded chair.
-loader.load(
-    roundedChair,
-    gltf => {
-        gltf.scene.position.set(1.4, 0, -1.66);
-        gltf.scene.scale.set(0.3, 0.3, 0.3);
-        gltf.scene.rotation.set(0, -2.5, 0);
-        gltf.scene.traverse(child => {
-            if (child.isMesh) {
-                child.castShadow = true;
-                child.receiveShadow = true;
-
-                if (child.material) {
-                    const newMaterial = new THREE.MeshStandardMaterial({
-                        color: 0xacbac1,
-                        metalness: 0.1,
-                        roughness: 0.8,
-                    });
-                    newMaterial.needsUpdate = true;
-                    child.material = newMaterial;
-                }
-            }
-        });
-
-        scene.add(gltf.scene);
-    },
-    undefined,
-    error => {
-        console.error('Error cargando GLB:', error);
-    }
-);
+addModel(keyboard, { position: [1.12, 0.721, -2.095], scale: 1.25, material: TINTED_ITEM });
+addModel(mouse, {
+    position: [1.4, 0.711, -2.095],
+    scale: 0.04,
+    rotation: [0, -1.25, 0],
+    material: MATTE_ITEM,
+});
+addModel(books, {
+    position: [1.75, 0.698, -2.25],
+    scale: 0.066,
+    rotation: [0, 0.5, 0],
+    material: TINTED_ITEM,
+});
+addModel(roundedChair, {
+    position: [1.4, 0, -1.66],
+    scale: 0.3,
+    rotation: [0, -2.5, 0],
+    material: MATTE_ITEM,
+});
 
 // Blue tint.
 const blueTint = setupBlueTint(renderer);
