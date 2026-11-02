@@ -6,6 +6,7 @@ import { createRoom } from './room.ts';
 import { setupBlueTint, createHemisphereLight, createSpotLights } from './lighting.ts';
 import { createMonitor } from './monitor.js';
 import curve from './camera-movement.js';
+import { getSceneTier } from './scene-tier.ts';
 import {
     WORK_CARD_MONITOR_SIZE,
     createMonitorJobCard,
@@ -30,9 +31,10 @@ export function startScene(scroll) {
 
     // Renderers: WebGL + CSS3D (job preview on the monitor).
     const renderer = new THREE.WebGLRenderer();
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.5));
+    let tier = getSceneTier();
+    renderer.setPixelRatio(tier.pixelRatio);
     renderer.setSize(window.innerWidth, window.innerHeight);
-    renderer.shadowMap.enabled = true;
+    renderer.shadowMap.enabled = tier.shadows;
     renderer.shadowMap.type = THREE.PCFShadowMap;
 
     const cssRenderer = new CSS3DRenderer();
@@ -202,15 +204,16 @@ export function startScene(scroll) {
     const TINTED_ITEM = { tint: ITEM_COLOR };
     const MATTE_ITEM = { replace: { color: ITEM_COLOR, metalness: 0.1, roughness: 0.8 } };
 
-    function addModel(url, options) {
-        loadModel(url, options)
-            .then(model => {
-                scene.add(model);
-                requestRender();
-            })
-            .catch(error => {
-                console.error('Error cargando GLB:', error);
-            });
+    async function addModel(url, options) {
+        try {
+            const model = await loadModel(url, options);
+            scene.add(model);
+            requestRender();
+            return model;
+        } catch (error) {
+            console.error('Error cargando GLB:', error);
+            return null;
+        }
     }
 
     addModel(keyboard, { position: [1.12, 0.721, -2.095], scale: 1.25, material: TINTED_ITEM });
@@ -226,12 +229,47 @@ export function startScene(scroll) {
         rotation: [0, 0.5, 0],
         material: TINTED_ITEM,
     });
-    addModel(roundedChair, {
-        position: [1.4, 0, -1.66],
-        scale: 0.3,
-        rotation: [0, -2.5, 0],
-        material: MATTE_ITEM,
-    });
+
+    let chair = null;
+    let isChairRequested = false;
+
+    // The chair is the one model the mobile tier skips, so it can show up mid-session when the
+    // viewport crosses the breakpoint. Once loaded it stays in memory and is only hidden.
+    function syncChair() {
+        if (chair) {
+            chair.visible = tier.chair;
+            requestRender();
+        } else if (tier.chair && !isChairRequested) {
+            isChairRequested = true;
+            addModel(roundedChair, {
+                position: [1.4, 0, -1.66],
+                scale: 0.3,
+                rotation: [0, -2.5, 0],
+                material: MATTE_ITEM,
+            }).then(model => {
+                chair = model;
+                syncChair();
+            });
+        }
+    }
+
+    syncChair();
+
+    function updateTier() {
+        const next = getSceneTier();
+        const shadowsChanged = next.shadows !== tier.shadows;
+        tier = next;
+
+        renderer.setPixelRatio(tier.pixelRatio);
+        if (shadowsChanged) {
+            renderer.shadowMap.enabled = tier.shadows;
+            // Shadow support is compiled into the shaders.
+            scene.traverse(object => {
+                if (object.isMesh) object.material.needsUpdate = true;
+            });
+        }
+        syncChair();
+    }
 
     // Blue tint.
     const blueTint = setupBlueTint(renderer);
@@ -288,6 +326,8 @@ export function startScene(scroll) {
             idleFrames < IDLE_SKIP_AFTER || pendingRenderFrames > 0 || Boolean(activeJobId);
         if (shouldRender) {
             renderer.render(scene, camera);
+            // The canvas starts hidden (global.css): the first frame is what fades it in.
+            renderer.domElement.classList.add('is-rendered');
             if (cssObject) {
                 cssRenderer.render(scene, camera);
             }
@@ -298,7 +338,7 @@ export function startScene(scroll) {
     window.addEventListener('resize', () => {
         camera.aspect = window.innerWidth / window.innerHeight;
         camera.updateProjectionMatrix();
-        renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.5));
+        updateTier();
         renderer.setSize(window.innerWidth, window.innerHeight);
         cssRenderer.setSize(window.innerWidth, window.innerHeight);
         requestRender();

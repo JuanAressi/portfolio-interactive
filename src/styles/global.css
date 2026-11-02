@@ -72,6 +72,15 @@ body::-webkit-scrollbar {
     background: #070b10;
 }
 
+#canvas-container canvas {
+    opacity: 0;
+    transition: opacity 400ms ease;
+}
+
+#canvas-container canvas.is-rendered {
+    opacity: 1;
+}
+
 #content {
     position: absolute;
     top: 0;
@@ -839,6 +848,10 @@ body::-webkit-scrollbar {
     }
 
     .nav-label {
+        transition: none;
+    }
+
+    #canvas-container canvas {
         transition: none;
     }
 }
