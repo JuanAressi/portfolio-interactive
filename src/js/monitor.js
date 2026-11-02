@@ -100,7 +100,7 @@ function createBezel(screenWidth, screenHeight, bezelThickness, bezelDepth) {
     bezelGroup.userData.screen = screen;
     bezelGroup.userData.screenSize = { width: screenWidth, height: apertureHeight };
 
-    // Real light source for the power-on glow (intensity ramped 0→N in index.js,
+    // Real light source for the power-on glow (intensity ramped 0→N in scene.js,
     // in sync with the CSS3D job-card fade) — makes the screen actually illuminate
     // the bezel/desk around it instead of only changing color on its own plane.
     // SpotLight (not PointLight): the monitor sits only centimeters from the room's
