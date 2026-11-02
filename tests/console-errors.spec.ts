@@ -1,4 +1,5 @@
 import { expect, test } from '@playwright/test';
+import { collectConsoleProblems } from './console-problems.ts';
 
 const VIEWPORTS = [
     { width: 1440, height: 900 },
@@ -9,20 +10,15 @@ for (const viewport of VIEWPORTS) {
     test(`page loads without console errors or warnings at ${viewport.width}×${viewport.height}`, async ({
         page,
     }) => {
-        const errors: string[] = [];
-        page.on('console', message => {
-            if (message.type() === 'error' || message.type() === 'warning') {
-                errors.push(`console.${message.type()}: ${message.text()}`);
-            }
-        });
-        page.on('pageerror', error => {
-            errors.push(`pageerror: ${error.message}`);
-        });
+        const problems = collectConsoleProblems(page);
 
         await page.setViewportSize(viewport);
-        // Models arrive after the load event; networkidle covers their progress and error paths.
-        await page.goto('./', { waitUntil: 'networkidle' });
+        await page.goto('./');
+        // The scene loads after the first paint and its models after that; networkidle covers
+        // their progress and error paths.
+        await expect(page.locator('#canvas-container canvas')).toHaveClass(/is-rendered/);
+        await page.waitForLoadState('networkidle');
 
-        expect(errors).toEqual([]);
+        expect(problems).toEqual([]);
     });
 }

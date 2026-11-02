@@ -18,6 +18,7 @@ async function skipWebGLDraws(page: Page): Promise<void> {
 async function openPortfolio(page: Page): Promise<void> {
     await skipWebGLDraws(page);
     await page.goto('./');
+    await page.locator(CARD_SELECTOR).waitFor({ state: 'attached' });
     await page.addStyleTag({
         content: `
             *, *::before, *::after {
@@ -221,7 +222,7 @@ test.describe('HUD polish', () => {
         await expect(about).toHaveAttribute('aria-current', 'page');
         await expect(page.locator('#bottom-nav [aria-current="page"]')).toHaveCount(1);
 
-        // Regression: NAV_SECTION_IDS single-source refactor (index.js) — Contact
+        // Regression: NAV_SECTION_IDS single-source refactor (scroll.ts) — Contact
         // must scroll+activate exactly like Home/Work/About did before the refactor.
         await page.evaluate(() => {
             window.scrollTo(0, document.getElementById('contact')!.offsetTop);

@@ -50,8 +50,13 @@ Requires Node >= 22.23 (Astro 7). The site is served under `/portfolio-interacti
 - `npm run test:e2e` — Playwright against `astro preview` (needs a fresh build)
 - `npm run check` — `astro check` (types for `.astro` and `.ts` files)
 - `npm run verify` — unit tests, build and e2e
-- `npm run models:optimize` — rebuilds `rounded_chair`, `mouse` and `door_handle` in
-  `src/assets/models` from the originals in `assets-src/models` (out of the bundle)
+- `npm run models:optimize` — rebuilds every model in `src/assets/models` from the originals in
+  `assets-src/models` (out of the bundle); each model's steps are in `scripts/optimize-models.mjs`
+
+The e2e suite needs `npm run build` first and filters a single console message: the
+`GPU stall due to ReadPixels` warning SwiftShader's compositor emits (`tests/console-problems.ts`).
+For measurements on the real GPU, launch Chromium with `--use-angle=gl-egl`; Playwright's default
+is software WebGL, where a frame takes seconds.
 
 `src/assets/fonts/Manrope/Manrope-Variable-latin.woff2` is generated from the TTF in
 `assets-src/fonts/Manrope` with `pyftsubset` (needs `fonttools` and `brotli`):
@@ -88,7 +93,7 @@ Phase A — base (no visual changes)
 - [x] T1 Migrate build to Astro 1:1
 - [x] T2 Scene bugs and cleanup (duplicated desk, loader onError, dead code, source maps)
 - [x] T3a Assets and render-on-demand (requestRender, lighter models, woff2 font)
-- [ ] T3b Deferred 3D and light mobile scene
+- [x] T3b Deferred 3D and light mobile scene
 - [ ] T4 i18n routes, SEO/OG, favicon, 404
 - [ ] T5 Deploy to Cloudflare, private repo, custom domain later
 
@@ -98,6 +103,7 @@ Phase B — redesign
 - [ ] T7 Mobile layout
 - [ ] T7b Section-based camera (holds + transition bands)
 - [ ] T8 Hero
+  - Nav entrance blocks clicks for ~1.46s (1.3s delay + pointer-events: none during animation). Fix as part of the hero entrance choreography.
 - [ ] T9 Projects with the monitor
 - [ ] T10 Accessible experience
 - [ ] T11 About and Contact
