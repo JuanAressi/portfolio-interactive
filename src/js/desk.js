@@ -1,76 +1,54 @@
 import * as THREE from 'three';
-import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
-import { MeshoptDecoder } from 'three/examples/jsm/libs/meshopt_decoder.module.js';
+import { loadModel } from './load-model.ts';
 
 const doorHandle = new URL('../assets/models/door_handle.glb', import.meta.url).href;
 
-// Door handle.
-let doorHandleModel = null;
-let isLoading = false;
-let isLoaded = false;
+function createDoorHandleInstance(model, x, y, z, rotationX = 0, rotationY = 0, rotationZ = 0) {
+    const instance = model.clone();
+    instance.position.set(x, y, z);
+    instance.scale.set(0.05, 0.05, 0.05);
+    instance.rotation.set(rotationX, rotationY, rotationZ);
 
-function loadDoorHandle() {
-    if (isLoading || isLoaded) return;
+    instance.traverse(child => {
+        if (child.isMesh) {
+            child.castShadow = true;
+            child.receiveShadow = true;
 
-    isLoading = true;
-
-    const loader = new GLTFLoader();
-    loader.setMeshoptDecoder(MeshoptDecoder);
-    loader.load(
-        doorHandle,
-        gltf => {
-            doorHandleModel = gltf.scene;
-            isLoaded = true;
-            isLoading = false;
-
-            // Notify that the model is ready.
-            if (window.doorHandleReady) {
-                window.doorHandleReady();
+            if (child.material) {
+                const newMaterial = new THREE.MeshStandardMaterial({
+                    color: 0xacbac1,
+                    metalness: 0.1,
+                    roughness: 0.8,
+                });
+                newMaterial.needsUpdate = true;
+                child.material = newMaterial;
             }
-        },
-        error => {
-            console.error('Error cargando door handle:', error);
-            isLoading = false;
         }
-    );
+    });
+
+    return instance;
 }
 
-function createDoorHandleInstance(x, y, z, rotationX = 0, rotationY = 0, rotationZ = 0) {
-    if (doorHandleModel) {
-        const instance = doorHandleModel.clone();
-        instance.position.set(x, y, z);
-        instance.scale.set(0.05, 0.05, 0.05);
-        instance.rotation.set(rotationX, rotationY, rotationZ);
+// Resolves once the handles are on the desk. A failed load leaves the desk without them.
+export async function addDoorHandles(desk) {
+    const { leftCajonera, rightCajonera } = desk.userData;
 
-        instance.traverse(child => {
-            if (child.isMesh) {
-                child.castShadow = true;
-                child.receiveShadow = true;
-
-                if (child.material) {
-                    const newMaterial = new THREE.MeshStandardMaterial({
-                        color: 0xacbac1,
-                        metalness: 0.1,
-                        roughness: 0.8,
-                    });
-                    newMaterial.needsUpdate = true;
-                    child.material = newMaterial;
-                }
-            }
-        });
-
-        return instance;
+    try {
+        const model = await loadModel(doorHandle);
+        leftCajonera.add(
+            createDoorHandleInstance(model, -0.095, 0.59, 0.261, Math.PI / 2, 0, -Math.PI / 2),
+            createDoorHandleInstance(model, 0.135, 0.175, 0.261, 0, Math.PI / 2, 0)
+        );
+        rightCajonera.add(
+            createDoorHandleInstance(model, -0.095, 0.59, 0.261, Math.PI / 2, 0, -Math.PI / 2),
+            createDoorHandleInstance(model, -0.085, 0.175, 0.261, 0, Math.PI / 2, 0)
+        );
+    } catch (error) {
+        console.error('Error cargando door handle:', error);
     }
-
-    return null;
 }
 
 export function createDesk(x = 0, y = 0, z = 0) {
-    // Load door handle if not loaded.
-    if (!isLoaded && !isLoading) {
-        loadDoorHandle();
-    }
-
     const deskGroup = new THREE.Group();
 
     // Desk material.
@@ -200,32 +178,10 @@ export function createDesk(x = 0, y = 0, z = 0) {
 
     // Create left drawer.
     const leftCajonera = createCajonera(new THREE.Vector3(x - cajoneraSpacing / 2, y, z));
-    const upperLeftDoorHandle = createDoorHandleInstance(
-        -0.095,
-        0.59,
-        0.261,
-        Math.PI / 2,
-        0,
-        -Math.PI / 2
-    );
-    const lowerLeftDoorHandle = createDoorHandleInstance(0.135, 0.175, 0.261, 0, Math.PI / 2, 0);
-    leftCajonera.add(upperLeftDoorHandle);
-    leftCajonera.add(lowerLeftDoorHandle);
     deskGroup.add(leftCajonera);
 
     // Create right drawer.
     const rightCajonera = createCajonera(new THREE.Vector3(x + cajoneraSpacing / 2, y, z));
-    const upperRightDoorHandle = createDoorHandleInstance(
-        -0.095,
-        0.59,
-        0.261,
-        Math.PI / 2,
-        0,
-        -Math.PI / 2
-    );
-    const lowerRightDoorHandle = createDoorHandleInstance(-0.085, 0.175, 0.261, 0, Math.PI / 2, 0);
-    rightCajonera.add(upperRightDoorHandle);
-    rightCajonera.add(lowerRightDoorHandle);
     deskGroup.add(rightCajonera);
 
     // Create desk top.
@@ -238,6 +194,9 @@ export function createDesk(x = 0, y = 0, z = 0) {
     deskTop.castShadow = true;
     deskTop.receiveShadow = true;
     deskGroup.add(deskTop);
+
+    deskGroup.userData.leftCajonera = leftCajonera;
+    deskGroup.userData.rightCajonera = rightCajonera;
 
     return deskGroup;
 }

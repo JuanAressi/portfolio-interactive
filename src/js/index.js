@@ -3,7 +3,7 @@ import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 import { MeshoptDecoder } from 'three/examples/jsm/libs/meshopt_decoder.module.js';
 import { CSS3DRenderer, CSS3DObject } from 'three/examples/jsm/renderers/CSS3DRenderer.js';
-import { createDesk } from './desk.js';
+import { addDoorHandles, createDesk } from './desk.js';
 import { createRoom } from './room.ts';
 import { setupBlueTint, createHemisphereLight, createSpotLights } from './lighting.ts';
 import { createMonitor } from './monitor.js';
@@ -58,15 +58,10 @@ const room = createRoom(0, 0, 0);
 scene.add(room);
 
 // Desk.
-let desk = createDesk(1.29, 0, -2.44);
+const desk = createDesk(1.29, 0, -2.44);
 desk.scale.set(0.9, 0.9, 0.9);
 scene.add(desk);
-
-window.doorHandleReady = () => {
-    desk = createDesk(1.29, 0, -2.44);
-    desk.scale.set(0.9, 0.9, 0.9);
-    scene.add(desk);
-};
+addDoorHandles(desk);
 
 // Monitor.
 const monitor = createMonitor(1.12, 0.988, -2.43);
