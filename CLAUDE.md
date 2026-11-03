@@ -43,21 +43,27 @@ and a cleaner, faster implementation. Client work is routed through Cubrama (cub
 
 ## Commands
 
-Requires Node >= 22.23 (Astro 7). The site is served under `/portfolio-interactive/`; `BASE_PATH`
-overrides it for `astro` and Playwright (`BASE_PATH=/ npm run build`). It is read from the
-environment, not from a `.env` file.
+Requires Node >= 22.23 (Astro 7). The site is served at `/`. `BASE_PATH` overrides the base for
+`astro` and Playwright, and `SITE` overrides the site URL for `astro` (`SITE=https://example.com
+npm run build`). Both are read from the environment, not from a `.env` file; the production
+defaults are in `astro.config.mjs`.
 
 Spanish lives at `/` and English at `/en/`. Both are `src/components/Portfolio.astro` with a
 different `locale`; the text is in `src/i18n/es.ts` and `src/i18n/en.ts`, which must have the same
 keys (`src/i18n/dictionaries.test.ts`). The monitor's job cards stay in `src/js/jobs-data.ts`.
 
-- `npm run dev` — Astro dev server (`http://localhost:4321/portfolio-interactive/`)
+- `npm run dev` — Astro dev server (`http://localhost:4321/`)
 - `npm run build` — static build into `dist/`
 - `npm run preview` — serve `dist/`
 - `npm test` — Vitest unit tests
 - `npm run test:e2e` — Playwright against `astro preview` (needs a fresh build)
 - `npm run check` — `astro check` (types for `.astro` and `.ts` files)
 - `npm run verify` — unit tests, build and e2e
+- `npx wrangler dev` — serves `dist/` on the Workers runtime, with `public/_headers`, the 404 page
+  and `html_handling` applied (`astro preview` applies none of them; needs a fresh build)
+- `npx wrangler deploy --dry-run` — validates `wrangler.jsonc` and the assets without uploading.
+  Production deploys come from `.github/workflows/deploy.yml` on push to `main`; pull requests run
+  the same pipeline without the deploy step
 - `npm run models:optimize` — rebuilds every model in `src/assets/models` from the originals in
   `assets-src/models` (out of the bundle); each model's steps are in `scripts/optimize-models.mjs`
 - `npm run og:generate` — captures the internal `/og/<locale>/` pages into `public/og-<locale>.png`
@@ -69,6 +75,11 @@ keys (`src/i18n/dictionaries.test.ts`). The monitor's job cards stay in `src/js/
 Absolute URLs (canonical, hreflang, `og:image`, JSON-LD, robots, sitemap) come from `site` and
 `base` in `astro.config.mjs`. The head text is under `meta` in the dictionaries, and the links
 shared by Contact and the JSON-LD are in `src/data/profile.ts`.
+
+Response headers live in `public/_headers`. Every matching rule applies and repeated headers are
+joined, so `/_astro/*` detaches the `Cache-Control` from `/*` before setting `immutable`. Only files
+with a content hash may be `immutable`: that is everything under `/_astro/`, `.glb` and `.woff2`
+included.
 
 The e2e suite needs `npm run build` first and filters a single console message: the
 `GPU stall due to ReadPixels` warning SwiftShader's compositor emits (`tests/console-problems.ts`).
@@ -117,8 +128,8 @@ Phase A — base (no visual changes)
 - [x] T3b Deferred 3D and light mobile scene
 - [x] T4a Language routes with server-rendered text
 - [x] T4b SEO/OG, favicon, sitemap, 404
-- [ ] T5 Deploy to Cloudflare, private repo, custom domain later
-  - Crawlers only read robots.txt at the host root: under `/portfolio-interactive/` it has no effect until the site moves to its own domain or to `BASE_PATH=/`.
+- [~] T5 Deploy to Cloudflare Workers (`portfolio.juan-aressi.workers.dev`): implemented, pending first real deploy
+  - Still open: private repo and turning off GitHub Pages (manual), custom domain (see Readme).
 
 Phase B — redesign
 
@@ -128,6 +139,7 @@ Phase B — redesign
 - [ ] T8 Hero
   - Nav entrance blocks clicks for ~1.46s (1.3s delay + pointer-events: none during animation). Fix as part of the hero entrance choreography.
   - Hero subtitle uses text-gray, which doesn't exist (no color applied). Define it as part of the hero redesign.
+  - Home shows the monitor's idle screen (#141414) filling the right side: the initial camera pose is too close to the monitor. Define a new start pose for the hero.
 - [ ] T9 Projects with the monitor
 - [ ] T10 Accessible experience
 - [ ] T11 About and Contact
