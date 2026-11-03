@@ -1,0 +1,50 @@
+---
+import { getAbsoluteLocaleUrl } from 'astro:i18n';
+import SiteIcons from './SiteIcons.astro';
+import { COMPANY, GITHUB_URL, LINKEDIN_URL, NAME } from '../data/profile.ts';
+import { dictionaries, type Locale } from '../i18n/index.ts';
+
+interface Props {
+    locale: Locale;
+}
+
+const OG_LOCALES: Record<Locale, string> = { es: 'es_AR', en: 'en_US' };
+const DEFAULT_LOCALE: Locale = 'es';
+
+const { locale } = Astro.props;
+const { title, description, role } = dictionaries[locale].meta;
+const otherLocale: Locale = locale === 'es' ? 'en' : 'es';
+
+const canonical = getAbsoluteLocaleUrl(locale, '/');
+const ogImage = new URL(`${import.meta.env.BASE_URL}og-${locale}.png`, Astro.site);
+
+const person = {
+    '@context': 'https://schema.org',
+    '@type': 'Person',
+    name: NAME,
+    jobTitle: role,
+    url: canonical,
+    sameAs: [GITHUB_URL, LINKEDIN_URL],
+    worksFor: { '@type': 'Organization', ...COMPANY },
+};
+---
+
+<title>{title}</title>
+<meta name="description" content={description} />
+<link rel="canonical" href={canonical} />
+<link rel="alternate" hreflang="es" href={getAbsoluteLocaleUrl('es', '/')} />
+<link rel="alternate" hreflang="en" href={getAbsoluteLocaleUrl('en', '/')} />
+<link rel="alternate" hreflang="x-default" href={getAbsoluteLocaleUrl(DEFAULT_LOCALE, '/')} />
+
+<meta property="og:type" content="website" />
+<meta property="og:title" content={title} />
+<meta property="og:description" content={description} />
+<meta property="og:url" content={canonical} />
+<meta property="og:image" content={ogImage} />
+<meta property="og:locale" content={OG_LOCALES[locale]} />
+<meta property="og:locale:alternate" content={OG_LOCALES[otherLocale]} />
+<meta name="twitter:card" content="summary_large_image" />
+
+<SiteIcons />
+
+<script type="application/ld+json" set:html={JSON.stringify(person)} />

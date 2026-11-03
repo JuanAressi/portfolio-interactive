@@ -1,6 +1,12 @@
 import type { Dictionary } from './es.ts';
 
 export const en: Dictionary = {
+    meta: {
+        title: 'Juan Aressi — Full stack developer',
+        description:
+            'Systems Engineer and full stack developer from Argentina. I design and build websites and web systems with motion and interaction. Co-founder of Cubrama.',
+        role: 'Full stack developer',
+    },
     header: {
         title: 'Systems Engineer',
         profession: 'Full Stack Developer',

@@ -2,6 +2,8 @@
 import { getRelativeLocaleUrl } from 'astro:i18n';
 import '../styles/global.css';
 import manropeUrl from '../assets/fonts/Manrope/Manrope-Variable-latin.woff2?url';
+import SeoHead from './SeoHead.astro';
+import { GITHUB_URL, LINKEDIN_URL } from '../data/profile.ts';
 import { dictionaries, type Locale } from '../i18n/index.ts';
 
 interface Props {
@@ -22,7 +24,7 @@ const t = dictionaries[locale];
     <head>
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>Portfolio Interactive</title>
+        <SeoHead locale={locale} />
         <link rel="preload" href={manropeUrl} as="font" type="font/woff2" crossorigin />
         <!-- Match scene.background (0x4a6fa5 * 0.1) so hard reload is not white -->
         <style is:inline>
@@ -425,7 +427,7 @@ const t = dictionaries[locale];
                                 <!-- GitHub -->
                                 <a
                                     class="flex items-center company-item"
-                                    href="https://github.com/JuanAressi"
+                                    href={GITHUB_URL}
                                     target="_blank"
                                     rel="noopener noreferrer"
                                 >
@@ -455,7 +457,7 @@ const t = dictionaries[locale];
                                 <!-- LinkedIn -->
                                 <a
                                     class="flex items-center company-item"
-                                    href="https://www.linkedin.com/in/juan-aressi"
+                                    href={LINKEDIN_URL}
                                     target="_blank"
                                     rel="noopener noreferrer"
                                 >

@@ -1,4 +1,10 @@
 export const es = {
+    meta: {
+        title: 'Juan Aressi — Desarrollador full stack',
+        description:
+            'Ingeniero en Sistemas y desarrollador full stack de Argentina. Diseño y desarrollo sitios y sistemas web con movimiento e interacción. Cofundador de Cubrama.',
+        role: 'Desarrollador full stack',
+    },
     header: {
         title: 'Ingeniero en Sistemas',
         profession: 'Desarrollador Full Stack',
