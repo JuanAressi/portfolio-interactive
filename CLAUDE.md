@@ -71,6 +71,15 @@ keys (`src/i18n/dictionaries.test.ts`). The monitor's job cards stay in `src/js/
   change; the PNGs are committed and neither the build nor CI generates them
 - `npm run icons:generate` — builds `favicon.ico` and `apple-touch-icon.png` from
   `public/favicon.svg`; also committed
+- `npm run captures:generate [-- <slug> ...]` — captures the client projects (list in
+  `scripts/generate-captures.mjs`) into `assets-src/projects/<slug>/<desktop|mobile>/` as WebP under
+  300 KB: `hero`, `frame-NN` (one per scroll step of 80% of the viewport) and `long` (the steps
+  stitched below sticky headers, without floating widgets and with sticky columns in place, scaled
+  down to fit). Also writes `assets-src/projects/index.html`, a contact sheet of all
+  of them. Out of the bundle and committed; rerun when a project's site changes. It scrolls step by
+  step instead of `fullPage` so scroll reveals run and pinned sections render; the page's JS runs on
+  Playwright's paused clock and `Math.random` is seeded, so two runs give the same frames. Needs
+  network; takes a few minutes
 
 Absolute URLs (canonical, hreflang, `og:image`, JSON-LD, robots, sitemap) come from `site` and
 `base` in `astro.config.mjs`. The head text is under `meta` in the dictionaries, and the links
@@ -133,6 +142,7 @@ Phase A — base (no visual changes)
 
 Phase B — redesign
 
+- [x] T6a Project captures (`npm run captures:generate`) for the mockups and T9
 - [ ] T6 Identity tokens and mockups
 - [ ] T7 Mobile layout
 - [ ] T7b Section-based camera (holds + transition bands)

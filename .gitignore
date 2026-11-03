@@ -15,3 +15,6 @@ test-results/
 .gstack/
 
 TODOS.md
+
+# Local code index
+.codeindex.db
