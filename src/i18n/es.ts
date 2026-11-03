@@ -36,6 +36,10 @@ export const es = {
         contact: 'Contacto',
         translate: 'Traducir',
     },
+    notFound: {
+        title: 'Esta página no existe',
+        home: 'Ir al inicio',
+    },
 };
 
 /** Spanish is the default locale, so its shape is the one every language has to match. */

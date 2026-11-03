@@ -1,4 +1,5 @@
 import { defineConfig } from 'astro/config';
+import sitemap from '@astrojs/sitemap';
 import tailwindcss from '@tailwindcss/vite';
 
 export default defineConfig({
@@ -11,6 +12,12 @@ export default defineConfig({
         locales: ['es', 'en'],
         routing: { prefixDefaultLocale: false },
     },
+    integrations: [
+        sitemap({
+            i18n: { defaultLocale: 'es', locales: { es: 'es', en: 'en' } },
+            filter: page => !new URL(page).pathname.includes('/og/'),
+        }),
+    ],
     // The toolbar would sit on top of the bottom nav during development.
     devToolbar: { enabled: false },
     vite: {

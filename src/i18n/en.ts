@@ -38,4 +38,8 @@ export const en: Dictionary = {
         contact: 'Contact',
         translate: 'Translate',
     },
+    notFound: {
+        title: "This page doesn't exist",
+        home: 'Go to the home page',
+    },
 };

@@ -1,0 +1,57 @@
+---
+import { getRelativeLocaleUrl } from 'astro:i18n';
+import '../styles/global.css';
+import manropeUrl from '../assets/fonts/Manrope/Manrope-Variable-latin.woff2?url';
+import SiteIcons from '../components/SiteIcons.astro';
+import { dictionaries } from '../i18n/index.ts';
+
+const { es, en } = dictionaries;
+---
+
+<!doctype html>
+<html lang="es">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>{es.notFound.title}</title>
+        <meta name="robots" content="noindex" />
+        <link rel="preload" href={manropeUrl} as="font" type="font/woff2" crossorigin />
+        <SiteIcons />
+    </head>
+    <body>
+        <main class="flex min-h-screen flex-col justify-center gap-6 px-10 text-slate-200">
+            <div class="flex gap-4" aria-hidden="true">
+                <span class="square"></span>
+                <span class="line line-3 gradient-blue"></span>
+                <span class="dot"></span>
+                <span class="line line-2 gradient-pink"></span>
+                <span class="line line-1 gradient-green"></span>
+            </div>
+
+            <div class="flex flex-col gap-2">
+                <h1 class="m-0 text-5xl font-bold tracking-tight">{es.notFound.title}</h1>
+                <p class="text-2xl" lang="en">{en.notFound.title}</p>
+            </div>
+
+            <nav class="flex flex-wrap gap-6 text-xl">
+                <a class="not-found-link" href={getRelativeLocaleUrl('es', '/')} hreflang="es">
+                    {es.notFound.home}
+                </a>
+                <a class="not-found-link" href={getRelativeLocaleUrl('en', '/')} hreflang="en" lang="en">
+                    {en.notFound.home}
+                </a>
+            </nav>
+        </main>
+    </body>
+</html>
+
+<style>
+    .not-found-link {
+        text-decoration: underline;
+        text-underline-offset: 0.25em;
+    }
+
+    .not-found-link:hover {
+        color: var(--color-primary);
+    }
+</style>
