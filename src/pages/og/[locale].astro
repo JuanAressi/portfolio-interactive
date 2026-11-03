@@ -1,0 +1,63 @@
+---
+// Internal: the share images (`npm run og:generate`) are screenshots of this page. It is noindex
+// and filtered out of the sitemap.
+import '../../styles/global.css';
+import manropeUrl from '../../assets/fonts/Manrope/Manrope-Variable-latin.woff2?url';
+import { NAME } from '../../data/profile.ts';
+import { dictionaries, type Locale } from '../../i18n/index.ts';
+
+export function getStaticPaths() {
+    return Object.keys(dictionaries).map(locale => ({ params: { locale } }));
+}
+
+const locale = Astro.params.locale as Locale;
+const { role } = dictionaries[locale].meta;
+---
+
+<!doctype html>
+<html lang={locale}>
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>{NAME}</title>
+        <meta name="robots" content="noindex" />
+        <link rel="preload" href={manropeUrl} as="font" type="font/woff2" crossorigin />
+    </head>
+    <body>
+        <div id="canvas-container"></div>
+
+        <main class="panel flex flex-col justify-center gap-7 text-slate-200">
+            <div class="flex gap-4" aria-hidden="true">
+                <span class="square"></span>
+                <span class="line line-4 gradient-green"></span>
+                <span class="line line-3 gradient-blue"></span>
+                <span class="dot"></span>
+                <span class="line line-2 gradient-orange"></span>
+            </div>
+
+            <div class="flex flex-col gap-3">
+                <h1 class="m-0 text-8xl font-bold tracking-tight">{NAME}</h1>
+                <p class="text-4xl">{role}</p>
+            </div>
+        </main>
+
+        <script src="../../js/og-scene.ts"></script>
+    </body>
+</html>
+
+<style>
+    /* The canvas keeps the whole window, shifted so the desk lands to the right of the text. */
+    #canvas-container {
+        left: 320px;
+    }
+
+    .panel {
+        position: fixed;
+        inset: 0 auto 0 0;
+        z-index: 2;
+        width: 680px;
+        padding-left: 64px;
+        /* Solid under the longest line of text, which ends at 570px. */
+        background: linear-gradient(90deg, #070b10 88%, transparent);
+    }
+</style>

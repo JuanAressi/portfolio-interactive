@@ -20,7 +20,9 @@
         "test:e2e": "playwright test",
         "verify": "npm test && npm run build && npm run test:e2e",
         "check": "astro check",
-        "models:optimize": "node scripts/optimize-models.mjs"
+        "models:optimize": "node scripts/optimize-models.mjs",
+        "icons:generate": "node scripts/generate-icons.mjs",
+        "og:generate": "node scripts/generate-og.mjs"
     },
     "devDependencies": {
         "@astrojs/check": "^0.9.12",
@@ -32,6 +34,7 @@
         "eslint": "^9.31.0",
         "jsdom": "^26.1.0",
         "meshoptimizer": "1.2.0",
+        "sharp": "^0.35.5",
         "typescript": "^6.0.3",
         "vitest": "^5.1.0"
     },
