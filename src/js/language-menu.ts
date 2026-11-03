@@ -9,9 +9,14 @@ export function initLanguageMenu(): void {
         trigger.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
     });
 
-    dropdown.querySelectorAll('.translate-button').forEach(button => {
-        button.addEventListener('click', event => {
-            event.stopPropagation();
+    dropdown.querySelectorAll<HTMLAnchorElement>('.translate-button').forEach(link => {
+        link.addEventListener('click', event => {
+            if (link.hasAttribute('aria-current')) {
+                // Already on this language: just close the menu.
+                event.preventDefault();
+            } else {
+                link.hash = location.hash;
+            }
         });
     });
 

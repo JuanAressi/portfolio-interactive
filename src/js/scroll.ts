@@ -50,6 +50,10 @@ function initSectionNav(): (scrollPosition: number) => void {
                 entry.button.removeAttribute('aria-current');
             }
         }
+
+        // Keeps a reload or a language link on this section, without adding to the history.
+        const url = id === 'home' ? location.pathname + location.search : `#${id}`;
+        history.replaceState(history.state, '', url);
     }
 
     return scrollPosition => {
@@ -99,27 +103,39 @@ export function initScroll(): ScrollHandle {
         if (maxScroll !== previousMaxScroll) layoutChanged = true;
     }
 
-    function scrollToSection(id: string): void {
+    function scrollToSection(id: string, behavior: ScrollBehavior = 'smooth'): void {
         const section = document.getElementById(id);
         if (!section) return;
         updateFakeScroll();
         const top = useNativeLayout
             ? section.getBoundingClientRect().top + readScrollY()
             : section.offsetTop;
-        window.scrollTo({ top: Math.max(0, Math.min(top, maxScroll || top)), behavior: 'smooth' });
+        window.scrollTo({ top: Math.max(0, Math.min(top, maxScroll || top)), behavior });
     }
 
-    function resetScrollToTop(): void {
-        window.scrollTo(0, 0);
-        targetScrollY = 0;
-        smoothScrollY = 0;
+    /** Moves everything to the scroll position at once, skipping the easing. */
+    function snapToScrollPosition(): void {
+        targetScrollY = readScrollY();
+        smoothScrollY = targetScrollY;
         if (!useNativeLayout && content) {
-            content.style.transform = 'translateY(0px)';
+            content.style.transform = `translateY(${-smoothScrollY}px)`;
         }
         if (progressBar) {
-            progressBar.style.height = '0%';
+            const progress = maxScroll > 0 ? (smoothScrollY / maxScroll) * 100 : 0;
+            progressBar.style.height = `${progress}%`;
         }
-        updateActiveSection(0);
+        updateActiveSection(targetScrollY);
+    }
+
+    /** A page starts at the section in the URL hash, or at the top without one. */
+    function goToStart(): void {
+        const id = location.hash.slice(1);
+        if (NAV_SECTION_IDS.includes(id)) {
+            scrollToSection(id, 'instant');
+        } else {
+            window.scrollTo(0, 0);
+        }
+        snapToScrollPosition();
     }
 
     function tick(): void {
@@ -170,15 +186,15 @@ export function initScroll(): ScrollHandle {
 
     updateFakeScroll();
 
-    // Always start at top after reload (disable browser scroll restoration).
+    // The start position is always ours to decide (disable browser scroll restoration).
     if ('scrollRestoration' in history) {
         history.scrollRestoration = 'manual';
     }
 
-    resetScrollToTop();
+    goToStart();
     window.addEventListener('pageshow', event => {
-        // bfcache / back-forward can restore scroll — force top again.
-        if (event.persisted) resetScrollToTop();
+        // bfcache / back-forward can restore scroll — go back to the start position.
+        if (event.persisted) goToStart();
     });
 
     tick();
