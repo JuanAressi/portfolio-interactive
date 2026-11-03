@@ -27,7 +27,7 @@ Key routing rules:
 Personal portfolio of Juan Aressi (Systems Engineer, full stack developer, co-founder of Cubrama).
 The 3D desk scene (Three.js + CSS3D monitor) is the core of the project and must be preserved.
 Goal of the current work: redesign for clients, show client projects, proper mobile layout,
-and a cleaner, faster implementation. Client work is routed through Cubrama (cubrama.com).
+and a cleaner, faster implementation.
 
 ## Working rules
 
@@ -125,7 +125,8 @@ keep them in the foreground (Playwright's `webServer` relies on this).
   Desktop: right progress bar split into one segment per section.
 - Projects: Voryn and SofiGior (sofigior.com). On desktop the monitor shows the live site.
   Employers stay as a separate Experience section, readable without hover.
-- Contact: main CTA goes to Cubrama; GitHub, LinkedIn and CV below.
+- Contact: main CTA is a personal mailto ('Escribime'), secondary LinkedIn; GitHub and CV below.
+  Cubrama appears only as a small footer link ('Cofundador de Cubrama').
 
 ## Roadmap
 
