@@ -102,11 +102,11 @@ const t = dictionaries[locale];
                                 </h1>
 
                                 <div class="text-rotator relative mt-2 min-h-[2.5rem]">
-                                    <p class="text-2xl text-gray mb-2 absolute top-0 left-0 rotating-text active">
+                                    <p data-glitch class="text-2xl text-gray mb-2 absolute top-0 left-0 rotating-text active">
                                         {t.header.title}
                                     </p>
 
-                                    <p class="text-2xl text-gray mb-2 absolute top-0 left-0 rotating-text">
+                                    <p data-glitch class="text-2xl text-gray mb-2 absolute top-0 left-0 rotating-text">
                                         {t.header.profession}
                                     </p>
                                 </div>
@@ -163,7 +163,7 @@ const t = dictionaries[locale];
                         </div>
 
                         <div class="flex flex-col gap-6">
-                            <h2 class="m-0 text-5xl horizontal-fade-in horizontal-fade-in-1">
+                            <h2 data-glitch class="m-0 text-5xl horizontal-fade-in horizontal-fade-in-1">
                                 {t.work.title}
                             </h2>
 
@@ -250,7 +250,7 @@ const t = dictionaries[locale];
                         </div>
 
                         <div class="flex flex-col gap-6">
-                            <h2 class="m-0 text-5xl horizontal-fade-in horizontal-fade-in-1">
+                            <h2 data-glitch class="m-0 text-5xl horizontal-fade-in horizontal-fade-in-1">
                                 {t.about.title}
                             </h2>
 
@@ -293,13 +293,13 @@ const t = dictionaries[locale];
                                 class="flex w-full max-w-2xl flex-col gap-2 text-xl"
                                 data-about-copy
                             >
-                                <p>{t.about['paragraph-1']}</p>
+                                <p data-glitch>{t.about['paragraph-1']}</p>
 
-                                <p>{t.about['paragraph-2']}</p>
+                                <p data-glitch>{t.about['paragraph-2']}</p>
 
-                                <p>{t.about['paragraph-3']}</p>
+                                <p data-glitch>{t.about['paragraph-3']}</p>
 
-                                <p>{t.about['paragraph-4']}</p>
+                                <p data-glitch>{t.about['paragraph-4']}</p>
                             </div>
 
                             <div class="flex flex-col gap-3">
@@ -359,7 +359,7 @@ const t = dictionaries[locale];
                         </div>
 
                         <div class="flex flex-col gap-6">
-                            <h2 class="m-0 text-5xl horizontal-fade-in horizontal-fade-in-1">
+                            <h2 data-glitch class="m-0 text-5xl horizontal-fade-in horizontal-fade-in-1">
                                 {t.contact.title}
                             </h2>
 
@@ -418,7 +418,7 @@ const t = dictionaries[locale];
                                         </svg>
                                         <span class="line line-5 gradient-blue w-0"></span>
 
-                                        <span>{t.contact.email}</span>
+                                        <span data-glitch>{t.contact.email}</span>
                                     </span>
                                 </a>
 
@@ -448,7 +448,7 @@ const t = dictionaries[locale];
                                             <path d="M9 18c-4.51 2-5-2-7-2" />
                                         </svg>
                                         <span class="line line-2 gradient-orange w-0"></span>
-                                        <span>{t.contact.github}</span>
+                                        <span data-glitch>{t.contact.github}</span>
                                     </span>
                                 </a>
 
@@ -479,7 +479,7 @@ const t = dictionaries[locale];
                                             <circle cx="4" cy="4" r="2" />
                                         </svg>
                                         <span class="line line-4 gradient-pink w-0"></span>
-                                        <span>{t.contact.linkedin}</span>
+                                        <span data-glitch>{t.contact.linkedin}</span>
                                     </span>
                                 </a>
 
@@ -506,7 +506,7 @@ const t = dictionaries[locale];
                                         </svg>
                                         <span class="line line-3 gradient-green w-0"></span>
 
-                                        <span>{t.contact.cv}</span>
+                                        <span data-glitch>{t.contact.cv}</span>
                                     </span>
                                 </a>
                             </div>
@@ -528,7 +528,7 @@ const t = dictionaries[locale];
                         aria-label={t.navbar.home}
                     >
                         <span class="nav-home-circle" aria-hidden="true"></span>
-                        <span class="nav-label">{t.navbar.home}</span>
+                        <span class="nav-label" data-glitch>{t.navbar.home}</span>
                     </button>
 
                     <!-- My Work -->
@@ -552,7 +552,7 @@ const t = dictionaries[locale];
                                 d="M20.25 14.15v4.25c0 1.094-.787 2.036-1.872 2.18-2.087.277-4.216.42-6.378.42s-4.291-.143-6.378-.42c-1.085-.144-1.872-1.086-1.872-2.18v-4.25m16.5 0a2.18 2.18 0 0 0 .75-1.661V8.706c0-1.081-.768-2.015-1.837-2.175a48.114 48.114 0 0 0-3.413-.387m4.5 8.006c-.194.165-.42.295-.673.38A23.978 23.978 0 0 1 12 15.75c-2.648 0-5.195-.429-7.577-1.22a2.016 2.016 0 0 1-.673-.38m0 0A2.18 2.18 0 0 1 3 12.489V8.706c0-1.081.768-2.015 1.837-2.175a48.111 48.111 0 0 1 3.413-.387m7.5 0V5.25A2.25 2.25 0 0 0 13.5 3h-3a2.25 2.25 0 0 0-2.25 2.25v.894m7.5 0a48.667 48.667 0 0 0-7.5 0M12 12.75h.008v.008H12v-.008Z"
                             />
                         </svg>
-                        <span class="nav-label">{t.navbar.work}</span>
+                        <span class="nav-label" data-glitch>{t.navbar.work}</span>
                     </button>
 
                     <!-- About me -->
@@ -576,7 +576,7 @@ const t = dictionaries[locale];
                                 d="M17.982 18.725A7.488 7.488 0 0 0 12 15.75a7.488 7.488 0 0 0-5.982 2.975m11.963 0a9 9 0 1 0-11.963 0m11.963 0A8.966 8.966 0 0 1 12 21a8.966 8.966 0 0 1-5.982-2.275M15 9.75a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"
                             />
                         </svg>
-                        <span class="nav-label">{t.navbar.about}</span>
+                        <span class="nav-label" data-glitch>{t.navbar.about}</span>
                     </button>
 
                     <!-- Contact -->
@@ -600,7 +600,7 @@ const t = dictionaries[locale];
                                 d="M21.75 9v.906a2.25 2.25 0 0 1-1.183 1.981l-6.478 3.488M2.25 9v.906a2.25 2.25 0 0 0 1.183 1.981l6.478 3.488m8.839 2.51-4.66-2.51m0 0-1.023-.55a2.25 2.25 0 0 0-2.134 0l-1.022.55m0 0-4.661 2.51m16.5 1.615a2.25 2.25 0 0 1-2.25 2.25h-15a2.25 2.25 0 0 1-2.25-2.25V8.844a2.25 2.25 0 0 1 1.183-1.981l7.5-4.039a2.25 2.25 0 0 1 2.134 0l7.5 4.039a2.25 2.25 0 0 1 1.183 1.98V19.5Z"
                             />
                         </svg>
-                        <span class="nav-label">{t.navbar.contact}</span>
+                        <span class="nav-label" data-glitch>{t.navbar.contact}</span>
                     </button>
                 </div>
 
@@ -633,7 +633,7 @@ const t = dictionaries[locale];
                             </svg>
                         </button>
 
-                        <span class="nav-label">{t.navbar.translate}</span>
+                        <span class="nav-label" data-glitch>{t.navbar.translate}</span>
 
                         <div
                             class="dropdown-menu flex flex-col items-center justify-center absolute py-1 w-28 bottom-14 rounded-md"

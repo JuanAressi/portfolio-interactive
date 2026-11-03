@@ -1,3 +1,5 @@
+import { markLanguageSwitch } from './text-glitch.ts';
+
 export function initLanguageMenu(): void {
     const dropdown = document.querySelector('.dropdown');
     const trigger = document.querySelector('.dropdown-trigger');
@@ -16,6 +18,7 @@ export function initLanguageMenu(): void {
                 event.preventDefault();
             } else {
                 link.hash = location.hash;
+                markLanguageSwitch();
             }
         });
     });
