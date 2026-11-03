@@ -128,7 +128,7 @@ Phase A — base (no visual changes)
 - [x] T3b Deferred 3D and light mobile scene
 - [x] T4a Language routes with server-rendered text
 - [x] T4b SEO/OG, favicon, sitemap, 404
-- [~] T5 Deploy to Cloudflare Workers (`portfolio.juan-aressi.workers.dev`): implemented, pending first real deploy
+- [x] T5 Deploy to Cloudflare Workers: first real deploy verified on 2026-11-03 at https://portfolio.juan-aressi.workers.dev
   - Still open: private repo and turning off GitHub Pages (manual), custom domain (see Readme).
 
 Phase B — redesign
