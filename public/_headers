@@ -1,0 +1,16 @@
+# Headers for the static assets (Workers static assets read this file from dist/ and don't serve it). Every rule that
+# matches a path applies, and a header set twice is joined, so a rule that replaces one has to detach it first.
+
+# Every file: revalidate, since HTML, icons, OG images and the CV keep their names across deploys. Basic security
+# headers. No CSP yet.
+/*
+  Cache-Control: public, max-age=0, must-revalidate
+  X-Content-Type-Options: nosniff
+  Referrer-Policy: strict-origin-when-cross-origin
+  X-Frame-Options: DENY
+
+# Astro's build output, .glb models and .woff2 fonts included: the names carry a content hash, so they never change
+# in place.
+/_astro/*
+  ! Cache-Control
+  Cache-Control: public, max-age=31536000, immutable

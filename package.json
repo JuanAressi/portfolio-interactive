@@ -36,7 +36,8 @@
         "meshoptimizer": "1.2.0",
         "sharp": "^0.35.5",
         "typescript": "^6.0.3",
-        "vitest": "^5.1.0"
+        "vitest": "^5.1.0",
+        "wrangler": "^4.156.2"
     },
     "dependencies": {
         "@astrojs/sitemap": "^3.7.4",
@@ -52,5 +53,5 @@
     "bugs": {
         "url": "https://github.com/JuanAressi/portfolio-interactive/issues"
     },
-    "homepage": "https://JuanAressi.github.io/portfolio-interactive"
+    "homepage": "https://portfolio.juan-aressi.workers.dev"
 }

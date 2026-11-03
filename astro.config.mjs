@@ -3,8 +3,8 @@ import sitemap from '@astrojs/sitemap';
 import tailwindcss from '@tailwindcss/vite';
 
 export default defineConfig({
-    site: 'https://juanaressi.github.io',
-    base: process.env.BASE_PATH || '/portfolio-interactive/',
+    site: process.env.SITE || 'https://portfolio.juan-aressi.workers.dev',
+    base: process.env.BASE_PATH || '/',
     output: 'static',
     outDir: 'dist',
     i18n: {

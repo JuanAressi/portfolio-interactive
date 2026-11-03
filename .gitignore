@@ -9,6 +9,7 @@ test-results/
 # Cache
 .astro/
 .parcel-cache/
+.wrangler/
 
 .vscode/
 .gstack/

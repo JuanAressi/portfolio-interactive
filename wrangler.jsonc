@@ -1,0 +1,16 @@
+// The site on Cloudflare Workers: the static build (dist/, `npm run build`) served as assets, with no Worker code.
+//   Local:  npm run build && npx wrangler dev
+//   Deploy: .github/workflows/deploy.yml on push to main
+// A custom domain is added here under "routes"; the site URL itself lives in astro.config.mjs (see Readme.md).
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "portfolio",
+  "compatibility_date": "2026-11-02",
+  "assets": {
+    "directory": "./dist",
+    // An address with no file gets dist/404.html (src/pages/404.astro), still with a 404 status.
+    "not_found_handling": "404-page",
+    // Astro builds every page as <route>/index.html, and the sitemap and canonicals link to <route>/.
+    "html_handling": "force-trailing-slash",
+  },
+}

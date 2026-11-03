@@ -1,7 +1,7 @@
 import { defineConfig, devices } from '@playwright/test';
 
 const PORT = 4173;
-const baseURL = `http://127.0.0.1:${PORT}${process.env.BASE_PATH || '/portfolio-interactive/'}`;
+const baseURL = `http://127.0.0.1:${PORT}${process.env.BASE_PATH || '/'}`;
 
 export default defineConfig({
     testDir: './tests',
