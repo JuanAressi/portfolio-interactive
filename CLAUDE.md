@@ -41,7 +41,13 @@ and a cleaner, faster implementation. Client work is routed through Cubrama (cub
 
 ## Commands
 
-Requires Node >= 22.23 (Astro 7). The site is served under `/portfolio-interactive/`.
+Requires Node >= 22.23 (Astro 7). The site is served under `/portfolio-interactive/`; `BASE_PATH`
+overrides it for `astro` and Playwright (`BASE_PATH=/ npm run build`). It is read from the
+environment, not from a `.env` file.
+
+Spanish lives at `/` and English at `/en/`. Both are `src/components/Portfolio.astro` with a
+different `locale`; the text is in `src/i18n/es.ts` and `src/i18n/en.ts`, which must have the same
+keys (`src/i18n/dictionaries.test.ts`). The monitor's job cards stay in `src/js/jobs-data.ts`.
 
 - `npm run dev` — Astro dev server (`http://localhost:4321/portfolio-interactive/`)
 - `npm run build` — static build into `dist/`
@@ -72,6 +78,10 @@ keep them in the foreground (Playwright's `webServer` relies on this).
   active/hovered — same language as the Rubik cube logo. One row of lines per section as a
   signature, not repeated filler.
 - Section titles have no numbering ("02 / projects" style is banned).
+- Text entrance: the glitch runs over text already in the HTML (`[data-glitch]`), on the first load
+  of the session and on arrival from a language link. Never with prefers-reduced-motion.
+- The URL hash follows the active section (`replaceState`, no hash at Home), so a reload or a
+  language link stays on the section.
 - Fonts: Manrope for text; JetBrains Mono only for metadata (years, role, tech tags).
 - Favicon and Home nav button: mini cube.
 - Default language Spanish at `/`, English at `/en/`.
@@ -94,7 +104,8 @@ Phase A — base (no visual changes)
 - [x] T2 Scene bugs and cleanup (duplicated desk, loader onError, dead code, source maps)
 - [x] T3a Assets and render-on-demand (requestRender, lighter models, woff2 font)
 - [x] T3b Deferred 3D and light mobile scene
-- [ ] T4 i18n routes, SEO/OG, favicon, 404
+- [x] T4a Language routes with server-rendered text
+- [ ] T4b SEO/OG, favicon, sitemap, 404
 - [ ] T5 Deploy to Cloudflare, private repo, custom domain later
 
 Phase B — redesign

@@ -2,7 +2,8 @@ import { expect, test, type Page } from '@playwright/test';
 
 const CARD_SELECTOR = '[data-work-card="monitor"]';
 const DENSE_JOB_IDS = ['ignitix', 'capgemini', 'secco', 'persiscal', 'sacsi'] as const;
-const LANGUAGES = ['en', 'es'] as const;
+const ROUTES = { en: './en/', es: './' } as const;
+const LANGUAGES = Object.keys(ROUTES) as Array<keyof typeof ROUTES>;
 
 // This suite only reads the DOM. Under software WebGL a frame takes seconds, enough to starve
 // the main thread and time tests out, so draw calls are skipped. The render loop still runs.
@@ -15,9 +16,9 @@ async function skipWebGLDraws(page: Page): Promise<void> {
     });
 }
 
-async function openPortfolio(page: Page): Promise<void> {
+async function openPortfolio(page: Page, route: string = ROUTES.es): Promise<void> {
     await skipWebGLDraws(page);
-    await page.goto('./');
+    await page.goto(route);
     await page.locator(CARD_SELECTOR).waitFor({ state: 'attached' });
     await page.addStyleTag({
         content: `
@@ -29,22 +30,6 @@ async function openPortfolio(page: Page): Promise<void> {
         `,
     });
     await page.evaluate(() => document.fonts.ready);
-}
-
-async function setLanguage(page: Page, language: (typeof LANGUAGES)[number]): Promise<void> {
-    const currentLanguage = await page.evaluate(() => localStorage.getItem('selectedLanguage'));
-    if (currentLanguage === language) return;
-
-    await page.evaluate(selectedLanguage => {
-        document.querySelector<HTMLElement>('.dropdown-trigger')?.click();
-        document.querySelector<HTMLElement>(`[data-language="${selectedLanguage}"]`)?.click();
-    }, language);
-    await expect
-        .poll(() => page.evaluate(() => localStorage.getItem('selectedLanguage')))
-        .toBe(language);
-    await expect(page.locator('[data-translate="about.paragraph-1"]')).toContainText(
-        language === 'es' ? 'Soy Ingeniero' : "I'm a Systems"
-    );
 }
 
 async function expectActiveCardFits(page: Page, jobId: (typeof DENSE_JOB_IDS)[number]) {
@@ -90,17 +75,16 @@ async function expectActiveCardFits(page: Page, jobId: (typeof DENSE_JOB_IDS)[nu
 }
 
 test.describe('HUD polish', () => {
-    test('all dense job cards fit in English and Spanish', async ({ page }) => {
-        await page.setViewportSize({ width: 1280, height: 800 });
-        await openPortfolio(page);
+    for (const language of LANGUAGES) {
+        test(`all dense job cards fit in ${language}`, async ({ page }) => {
+            await page.setViewportSize({ width: 1280, height: 800 });
+            await openPortfolio(page, ROUTES[language]);
 
-        for (const language of LANGUAGES) {
-            await setLanguage(page, language);
             for (const jobId of DENSE_JOB_IDS) {
                 await expectActiveCardFits(page, jobId);
             }
-        }
-    });
+        });
+    }
 
     test('mouseenter wiring still activates the monitor preview', async ({ page }) => {
         await page.setViewportSize({ width: 1280, height: 800 });
@@ -231,59 +215,6 @@ test.describe('HUD polish', () => {
         await expect(page.locator('#bottom-nav [aria-current="page"]')).toHaveCount(1);
     });
 
-    test('regression: all pre-existing translation keys still render after the generic-loop refactor', async ({
-        page,
-    }) => {
-        await page.setViewportSize({ width: 1280, height: 800 });
-        await openPortfolio(page);
-
-        // projects.* excluded — there is no #projects section until T9.
-        const keys = [
-            'header.title',
-            'header.profession',
-            'work.title',
-            'about.title',
-            'about.paragraph-1',
-            'about.paragraph-2',
-            'about.paragraph-3',
-            'about.paragraph-4',
-            'navbar.home',
-            'navbar.work',
-            'navbar.about',
-            'navbar.translate',
-        ];
-
-        for (const language of LANGUAGES) {
-            await setLanguage(page, language);
-            for (const key of keys) {
-                const locator = page.locator(`[data-translate="${key}"]`);
-                await expect(locator, `${key} (${language}) should not be empty`).not.toBeEmpty();
-            }
-        }
-    });
-
-    test('new contact section and nav keys render in both languages', async ({ page }) => {
-        await page.setViewportSize({ width: 1280, height: 800 });
-        await openPortfolio(page);
-
-        const keys = [
-            'contact.title',
-            'contact.email',
-            'contact.github',
-            'contact.linkedin',
-            'contact.cv',
-            'navbar.contact',
-        ];
-
-        for (const language of LANGUAGES) {
-            await setLanguage(page, language);
-            for (const key of keys) {
-                const locator = page.locator(`[data-translate="${key}"]`);
-                await expect(locator, `${key} (${language}) should not be empty`).not.toBeEmpty();
-            }
-        }
-    });
-
     test('regression: bottom nav fits without overlap at mobile width (4 icons, not 6)', async ({
         page,
     }) => {
@@ -326,14 +257,13 @@ test.describe('HUD polish', () => {
         });
     }
 
-    test('About stays inside its container on a narrow viewport in both languages', async ({
-        page,
-    }) => {
-        await page.setViewportSize({ width: 390, height: 700 });
-        await openPortfolio(page);
+    for (const language of LANGUAGES) {
+        test(`About stays inside its container on a narrow viewport in ${language}`, async ({
+            page,
+        }) => {
+            await page.setViewportSize({ width: 390, height: 700 });
+            await openPortfolio(page, ROUTES[language]);
 
-        for (const language of LANGUAGES) {
-            await setLanguage(page, language);
             const metrics = await page.locator('[data-about-copy]').evaluate(element => {
                 const rect = element.getBoundingClientRect();
                 const parentRect = element.parentElement!.getBoundingClientRect();
@@ -350,8 +280,8 @@ test.describe('HUD polish', () => {
             expect(metrics.right).toBeLessThanOrEqual(391);
             expect(metrics.width).toBeLessThanOrEqual(metrics.parentWidth + 1);
             expect(metrics.contentOverflows).toBe(false);
-        }
-    });
+        });
+    }
 
     test('language trigger and menu share the dock alignment', async ({ page }) => {
         await page.setViewportSize({ width: 1280, height: 800 });

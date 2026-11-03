@@ -3,10 +3,21 @@ import {
     JOB_FIELD_MAX,
     getAllJobPreviews,
     getJobPreview,
+    getLangCode,
     isDenseJobPreview,
 } from './jobs-data.ts';
 import { TECH_SLUGS, createTechIconSvg, isTechSlug } from './tech-icons.ts';
 import { applyMonitorJob, createMonitorJobCard, setMonitorJobIdle } from './work-card.ts';
+
+describe('getLangCode', () => {
+    it('follows the lang of the document', () => {
+        document.documentElement.lang = 'en';
+        expect(getLangCode()).toBe('en');
+
+        document.documentElement.lang = 'es';
+        expect(getLangCode()).toBe('es');
+    });
+});
 
 describe('getJobPreview', () => {
     it('returns en dense job by id', () => {

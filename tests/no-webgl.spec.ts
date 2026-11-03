@@ -51,10 +51,9 @@ for (const viewport of VIEWPORTS) {
 
         // Language.
         await page.locator('.dropdown-trigger').click();
-        await page.locator('[data-language="es"]').click();
-        await expect(page.locator('[data-translate="work.title"]')).toHaveText(
-            'Experiencia laboral'
-        );
+        await page.locator('[data-language="en"]').click();
+        await expect(page.locator('#work h2')).toHaveText('My Work Experience');
+        await page.waitForFunction(() => 'webglRefused' in window);
 
         await expect(page.locator('canvas')).toHaveCount(0);
         expect(requests.filter(url => /\/_astro\/(scene|three)\./.test(url))).toEqual([]);

@@ -33,11 +33,13 @@ test('nav and language menu work while three.js is still on its way', async ({ p
         .poll(() => page.locator('#content').evaluate(element => element.style.transform))
         .not.toBe('translateY(0px)');
 
+    // The other route starts its own wait for the chunk.
+    three = undefined;
     await page.locator('.dropdown-trigger').click();
-    await page.locator('[data-language="es"]').click();
-    await expect(page.locator('[data-translate="about.paragraph-1"]')).toContainText(
-        'Soy Ingeniero'
-    );
+    await page.locator('[data-language="en"]').click();
+    await expect(page.locator('[data-about-copy]')).toContainText("I'm a Systems Engineer");
+    await expect(page.locator('[data-nav="about"]')).toHaveAttribute('aria-current', 'page');
+    await expect.poll(() => three).toBeDefined();
 
     await expect(page.locator(CANVAS)).toHaveCount(0);
     await three!.continue();

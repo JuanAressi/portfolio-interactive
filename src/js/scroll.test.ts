@@ -60,6 +60,7 @@ describe('initScroll', () => {
         scrollTo = vi.fn();
         setViewport(VIEWPORT.width, VIEWPORT.height);
         setScrollY(0);
+        history.replaceState(null, '', '/');
         mockLayout();
         vi.stubGlobal('requestAnimationFrame', (callback: FrameRequestCallback) =>
             frames.push(callback)
@@ -144,6 +145,99 @@ describe('initScroll', () => {
         expect(about.getAttribute('aria-current')).toBe('page');
         expect(about.classList.contains('is-active')).toBe(true);
         expect(home.hasAttribute('aria-current')).toBe(false);
+    });
+
+    describe('start position', () => {
+        const contentTransform = () => document.getElementById('content')!.style.transform;
+
+        // Unlike the stub, the real scrollTo moves the page.
+        function followScrollTo(): void {
+            scrollTo.mockImplementation((position: number | ScrollToOptions) => {
+                setScrollY(typeof position === 'number' ? position : position.top!);
+            });
+        }
+
+        beforeEach(followScrollTo);
+
+        it('jumps to the section in the hash, already settled and without easing', () => {
+            history.replaceState(null, '', '#about');
+            const reported = collectFrames(initScroll());
+
+            expect(scrollTo).toHaveBeenCalledWith({ top: 2000, behavior: 'instant' });
+            expect(contentTransform()).toBe('translateY(-2000px)');
+            expect(document.querySelector('[data-nav="about"]')!.getAttribute('aria-current')).toBe(
+                'page'
+            );
+
+            runFrame();
+            expect(contentTransform()).toBe('translateY(-2000px)');
+            expect(reported.at(-1)!.progress).toBeCloseTo(2000 / 3200);
+        });
+
+        it('starts at the top without a hash, or with one that is not a section', () => {
+            initScroll();
+            expect(contentTransform()).toBe('translateY(0px)');
+
+            history.replaceState(null, '', '#nope');
+            setScrollY(500);
+            initScroll();
+            expect(scrollTo).toHaveBeenLastCalledWith(0, 0);
+            expect(contentTransform()).toBe('translateY(0px)');
+        });
+
+        it('goes back to the hash section on a page restored from the bfcache', () => {
+            history.replaceState(null, '', '#work');
+            initScroll();
+            setScrollY(2500);
+
+            window.dispatchEvent(new PageTransitionEvent('pageshow', { persisted: true }));
+
+            expect(contentTransform()).toBe('translateY(-1000px)');
+        });
+    });
+
+    describe('URL hash', () => {
+        function scrollTo(y: number): void {
+            setScrollY(y);
+            window.dispatchEvent(new Event('scroll'));
+        }
+
+        it('follows the active section, and goes away at Home', () => {
+            initScroll();
+            expect(location.hash).toBe('');
+
+            scrollTo(1700);
+            expect(location.hash).toBe('#about');
+
+            scrollTo(700);
+            expect(location.hash).toBe('#work');
+
+            scrollTo(0);
+            expect(location.hash).toBe('');
+            expect(location.href.endsWith('#')).toBe(false);
+        });
+
+        it('adds nothing to the history', () => {
+            initScroll();
+            const entries = history.length;
+            const pushState = vi.spyOn(history, 'pushState');
+
+            scrollTo(1700);
+            scrollTo(700);
+
+            expect(history.length).toBe(entries);
+            expect(pushState).not.toHaveBeenCalled();
+        });
+
+        it('keeps the query string at Home', () => {
+            history.replaceState(null, '', '?ref=mail#work');
+            initScroll();
+
+            scrollTo(0);
+
+            expect(location.search).toBe('?ref=mail');
+            expect(location.hash).toBe('');
+        });
     });
 
     it('leaves the content alone on the native layout', () => {
