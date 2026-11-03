@@ -38,6 +38,8 @@ and a cleaner, faster implementation. Client work is routed through Cubrama (cub
 - At the end of each ticket, update the "Commands" and "Roadmap" sections of this file.
 - Never kill processes by name pattern (pkill -f, killall). Only stop processes this session
   started, by PID. Other projects may be running on this machine.
+- OG images and icons are committed PNGs. If name, role, scene framing or favicon change, run
+  npm run og:generate and npm run icons:generate in the same ticket.
 
 ## Commands
 
@@ -58,6 +60,15 @@ keys (`src/i18n/dictionaries.test.ts`). The monitor's job cards stay in `src/js/
 - `npm run verify` — unit tests, build and e2e
 - `npm run models:optimize` — rebuilds every model in `src/assets/models` from the originals in
   `assets-src/models` (out of the bundle); each model's steps are in `scripts/optimize-models.mjs`
+- `npm run og:generate` — captures the internal `/og/<locale>/` pages into `public/og-<locale>.png`
+  (1200×630) over its own dev server. Rerun it when the name, the role (`meta.role`) or the scene
+  change; the PNGs are committed and neither the build nor CI generates them
+- `npm run icons:generate` — builds `favicon.ico` and `apple-touch-icon.png` from
+  `public/favicon.svg`; also committed
+
+Absolute URLs (canonical, hreflang, `og:image`, JSON-LD, robots, sitemap) come from `site` and
+`base` in `astro.config.mjs`. The head text is under `meta` in the dictionaries, and the links
+shared by Contact and the JSON-LD are in `src/data/profile.ts`.
 
 The e2e suite needs `npm run build` first and filters a single console message: the
 `GPU stall due to ReadPixels` warning SwiftShader's compositor emits (`tests/console-problems.ts`).
@@ -105,8 +116,9 @@ Phase A — base (no visual changes)
 - [x] T3a Assets and render-on-demand (requestRender, lighter models, woff2 font)
 - [x] T3b Deferred 3D and light mobile scene
 - [x] T4a Language routes with server-rendered text
-- [ ] T4b SEO/OG, favicon, sitemap, 404
+- [x] T4b SEO/OG, favicon, sitemap, 404
 - [ ] T5 Deploy to Cloudflare, private repo, custom domain later
+  - Crawlers only read robots.txt at the host root: under `/portfolio-interactive/` it has no effect until the site moves to its own domain or to `BASE_PATH=/`.
 
 Phase B — redesign
 
@@ -115,7 +127,9 @@ Phase B — redesign
 - [ ] T7b Section-based camera (holds + transition bands)
 - [ ] T8 Hero
   - Nav entrance blocks clicks for ~1.46s (1.3s delay + pointer-events: none during animation). Fix as part of the hero entrance choreography.
+  - Hero subtitle uses text-gray, which doesn't exist (no color applied). Define it as part of the hero redesign.
 - [ ] T9 Projects with the monitor
 - [ ] T10 Accessible experience
 - [ ] T11 About and Contact
 - [ ] T12 Final QA and Lighthouse
+  - npm audit: 15 dev-only vulnerabilities (eslint, @gltf-transform/cli).
