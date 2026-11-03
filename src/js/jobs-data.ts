@@ -183,7 +183,7 @@ export function getJobPreview(id: string, language?: string | null): JobPreview 
 }
 
 export function getLangCode(): 'en' | 'es' {
-    return localStorage.getItem('selectedLanguage') === 'es' ? 'es' : 'en';
+    return document.documentElement.lang === 'en' ? 'en' : 'es';
 }
 
 /** All authored jobs (both languages) for length / dense fixtures in tests. */

@@ -183,22 +183,6 @@ export function startScene(scroll) {
     mountCss3dWorkCard();
     bindCompanyHoverPreview();
 
-    // Language switch flicker: without this, re-applying the same active job to an
-    // already-lit screen is a no-op for setScreenGlow (start === target), so the
-    // monitor stayed inert while the rest of the page glitched through its new text.
-    // Briefly dip the glow and bring it back, roughly matching the glitch duration
-    // in translation.ts, so the monitor reads as reacting to the language change.
-    const LANG_FLICKER_MS = 220;
-
-    window.addEventListener('portfolio:lang', () => {
-        if (!activeJobId) return;
-        const jobId = activeJobId;
-        setScreenGlow(false);
-        setTimeout(() => {
-            if (activeJobId === jobId) showJobOnMonitor(jobId);
-        }, LANG_FLICKER_MS);
-    });
-
     // Items.
     const ITEM_COLOR = 0xacbac1;
     const TINTED_ITEM = { tint: ITEM_COLOR };

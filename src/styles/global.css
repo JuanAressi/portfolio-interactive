@@ -402,15 +402,15 @@ body::-webkit-scrollbar {
     pointer-events: auto;
 }
 
-.text-rotator h3 {
+.text-rotator p {
     position: absolute;
 }
 
-.text-rotator h3:nth-child(1) {
+.text-rotator p:nth-child(1) {
     animation: text1 12s infinite;
 }
 
-.text-rotator h3:nth-child(2) {
+.text-rotator p:nth-child(2) {
     animation: text2 12s infinite;
 }
 
@@ -831,19 +831,19 @@ body::-webkit-scrollbar {
         pointer-events: auto !important;
     }
 
-    .text-rotator h3:nth-child(1),
-    .text-rotator h3:nth-child(2) {
+    .text-rotator p:nth-child(1),
+    .text-rotator p:nth-child(2) {
         animation: none !important;
     }
 
-    .text-rotator h3:nth-child(1) {
+    .text-rotator p:nth-child(1) {
         opacity: 1;
         position: relative;
         filter: none;
         transform: none;
     }
 
-    .text-rotator h3:nth-child(2) {
+    .text-rotator p:nth-child(2) {
         display: none;
     }
 
