@@ -22,7 +22,8 @@
         "check": "astro check",
         "models:optimize": "node scripts/optimize-models.mjs",
         "icons:generate": "node scripts/generate-icons.mjs",
-        "og:generate": "node scripts/generate-og.mjs"
+        "og:generate": "node scripts/generate-og.mjs",
+        "captures:generate": "node scripts/generate-captures.mjs"
     },
     "devDependencies": {
         "@astrojs/check": "^0.9.12",
