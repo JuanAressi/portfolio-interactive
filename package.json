@@ -23,7 +23,8 @@
         "models:optimize": "node scripts/optimize-models.mjs",
         "icons:generate": "node scripts/generate-icons.mjs",
         "og:generate": "node scripts/generate-og.mjs",
-        "captures:generate": "node scripts/generate-captures.mjs"
+        "captures:generate": "node scripts/generate-captures.mjs",
+        "scene:profile": "node scripts/profile-scene.mjs"
     },
     "devDependencies": {
         "@astrojs/check": "^0.9.12",
