@@ -20,9 +20,10 @@ const RIGHT_DRAWER_HANDLES = [
 // shadow maps with the faces turned away from them, so dropping those moves the shadows on the desk
 // and the keyboard (measured: docs/perf/geometry-notes.md).
 
-// The handles are one mesh: each copy of the model is moved into the desk's space and merged with
-// the rest, so four handles of four parts each cost one draw call. Resolves once they are on the
-// desk. A failed load leaves the desk without them.
+// The handles are one mesh: each copy of the model (one mesh itself) is moved into the desk's space
+// and merged with the rest, so four handles cost one draw call. An InstancedMesh would cost the
+// same one call, but the bake of T15 needs every handle to have its own uvs, which instances
+// cannot. Resolves once they are on the desk. A failed load leaves the desk without them.
 export async function addDoorHandles(desk) {
     const { leftCajonera, rightCajonera } = desk.userData;
 
