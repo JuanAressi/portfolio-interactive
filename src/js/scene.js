@@ -5,7 +5,7 @@ import { loadModel } from './load-model.ts';
 import { createRoom } from './room.ts';
 import { setupBlueTint, createHemisphereLight, createSpotLights } from './lighting.ts';
 import { createMonitor } from './monitor.js';
-import curve from './camera-movement.js';
+import { cameraPoseAt } from './camera-movement.js';
 import { getSceneTier } from './scene-tier.ts';
 import {
     WORK_CARD_MONITOR_SIZE,
@@ -200,14 +200,21 @@ export function startScene(scroll) {
         }
     }
 
-    addModel(keyboard, { position: [1.12, 0.721, -2.095], scale: 1.25, material: TINTED_ITEM });
+    addModel(keyboard, {
+        name: 'keyboard',
+        position: [1.12, 0.721, -2.095],
+        scale: 1.25,
+        material: TINTED_ITEM,
+    });
     addModel(mouse, {
+        name: 'mouse',
         position: [1.4, 0.711, -2.095],
         scale: 0.04,
         rotation: [0, -1.25, 0],
         material: MATTE_ITEM,
     });
     addModel(books, {
+        name: 'books',
         position: [1.75, 0.698, -2.25],
         scale: 0.066,
         rotation: [0, 0.5, 0],
@@ -226,6 +233,7 @@ export function startScene(scroll) {
         } else if (tier.chair && !isChairRequested) {
             isChairRequested = true;
             addModel(roundedChair, {
+                name: 'chair',
                 position: [1.4, 0, -1.66],
                 scale: 0.3,
                 rotation: [0, -2.5, 0],
@@ -282,15 +290,8 @@ export function startScene(scroll) {
         targetMouseX = (event.clientX / window.innerWidth) * 2 - 1;
     });
 
-    function updateCameraPosition(point) {
-        const position = curve.getPoint(point);
-        // Cubic ease — keeps lookAt near the monitor through Work (matches live).
-        const easedPoint = point * point * point;
-        if (point > 0.1) {
-            position.x += mouseX * 0.35 * easedPoint;
-        }
-        camera.position.copy(position);
-        lookAtTarget.set(1.12, 0.988 - easedPoint * 0.66, -2.43);
+    function updateCameraPosition(progress) {
+        cameraPoseAt(progress, mouseX, camera.position, lookAtTarget);
         camera.lookAt(lookAtTarget);
     }
 
@@ -327,4 +328,11 @@ export function startScene(scroll) {
         cssRenderer.setSize(window.innerWidth, window.innerHeight);
         requestRender();
     });
+
+    // Diagnostics (window.__perf) only exist on request; a normal visit never loads them.
+    if (new URLSearchParams(location.search).get('debug') === 'perf') {
+        import('./perf-debug.ts').then(({ installPerfDebug }) =>
+            installPerfDebug({ renderer, scene, camera, parts: { room, desk, monitor } })
+        );
+    }
 }
