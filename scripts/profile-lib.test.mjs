@@ -4,6 +4,7 @@ import {
     BUDGET,
     checkBudget,
     inventorySummary,
+    renderComparison,
     percentile,
     renderMarkdown,
     summarize,
@@ -119,5 +120,39 @@ describe('renderMarkdown', () => {
         expect(markdown).toContain('| about | n/a');
         expect(markdown).not.toContain('#### gl-egl · mobile');
         expect(markdown).toContain('| gl-egl | desktop | 31 / 30 ⚠ | 1,000 / 50,000 | 17.2 / 17 ⚠ |');
+    });
+});
+
+describe('renderComparison', () => {
+    const run = (calls, frameP95, triangles) => ({
+        config: { modes: ['gl-egl'] },
+        results: ['home', 'work', 'about', 'contact'].map(section => ({
+            mode: 'gl-egl',
+            viewport: 'desktop',
+            section,
+            calls,
+            triangles,
+            frameMs: { p50: 16.7, p95: frameP95 },
+            renderMs: { p50: 4, p95: 8 },
+        })),
+        inventory: { meshes: [mesh()], lights: [] },
+    });
+
+    it('shows each metric before → after with the change', () => {
+        const markdown = renderComparison(run(200, 30, 100_000), run(100, 17, 100_000), {
+            before: 'abc',
+            after: 'def',
+        });
+
+        expect(markdown).toContain('#### gl-egl · desktop');
+        expect(markdown).toMatch(/\| home \| 200 → 100 \(-50%\) \| 100,000 → 100,000 \(0%\) \| 16\.7 → 16\.7 \(0%\) \| 30\.0 → 17\.0 \(-43%\) \|/);
+        expect(markdown).toContain('| Meshes | 1 | 1 |');
+    });
+
+    it('skips a viewport that only one of the runs has', () => {
+        const before = run(200, 30, 1000);
+        before.results = before.results.filter(r => r.section !== 'home');
+
+        expect(renderComparison(before, run(100, 17, 1000))).not.toMatch(/\| home \|/);
     });
 });

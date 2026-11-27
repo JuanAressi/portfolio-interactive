@@ -279,3 +279,79 @@ export function renderMarkdown(data) {
         renderBudget(data),
     ].join('\n\n');
 }
+
+function change(before, after, digits = 0) {
+    const show = value => (digits ? fixed(value, digits) : number(value));
+    if (!Number.isFinite(before) || !Number.isFinite(after)) return `${show(before)} → ${show(after)}`;
+    const delta = before === 0 ? 0 : ((after - before) / before) * 100;
+    const sign = delta > 0 ? '+' : '';
+    return `${show(before)} → ${show(after)} (${sign}${delta.toFixed(0)}%)`;
+}
+
+/** Before/after tables for two profile runs (the JSON files of `npm run scene:profile`). */
+export function renderComparison(before, after, labels = { before: 'before', after: 'after' }) {
+    const sections = [];
+    for (const mode of after.config.modes) {
+        for (const viewport of ['desktop', 'mobile']) {
+            const rows = SECTIONS.flatMap(section => {
+                const find = data =>
+                    data.results.find(r => r.mode === mode && r.viewport === viewport && r.section === section);
+                const [b, a] = [find(before), find(after)];
+                if (!b || !a) return [];
+                return [
+                    [
+                        section,
+                        change(b.calls, a.calls),
+                        change(b.triangles, a.triangles),
+                        change(b.frameMs.p50, a.frameMs.p50, 1),
+                        change(b.frameMs.p95, a.frameMs.p95, 1),
+                        change(b.renderMs.p50, a.renderMs.p50, 1),
+                        change(b.renderMs.p95, a.renderMs.p95, 1),
+                    ],
+                ];
+            });
+            if (rows.length === 0) continue;
+            const throttle = viewport === 'mobile' ? ', CPU 4x slower' : '';
+            sections.push(
+                `#### ${mode} · ${viewport}${throttle}\n\n` +
+                    table(
+                        [
+                            'Section',
+                            'Draw calls',
+                            'Triangles',
+                            'Frame p50 (ms)',
+                            'Frame p95 (ms)',
+                            'Render p50 (ms)',
+                            'Render p95 (ms)',
+                        ],
+                        rows
+                    )
+            );
+        }
+    }
+
+    const [summaryBefore, summaryAfter] = [before, after].map(data => inventorySummary(data.inventory));
+    const inventoryRows = [
+        ['Meshes', summaryBefore.meshes, summaryAfter.meshes],
+        ['Triangles', number(summaryBefore.triangles), number(summaryAfter.triangles)],
+        ['Material instances', summaryBefore.materials, summaryAfter.materials],
+        ['Shadow casters', summaryBefore.shadowCasters, summaryAfter.shadowCasters],
+        [
+            'Meshes never seen',
+            `${summaryBefore.neverSeenMeshes} (${number(summaryBefore.neverSeenTriangles)} triangles)`,
+            `${summaryAfter.neverSeenMeshes} (${number(summaryAfter.neverSeenTriangles)} triangles)`,
+        ],
+        [
+            'Triangles on faces never seen (in seen meshes)',
+            number(summaryBefore.hiddenTrianglesInSeenMeshes),
+            number(summaryAfter.hiddenTrianglesInSeenMeshes),
+        ],
+    ];
+
+    return [
+        `Each cell: ${labels.before} → ${labels.after}. Same viewports, sections and method for both.`,
+        ...sections,
+        '#### Scene inventory',
+        table(['', labels.before, labels.after], inventoryRows),
+    ].join('\n\n');
+}

@@ -85,9 +85,16 @@ keys (`src/i18n/dictionaries.test.ts`). The monitor's job cards stay in `src/js/
   scene per section (Home, Work, About, Contact) at 1440×900 and 390×844 (CPU 4× slower), on the
   real GPU (`--use-angle=gl-egl`) and on SwiftShader: draw calls and triangles (shadow passes
   included), textures, frame and render time p50/p95 over 5 s of scroll, JS heap, plus an inventory
-  of every mesh with what the camera path never sees. Needs a fresh build; writes
-  `docs/perf/baseline.{json,md}` (the T13 numbers and the proposed budget). Takes about 10 minutes,
+  of every mesh with what the camera path never sees (desktop, ultrawide and mobile aspects). Needs a fresh build; writes
+  `docs/perf/baseline.{json,md}` (the T13 numbers and the proposed budget). `--compare
+  docs/perf/baseline.json` also writes `<out>-comparison.md`; `--inventory-only` prints just the
+  inventory. Takes about 10 minutes,
   most of it SwiftShader; do not run anything else meanwhile or the times are not comparable
+
+Scene conventions (T14): the procedural pieces are merged by material (`src/js/geometry-parts.ts`,
+shared materials in `src/js/scene-materials.ts`). Every mesh has a stable `name` and
+`userData.static` / `userData.bakeGroup` (`room`, `desk`, `monitor`, `props`); the monitor, its screen
+and its glow light are dynamic. New geometry should follow that, because T15 bakes by `bakeGroup`.
 
 Loading any page with `?debug=perf` loads `src/js/perf-debug.ts` (a separate chunk) and exposes
 `window.__perf` (`snapshot()`, `start()`/`stop()` for a recording, `inventory()`). A normal visit
@@ -172,7 +179,7 @@ Phase B — redesign
 Phase C — scene performance (no visual changes; compare against `main` with screenshots)
 
 - [x] T13 Measurement: `?debug=perf` hook, `npm run scene:profile`, baseline and budget in `docs/perf/`
-- [ ] T14 Geometry: merge static pieces by material, drop never-seen faces and meshes, bake-ready names and `userData`
+- [x] T14 Geometry: static pieces merged by material (draw calls −52% on desktop), monitor's hidden faces dropped, bake-ready names and `userData`. Walls and desk keep their hidden faces: they draw the shadow maps (`docs/perf/geometry-notes.md`)
 - [ ] T15 Baked lights
 - [ ] T16 Adaptive quality
 

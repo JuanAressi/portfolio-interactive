@@ -1,6 +1,8 @@
 // Measures what the 3D scene costs, per section and viewport, on a real GPU and on SwiftShader,
 // and writes docs/perf/baseline.{json,md}. Needs a fresh `npm run build`.
 // Usage: npm run scene:profile [-- --modes gl-egl,swiftshader] [--out docs/perf/baseline]
+//        npm run scene:profile -- --compare docs/perf/baseline.json   (also writes <out>-comparison.md)
+//        npm run scene:profile -- --inventory-only   (just the scene inventory, to stdout)
 import { execFileSync } from 'node:child_process';
 import { existsSync } from 'node:fs';
 import { mkdir, writeFile } from 'node:fs/promises';
@@ -8,7 +10,8 @@ import { dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { preview } from 'astro';
 import { chromium } from '@playwright/test';
-import { SECTIONS, renderMarkdown, summarize } from './profile-lib.mjs';
+import { readFile } from 'node:fs/promises';
+import { SECTIONS, renderComparison, renderMarkdown, summarize } from './profile-lib.mjs';
 
 const MODES = {
     'gl-egl': ['--use-angle=gl-egl', '--ignore-gpu-blocklist'],
@@ -30,7 +33,8 @@ function option(name, fallback) {
     return index === -1 ? fallback : process.argv[index + 1];
 }
 
-const modes = option('modes', 'gl-egl,swiftshader').split(',');
+const inventoryOnly = process.argv.includes('--inventory-only');
+const modes = inventoryOnly ? ['gl-egl'] : option('modes', 'gl-egl,swiftshader').split(',');
 const outBase = fileURLToPath(new URL(`../${option('out', 'docs/perf/baseline')}`, import.meta.url));
 
 for (const mode of modes) {
@@ -169,6 +173,12 @@ try {
                 inventory = await page.evaluate(() => window.__perf.inventory());
             }
 
+            if (inventoryOnly) {
+                console.log(JSON.stringify(inventory, null, 2));
+                await context.close();
+                break;
+            }
+
             if (cpuThrottle > 1) await cdp.send('Emulation.setCPUThrottlingRate', { rate: cpuThrottle });
 
             const ranges = await sectionRanges(page);
@@ -189,6 +199,8 @@ try {
     await server.stop();
 }
 
+if (inventoryOnly) process.exit(0);
+
 const data = {
     generatedAt: new Date().toISOString(),
     environment,
@@ -201,3 +213,11 @@ await mkdir(dirname(outBase), { recursive: true });
 await writeFile(`${outBase}.json`, `${JSON.stringify(data, null, 2)}\n`);
 await writeFile(`${outBase}.md`, `${renderMarkdown(data)}\n`);
 console.log(`Wrote ${outBase}.{json,md}`);
+
+const compareWith = option('compare', null);
+if (compareWith) {
+    const before = JSON.parse(await readFile(fileURLToPath(new URL(`../${compareWith}`, import.meta.url)), 'utf8'));
+    const labels = { before: before.environment.commit, after: environment.commit };
+    await writeFile(`${outBase}-comparison.md`, `${renderComparison(before, data, labels)}\n`);
+    console.log(`Wrote ${outBase}-comparison.md`);
+}
