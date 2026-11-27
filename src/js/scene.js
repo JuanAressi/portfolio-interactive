@@ -3,6 +3,7 @@ import { CSS3DRenderer, CSS3DObject } from 'three/examples/jsm/renderers/CSS3DRe
 import { addDoorHandles, createDesk } from './desk.js';
 import { loadModel } from './load-model.ts';
 import { createRoom } from './room.ts';
+import { tagModel } from './geometry-parts.ts';
 import { setupBlueTint, createHemisphereLight, createSpotLights } from './lighting.ts';
 import { createMonitor } from './monitor.js';
 import { cameraPoseAt } from './camera-movement.js';
@@ -191,6 +192,7 @@ export function startScene(scroll) {
     async function addModel(url, options) {
         try {
             const model = await loadModel(url, options);
+            tagModel(model, options.name);
             scene.add(model);
             requestRender();
             return model;

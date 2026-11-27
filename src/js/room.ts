@@ -1,108 +1,82 @@
 import * as THREE from 'three';
+import { boxPart, mergeParts, tagMesh } from './geometry-parts.ts';
+import { getSceneMaterials } from './scene-materials.ts';
+
+const ROOM_WIDTH = 5;
+const ROOM_HEIGHT = 3;
+const ROOM_DEPTH = 5;
+const WALL_THICKNESS = 0.075;
+
+const WINDOW_WIDTH = 2;
+const WINDOW_HEIGHT = 1.2;
+const WINDOW_Y = 0.85;
+
+// Every wall keeps all its faces, the ones no camera ever sees included: the walls keep the
+// light of two sources out (the window light and the second spotlight stand outside the room). The
+// faces turned away from a light are the ones its shadow map is drawn with, so dropping them moves
+// the shadows on the desk and the floor (measured: docs/perf/geometry-notes.md).
 
 export function createRoom(x = 0, y = 0, z = 0) {
     const roomGroup = new THREE.Group();
     roomGroup.position.set(x, y, z);
 
-    const roomWidth = 5;
-    const roomHeight = 3;
-    const roomDepth = 5;
+    const { wall, floor } = getSceneMaterials();
 
-    const wallGeometry = new THREE.BoxGeometry(roomWidth, roomHeight, 0.075);
+    // The right wall is a wall with a window: three pieces around the hole, turned to face -x.
+    const topHeight = ROOM_HEIGHT - WINDOW_HEIGHT - WINDOW_Y;
+    const windowWall = new THREE.Matrix4()
+        .makeRotationY(Math.PI / 2)
+        .setPosition(ROOM_WIDTH / 2, 0, 0);
+    const windowPieces = [
+        boxPart({
+            size: [ROOM_WIDTH, topHeight, WALL_THICKNESS],
+            position: [0, WINDOW_Y + WINDOW_HEIGHT + topHeight / 2, 0],
+        }),
+        boxPart({
+            size: [ROOM_WIDTH, WINDOW_Y, WALL_THICKNESS],
+            position: [0, WINDOW_Y / 2, 0],
+        }),
+        boxPart({
+            size: [(ROOM_WIDTH - WINDOW_WIDTH) / 2, WINDOW_HEIGHT, WALL_THICKNESS],
+            position: [(ROOM_WIDTH + WINDOW_WIDTH) / 2.75, WINDOW_Y + WINDOW_HEIGHT / 2, 0],
+        }),
+    ].map(piece => piece.applyMatrix4(windowWall));
 
-    const backWallMaterial = new THREE.MeshStandardMaterial({
-        color: 0xacbac1,
-        side: THREE.DoubleSide,
-    });
-    const backWall = new THREE.Mesh(wallGeometry, backWallMaterial);
-    backWall.position.z = -roomDepth / 2;
-    backWall.position.y = roomHeight / 2;
-    backWall.castShadow = true;
-    backWall.receiveShadow = true;
-    roomGroup.add(backWall);
-
-    const rightWallMaterial = new THREE.MeshStandardMaterial({
-        color: 0xacbac1,
-        side: THREE.DoubleSide,
-    });
-
-    const windowWidth = 2;
-    const windowHeight = 1.2;
-    const windowY = 0.85;
-
-    const rightWallGroup = new THREE.Group();
-
-    const topWallGeometry = new THREE.BoxGeometry(
-        roomWidth,
-        roomHeight - windowHeight - windowY,
-        0.075
+    const leftWall = boxPart({
+        size: [ROOM_WIDTH, ROOM_HEIGHT, WALL_THICKNESS],
+        position: [0, 0, 0],
+    }).applyMatrix4(
+        new THREE.Matrix4().makeRotationY(Math.PI / 2).setPosition(-ROOM_WIDTH / 2, ROOM_HEIGHT / 2, 0)
     );
-    const topWall = new THREE.Mesh(topWallGeometry, rightWallMaterial);
-    topWall.position.y = windowY + windowHeight + (roomHeight - windowHeight - windowY) / 2;
-    topWall.castShadow = true;
-    topWall.receiveShadow = true;
-    rightWallGroup.add(topWall);
 
-    // Bottom wall.
-    const bottomWallGeometry = new THREE.BoxGeometry(roomWidth, windowY, 0.075);
-    const bottomWall = new THREE.Mesh(bottomWallGeometry, rightWallMaterial);
-    bottomWall.position.y = windowY / 2;
-    bottomWall.castShadow = true;
-    bottomWall.receiveShadow = true;
-    rightWallGroup.add(bottomWall);
+    const backWall = boxPart({
+        size: [ROOM_WIDTH, ROOM_HEIGHT, WALL_THICKNESS],
+        position: [0, ROOM_HEIGHT / 2, -ROOM_DEPTH / 2],
+    });
 
-    // Right wall.
-    const rightPartGeometry = new THREE.BoxGeometry(
-        (roomWidth - windowWidth) / 2,
-        windowHeight,
-        0.075
-    );
-    const rightPart = new THREE.Mesh(rightPartGeometry, rightWallMaterial);
-    rightPart.position.x = (roomWidth + windowWidth) / 2.75;
-    rightPart.position.y = windowY + windowHeight / 2;
-    rightPart.castShadow = true;
-    rightPart.receiveShadow = true;
-    rightWallGroup.add(rightPart);
+    const walls = new THREE.Mesh(mergeParts([backWall, ...windowPieces, leftWall]), wall);
+    walls.castShadow = true;
+    walls.receiveShadow = true;
+    roomGroup.add(tagMesh(walls, 'room-walls', { bakeGroup: 'room', isStatic: true }));
 
-    rightWallGroup.rotation.y = Math.PI / 2;
-    rightWallGroup.position.x = roomWidth / 2;
-    rightWallGroup.position.y = 0;
-    roomGroup.add(rightWallGroup);
-
-    // Left wall.
-    const leftWallGeometry = new THREE.BoxGeometry(roomWidth, roomHeight, 0.075);
-    const leftWall = new THREE.Mesh(leftWallGeometry, rightWallMaterial);
-    leftWall.position.x = -roomWidth / 2;
-    leftWall.position.y = roomHeight / 2;
-    leftWall.castShadow = true;
-    leftWall.receiveShadow = true;
-    leftWall.rotation.y = Math.PI / 2;
-    roomGroup.add(leftWall);
-
-    createFloor(roomGroup, roomWidth, roomDepth);
+    const floorGeometry = new THREE.PlaneGeometry(ROOM_WIDTH, ROOM_DEPTH);
+    floorGeometry.rotateX(Math.PI / 2);
+    floorGeometry.deleteAttribute('uv');
+    const floorMesh = new THREE.Mesh(floorGeometry, floor);
+    floorMesh.castShadow = true;
+    floorMesh.receiveShadow = true;
+    roomGroup.add(tagMesh(floorMesh, 'room-floor', { bakeGroup: 'room', isStatic: true }));
 
     const windowLight = new THREE.DirectionalLight(0xffffff, 0.33);
-    windowLight.position.set(roomWidth / 2 + 1, windowY + windowHeight / 2, -roomDepth / 2 + 0.5);
+    windowLight.position.set(
+        ROOM_WIDTH / 2 + 1,
+        WINDOW_Y + WINDOW_HEIGHT / 2,
+        -ROOM_DEPTH / 2 + 0.5
+    );
     windowLight.castShadow = true;
-    windowLight.lookAt(0, windowY + windowHeight / 2, 0);
+    windowLight.lookAt(0, WINDOW_Y + WINDOW_HEIGHT / 2, 0);
+    windowLight.name = 'room-window-light';
     roomGroup.add(windowLight);
 
     return roomGroup;
-}
-
-function createFloor(roomGroup: THREE.Group, roomWidth: number, roomDepth: number) {
-    const floorGeometry = new THREE.PlaneGeometry(roomWidth, roomDepth);
-
-    const floorMaterial = new THREE.MeshStandardMaterial({
-        color: 0xacbac1,
-        side: THREE.DoubleSide,
-        roughness: 0.8,
-        metalness: 0.1,
-    });
-    const floor = new THREE.Mesh(floorGeometry, floorMaterial);
-    floor.rotation.x = Math.PI / 2;
-    floor.position.y = 0;
-    floor.castShadow = true;
-    floor.receiveShadow = true;
-    roomGroup.add(floor);
 }

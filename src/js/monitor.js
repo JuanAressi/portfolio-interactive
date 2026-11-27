@@ -1,5 +1,19 @@
 import * as THREE from 'three';
 import { createHorizontalLineLight, createVerticalLineLight } from './lighting.ts';
+import { boxPart, mergeParts, tagMesh } from './geometry-parts.ts';
+import { getSceneMaterials } from './scene-materials.ts';
+
+// Faces no camera pose of the inventory sees (`npm run scene:profile -- --inventory-only`, widest
+// viewport included). The monitor neither casts nor receives shadows, so nothing but the camera
+// looks at them and they can go (the walls and the desk can't: see room.ts).
+const TOP_BEZEL_OMIT = ['-z'];
+const BOTTOM_BEZEL_OMIT = ['-y', '-z'];
+const SIDE_BEZEL_OMIT = ['+y', '-y', '-z'];
+const STAND_OMIT = ['+y', '-y', '-z'];
+const BASE_OMIT = ['-y', '-z'];
+
+// The monitor is dynamic: its screen lights up and its light moves with it, so none of it is baked.
+const MONITOR_TAG = { bakeGroup: 'monitor', isStatic: false };
 
 export function createMonitor(x = 0, y = 0, z = 0) {
     const monitorGroup = new THREE.Group();
@@ -26,60 +40,41 @@ export function createMonitor(x = 0, y = 0, z = 0) {
 }
 
 function createBezel(screenWidth, screenHeight, bezelThickness, bezelDepth) {
-    const screenMaterial = new THREE.MeshStandardMaterial({
-        color: 0xa2afb5,
-        metalness: 0.2,
-        roughness: 0.7,
-    });
-    const bezelMaterial = new THREE.MeshStandardMaterial({
-        color: 0xacbac1,
-        metalness: 0.1,
-        roughness: 0.8,
-        envMapIntensity: 0.2,
-    });
     const bezelGroup = new THREE.Group();
 
-    createTopBezel(
-        screenWidth,
-        screenHeight,
-        bezelThickness,
-        bezelDepth,
-        bezelGroup,
-        bezelMaterial
+    // The four bezel pieces are one mesh: they share a material. The panel that used to sit behind
+    // the screen is never in view (the screen plane covers it) and cast no shadow, so it is gone.
+    const bezelMesh = new THREE.Mesh(
+        mergeParts([
+            boxPart({
+                size: [screenWidth + bezelThickness * 2, bezelThickness, bezelDepth / 2],
+                position: [0, screenHeight / 2 + bezelThickness / 2 - 0.04, -bezelDepth / 2],
+                omit: TOP_BEZEL_OMIT,
+            }),
+            boxPart({
+                size: [screenWidth + bezelThickness * 2, bezelThickness * 8, bezelDepth / 2],
+                position: [0, -screenHeight / 2 - bezelThickness / 2 - 0.04, -bezelDepth / 2],
+                omit: BOTTOM_BEZEL_OMIT,
+            }),
+            boxPart({
+                size: [bezelThickness, screenHeight, bezelDepth / 2],
+                position: [-screenWidth / 2 - bezelThickness / 2, -0.04, -bezelDepth / 2],
+                omit: SIDE_BEZEL_OMIT,
+            }),
+            boxPart({
+                size: [bezelThickness, screenHeight, bezelDepth / 2],
+                position: [screenWidth / 2 + bezelThickness / 2, -0.04, -bezelDepth / 2],
+                omit: SIDE_BEZEL_OMIT,
+            }),
+        ]),
+        getSceneMaterials().matte
     );
-    createBottomBezel(
-        screenWidth,
-        screenHeight,
-        bezelThickness,
-        bezelDepth,
-        bezelGroup,
-        bezelMaterial
-    );
-    createLeftBezel(
-        screenWidth,
-        screenHeight,
-        bezelThickness,
-        bezelDepth,
-        bezelGroup,
-        bezelMaterial
-    );
-    createRightBezel(
-        screenWidth,
-        screenHeight,
-        bezelThickness,
-        bezelDepth,
-        bezelGroup,
-        bezelMaterial
-    );
+    bezelGroup.add(tagMesh(bezelMesh, 'monitor-bezel', MONITOR_TAG));
 
-    const backPanelGeometry = new THREE.BoxGeometry(
-        screenWidth,
-        screenHeight - bezelThickness * 2,
-        bezelThickness
-    );
-    const backPanel = new THREE.Mesh(backPanelGeometry, screenMaterial);
-    backPanel.position.set(0, -0.035, -bezelDepth / 2 - bezelThickness);
-    bezelGroup.add(backPanel);
+    addTopLineLight(screenWidth, screenHeight, bezelDepth, bezelGroup);
+    addBottomLineLight(screenWidth, screenHeight, bezelDepth, bezelGroup);
+    addLeftLineLight(screenWidth, screenHeight, bezelDepth, bezelGroup);
+    addRightLineLight(screenWidth, screenHeight, bezelDepth, bezelGroup);
 
     // Glass aperture between bezels (bottom chin is thicker → shorter than screenHeight).
     const apertureTop = screenHeight / 2 - 0.04;
@@ -89,6 +84,7 @@ function createBezel(screenWidth, screenHeight, bezelThickness, bezelDepth) {
     const screenZ = -bezelDepth / 2 + 0.002;
 
     const screenGeometry = new THREE.PlaneGeometry(screenWidth, apertureHeight);
+    screenGeometry.deleteAttribute('uv');
     // Dark "powered off" screen; the CSS3D job card fades in over it to simulate power-on.
     const screenMeshMaterial = new THREE.MeshBasicMaterial({
         color: 0x141414,
@@ -96,7 +92,7 @@ function createBezel(screenWidth, screenHeight, bezelThickness, bezelDepth) {
     });
     const screen = new THREE.Mesh(screenGeometry, screenMeshMaterial);
     screen.position.set(0, apertureY, screenZ);
-    bezelGroup.add(screen);
+    bezelGroup.add(tagMesh(screen, 'monitor-screen', MONITOR_TAG));
     bezelGroup.userData.screen = screen;
     bezelGroup.userData.screenSize = { width: screenWidth, height: apertureHeight };
 
@@ -108,6 +104,7 @@ function createBezel(screenWidth, screenHeight, bezelThickness, bezelDepth) {
     // wall behind it. Aimed forward (+z, away from the wall, toward the desk/viewer)
     // with a capped `distance` so it can't reach past the desk it's meant to light.
     const glowLight = new THREE.SpotLight(0xf5f5f0, 0, 1.2, Math.PI / 3, 0.5, 2);
+    glowLight.name = 'monitor-glow-light';
     glowLight.position.set(0, apertureY, screenZ + 0.01);
     const glowTarget = new THREE.Object3D();
     glowTarget.position.set(0, apertureY, screenZ + 0.5);
@@ -121,23 +118,7 @@ function createBezel(screenWidth, screenHeight, bezelThickness, bezelDepth) {
     return bezelGroup;
 }
 
-function createTopBezel(
-    screenWidth,
-    screenHeight,
-    bezelThickness,
-    bezelDepth,
-    bezelGroup,
-    bezelMaterial
-) {
-    const topBezelGeometry = new THREE.BoxGeometry(
-        screenWidth + bezelThickness * 2,
-        bezelThickness,
-        bezelDepth / 2
-    );
-    const topBezel = new THREE.Mesh(topBezelGeometry, bezelMaterial);
-    topBezel.position.set(0, screenHeight / 2 + bezelThickness / 2 - 0.04, -bezelDepth / 2);
-    bezelGroup.add(topBezel);
-
+function addTopLineLight(screenWidth, screenHeight, bezelDepth, bezelGroup) {
     const topLineLight = createHorizontalLineLight(
         0,
         screenHeight / 2 - 0.04,
@@ -148,26 +129,11 @@ function createTopBezel(
         0xacbac1
     );
     topLineLight.lookAt(0, screenHeight / 2 - 0.04, 0.1);
+    topLineLight.name = 'monitor-line-light-top';
     bezelGroup.add(topLineLight);
 }
 
-function createBottomBezel(
-    screenWidth,
-    screenHeight,
-    bezelThickness,
-    bezelDepth,
-    bezelGroup,
-    bezelMaterial
-) {
-    const bottomBezelGeometry = new THREE.BoxGeometry(
-        screenWidth + bezelThickness * 2,
-        bezelThickness * 8,
-        bezelDepth / 2
-    );
-    const bottomBezel = new THREE.Mesh(bottomBezelGeometry, bezelMaterial);
-    bottomBezel.position.set(0, -screenHeight / 2 - bezelThickness / 2 - 0.04, -bezelDepth / 2);
-    bezelGroup.add(bottomBezel);
-
+function addBottomLineLight(screenWidth, screenHeight, bezelDepth, bezelGroup) {
     const bottomLineLight = createHorizontalLineLight(
         0,
         -screenHeight / 2 - 0.022,
@@ -178,22 +144,11 @@ function createBottomBezel(
         0xacbac1
     );
     bottomLineLight.lookAt(0, -screenHeight / 2 - 0.022, 0.1);
+    bottomLineLight.name = 'monitor-line-light-bottom';
     bezelGroup.add(bottomLineLight);
 }
 
-function createLeftBezel(
-    screenWidth,
-    screenHeight,
-    bezelThickness,
-    bezelDepth,
-    bezelGroup,
-    bezelMaterial
-) {
-    const leftBezelGeometry = new THREE.BoxGeometry(bezelThickness, screenHeight, bezelDepth / 2);
-    const leftBezel = new THREE.Mesh(leftBezelGeometry, bezelMaterial);
-    leftBezel.position.set(-screenWidth / 2 - bezelThickness / 2, -0.04, -bezelDepth / 2);
-    bezelGroup.add(leftBezel);
-
+function addLeftLineLight(screenWidth, screenHeight, bezelDepth, bezelGroup) {
     const leftLineLight = createVerticalLineLight(
         -screenWidth / 2 + 0.0001,
         -0.031,
@@ -204,22 +159,11 @@ function createLeftBezel(
         0xacbac1
     );
     leftLineLight.lookAt(-screenWidth / 2 + 0.0001, -0.031, 0.1);
+    leftLineLight.name = 'monitor-line-light-left';
     bezelGroup.add(leftLineLight);
 }
 
-function createRightBezel(
-    screenWidth,
-    screenHeight,
-    bezelThickness,
-    bezelDepth,
-    bezelGroup,
-    bezelMaterial
-) {
-    const rightBezelGeometry = new THREE.BoxGeometry(bezelThickness, screenHeight, bezelDepth / 2);
-    const rightBezel = new THREE.Mesh(rightBezelGeometry, bezelMaterial);
-    rightBezel.position.set(screenWidth / 2 + bezelThickness / 2, -0.04, -bezelDepth / 2);
-    bezelGroup.add(rightBezel);
-
+function addRightLineLight(screenWidth, screenHeight, bezelDepth, bezelGroup) {
     const rightLineLight = createVerticalLineLight(
         screenWidth / 2 - 0.0001,
         -0.031,
@@ -230,36 +174,43 @@ function createRightBezel(
         0xacbac1
     );
     rightLineLight.lookAt(screenWidth / 2 - 0.0001, -0.031, 0.1);
+    rightLineLight.name = 'monitor-line-light-right';
     bezelGroup.add(rightLineLight);
 }
 
 function createBase(screenHeight, screenDepth, standWidth, standHeight, bezelThickness) {
-    const standMaterial = new THREE.MeshStandardMaterial({
-        color: 0xacbac1,
-        metalness: 0.3,
-        roughness: 0.6,
-    });
-    const bezelMaterial = new THREE.MeshStandardMaterial({
-        color: 0xacbac1,
-        metalness: 0.1,
-        roughness: 0.9,
-    });
+    const { stand: standMaterial, base: baseMaterial } = getSceneMaterials();
     const baseGroup = new THREE.Group();
 
-    const standGeometry = new THREE.BoxGeometry(standWidth, standHeight, bezelThickness * 2);
-    const stand = new THREE.Mesh(standGeometry, standMaterial);
-    stand.position.set(0, -screenHeight / 2 - standHeight / 2, -screenDepth * 2.5);
-    baseGroup.add(stand);
+    const stand = new THREE.Mesh(
+        mergeParts([
+            boxPart({
+                size: [standWidth, standHeight, bezelThickness * 2],
+                position: [0, -screenHeight / 2 - standHeight / 2, -screenDepth * 2.5],
+                omit: STAND_OMIT,
+            }),
+        ]),
+        standMaterial
+    );
+    baseGroup.add(tagMesh(stand, 'monitor-stand', MONITOR_TAG));
 
-    const baseGeometry = new THREE.BoxGeometry(0.1, 0.005, 0.025);
-    const base = new THREE.Mesh(baseGeometry, bezelMaterial);
-    base.position.set(0, -screenHeight / 2 - 0.2 / 2, -screenDepth);
-    baseGroup.add(base);
-
-    const verticalBaseGeometry = new THREE.BoxGeometry(0.1, 0.025, 0.005);
-    const verticalBase = new THREE.Mesh(verticalBaseGeometry, bezelMaterial);
-    verticalBase.position.set(0, -screenHeight / 2 - 0.19 / 2, -0.015);
-    baseGroup.add(verticalBase);
+    // The foot and the neck share a material, so they are one mesh.
+    const foot = new THREE.Mesh(
+        mergeParts([
+            boxPart({
+                size: [0.1, 0.005, 0.025],
+                position: [0, -screenHeight / 2 - 0.2 / 2, -screenDepth],
+                omit: BASE_OMIT,
+            }),
+            boxPart({
+                size: [0.1, 0.025, 0.005],
+                position: [0, -screenHeight / 2 - 0.19 / 2, -0.015],
+                omit: BASE_OMIT,
+            }),
+        ]),
+        baseMaterial
+    );
+    baseGroup.add(tagMesh(foot, 'monitor-base', MONITOR_TAG));
 
     return baseGroup;
 }

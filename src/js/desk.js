@@ -1,48 +1,63 @@
 import * as THREE from 'three';
 import { loadModel } from './load-model.ts';
+import { boxPart, mergeParts, plainGeometry, tagMesh } from './geometry-parts.ts';
+import { getSceneMaterials } from './scene-materials.ts';
 
 const doorHandle = new URL('../assets/models/door_handle.glb', import.meta.url).href;
 
-function createDoorHandleInstance(model, x, y, z, rotationX = 0, rotationY = 0, rotationZ = 0) {
-    const instance = model.clone();
-    instance.position.set(x, y, z);
-    instance.scale.set(0.05, 0.05, 0.05);
-    instance.rotation.set(rotationX, rotationY, rotationZ);
+// Door handles per drawer: [x, y, z, rotationX, rotationY, rotationZ] in the drawer's space.
+const HANDLE_SCALE = 0.05;
+const LEFT_DRAWER_HANDLES = [
+    [-0.095, 0.59, 0.261, Math.PI / 2, 0, -Math.PI / 2],
+    [0.135, 0.175, 0.261, 0, Math.PI / 2, 0],
+];
+const RIGHT_DRAWER_HANDLES = [
+    [-0.095, 0.59, 0.261, Math.PI / 2, 0, -Math.PI / 2],
+    [-0.085, 0.175, 0.261, 0, Math.PI / 2, 0],
+];
 
-    instance.traverse(child => {
-        if (child.isMesh) {
-            child.castShadow = true;
-            child.receiveShadow = true;
+// The pieces keep all their faces, the ones no camera ever sees included: the lights draw their
+// shadow maps with the faces turned away from them, so dropping those moves the shadows on the desk
+// and the keyboard (measured: docs/perf/geometry-notes.md).
 
-            if (child.material) {
-                const newMaterial = new THREE.MeshStandardMaterial({
-                    color: 0xacbac1,
-                    metalness: 0.1,
-                    roughness: 0.8,
-                });
-                newMaterial.needsUpdate = true;
-                child.material = newMaterial;
-            }
-        }
-    });
-
-    return instance;
-}
-
-// Resolves once the handles are on the desk. A failed load leaves the desk without them.
+// The handles are one mesh: each copy of the model is moved into the desk's space and merged with
+// the rest, so four handles of four parts each cost one draw call. Resolves once they are on the
+// desk. A failed load leaves the desk without them.
 export async function addDoorHandles(desk) {
     const { leftCajonera, rightCajonera } = desk.userData;
 
     try {
         const model = await loadModel(doorHandle);
-        leftCajonera.add(
-            createDoorHandleInstance(model, -0.095, 0.59, 0.261, Math.PI / 2, 0, -Math.PI / 2),
-            createDoorHandleInstance(model, 0.135, 0.175, 0.261, 0, Math.PI / 2, 0)
-        );
-        rightCajonera.add(
-            createDoorHandleInstance(model, -0.095, 0.59, 0.261, Math.PI / 2, 0, -Math.PI / 2),
-            createDoorHandleInstance(model, -0.085, 0.175, 0.261, 0, Math.PI / 2, 0)
-        );
+        const { matte } = getSceneMaterials();
+        const geometries = [];
+
+        for (const [drawer, handles] of [
+            [leftCajonera, LEFT_DRAWER_HANDLES],
+            [rightCajonera, RIGHT_DRAWER_HANDLES],
+        ]) {
+            // A stand-in for the drawer: only its position matters to the handles' matrices.
+            const space = new THREE.Group();
+            space.position.copy(drawer.position);
+
+            for (const [x, y, z, rotationX, rotationY, rotationZ] of handles) {
+                const instance = model.clone();
+                instance.position.set(x, y, z);
+                instance.scale.setScalar(HANDLE_SCALE);
+                instance.rotation.set(rotationX, rotationY, rotationZ);
+                space.add(instance);
+            }
+
+            space.updateMatrixWorld(true);
+            space.traverse(child => {
+                if (!child.isMesh) return;
+                geometries.push(plainGeometry(child.geometry).applyMatrix4(child.matrixWorld));
+            });
+        }
+
+        const handles = new THREE.Mesh(mergeParts(geometries), matte);
+        handles.castShadow = true;
+        handles.receiveShadow = true;
+        desk.add(tagMesh(handles, 'desk-handles', { bakeGroup: 'desk', isStatic: true }));
     } catch (error) {
         console.error('Error cargando door handle:', error);
     }
@@ -50,9 +65,6 @@ export async function addDoorHandles(desk) {
 
 export function createDesk(x = 0, y = 0, z = 0) {
     const deskGroup = new THREE.Group();
-
-    // Desk material.
-    const deskMaterial = new THREE.MeshStandardMaterial({ color: 0xacbac1 });
 
     // Dimensions of the drawer.
     const cajoneraWidth = 0.4;
@@ -70,130 +82,98 @@ export function createDesk(x = 0, y = 0, z = 0) {
     const deskTopWidth = cajoneraWidth + cajoneraSpacing + 2 * edgeOverhang;
     const deskTopDepth = cajoneraDepth + 2 * edgeOverhang;
 
-    // Function to create a drawer.
-    function createCajonera(position) {
-        const cajoneraGroup = new THREE.Group();
+    const upperDoorHeight = cajoneraHeight / 3;
+    const lowerDoorHeight = cajoneraHeight * (2 / 3);
 
+    // The pieces of one drawer, as [size, position] in its own space.
+    const drawerPieces = [
         // Left wall.
-        const leftWallGeometry = new THREE.BoxGeometry(
-            cajoneraThickness,
-            cajoneraHeight,
-            cajoneraDepth
-        );
-        const leftWall = new THREE.Mesh(leftWallGeometry, deskMaterial);
-        leftWall.position.set(-cajoneraWidth / 2 + cajoneraThickness / 2, cajoneraHeight / 2, 0);
-        leftWall.castShadow = true;
-        leftWall.receiveShadow = true;
-        cajoneraGroup.add(leftWall);
-
+        [
+            [cajoneraThickness, cajoneraHeight, cajoneraDepth],
+            [-cajoneraWidth / 2 + cajoneraThickness / 2, cajoneraHeight / 2, 0],
+        ],
         // Right wall.
-        const rightWallGeometry = new THREE.BoxGeometry(
-            cajoneraThickness,
-            cajoneraHeight,
-            cajoneraDepth
-        );
-        const rightWall = new THREE.Mesh(rightWallGeometry, deskMaterial);
-        rightWall.position.set(cajoneraWidth / 2 - cajoneraThickness / 2, cajoneraHeight / 2, 0);
-        rightWall.castShadow = true;
-        rightWall.receiveShadow = true;
-        cajoneraGroup.add(rightWall);
-
+        [
+            [cajoneraThickness, cajoneraHeight, cajoneraDepth],
+            [cajoneraWidth / 2 - cajoneraThickness / 2, cajoneraHeight / 2, 0],
+        ],
         // Back wall.
-        const backWallGeometry = new THREE.BoxGeometry(
-            cajoneraWidth,
-            cajoneraHeight,
-            cajoneraThickness
-        );
-        const backWall = new THREE.Mesh(backWallGeometry, deskMaterial);
-        backWall.position.set(0, cajoneraHeight / 2, -cajoneraDepth / 2 + cajoneraThickness / 2);
-        backWall.castShadow = true;
-        backWall.receiveShadow = true;
-        cajoneraGroup.add(backWall);
-
+        [
+            [cajoneraWidth, cajoneraHeight, cajoneraThickness],
+            [0, cajoneraHeight / 2, -cajoneraDepth / 2 + cajoneraThickness / 2],
+        ],
         // Floor of the drawer.
-        const dividerMaterial = new THREE.MeshStandardMaterial({ color: 0xacbac1 });
-        const floorGeometry = new THREE.BoxGeometry(
-            cajoneraWidth - edgeOverhang * 2,
-            cajoneraThickness,
-            cajoneraDepth
-        );
-        const floor = new THREE.Mesh(floorGeometry, dividerMaterial);
-        floor.position.set(0, cajoneraThickness / 2 + 0.02, 0);
-        floor.castShadow = true;
-        floor.receiveShadow = true;
-        cajoneraGroup.add(floor);
-
+        [
+            [cajoneraWidth - edgeOverhang * 2, cajoneraThickness, cajoneraDepth],
+            [0, cajoneraThickness / 2 + 0.02, 0],
+        ],
         // Upper door (1/3 height).
-        const upperDoorHeight = cajoneraHeight / 3;
-        const doorMaterial = new THREE.MeshStandardMaterial({ color: 0xacbac1 });
-        const upperDoorGeometry = new THREE.BoxGeometry(
-            cajoneraWidth - edgeOverhang * 2.5,
-            upperDoorHeight - edgeOverhang * 2,
-            cajoneraThickness
-        );
-        const upperDoor = new THREE.Mesh(upperDoorGeometry, doorMaterial);
-        upperDoor.position.set(
-            0,
-            cajoneraHeight - (upperDoorHeight + edgeOverhang / 2) / 2,
-            cajoneraDepth / 2 - cajoneraThickness / 2
-        );
-        upperDoor.castShadow = true;
-        upperDoor.receiveShadow = true;
-        cajoneraGroup.add(upperDoor);
-
+        [
+            [
+                cajoneraWidth - edgeOverhang * 2.5,
+                upperDoorHeight - edgeOverhang * 2,
+                cajoneraThickness,
+            ],
+            [
+                0,
+                cajoneraHeight - (upperDoorHeight + edgeOverhang / 2) / 2,
+                cajoneraDepth / 2 - cajoneraThickness / 2,
+            ],
+        ],
         // Lower door (2/3 height).
-        const lowerDoorHeight = cajoneraHeight * (2 / 3);
-        const lowerDoorGeometry = new THREE.BoxGeometry(
-            cajoneraWidth - edgeOverhang * 2.5,
-            lowerDoorHeight - edgeOverhang * 3,
-            cajoneraThickness
-        );
-        const lowerDoor = new THREE.Mesh(lowerDoorGeometry, doorMaterial);
-        lowerDoor.position.set(
-            0,
-            (lowerDoorHeight + edgeOverhang * 1.5) / 2,
-            cajoneraDepth / 2 - cajoneraThickness / 2
-        );
-        lowerDoor.castShadow = true;
-        lowerDoor.receiveShadow = true;
-        cajoneraGroup.add(lowerDoor);
-
+        [
+            [
+                cajoneraWidth - edgeOverhang * 2.5,
+                lowerDoorHeight - edgeOverhang * 3,
+                cajoneraThickness,
+            ],
+            [
+                0,
+                (lowerDoorHeight + edgeOverhang * 1.5) / 2,
+                cajoneraDepth / 2 - cajoneraThickness / 2,
+            ],
+        ],
         // Horizontal divider (1/3 from top).
-        const dividerGeometry = new THREE.BoxGeometry(
-            cajoneraWidth - edgeOverhang * 2,
-            cajoneraThickness,
-            cajoneraDepth
+        [
+            [cajoneraWidth - edgeOverhang * 2, cajoneraThickness, cajoneraDepth],
+            [0, cajoneraHeight * (2 / 3), 0],
+        ],
+    ];
+
+    function drawerGeometries(drawerPosition) {
+        return drawerPieces.map(([size, [px, py, pz]]) =>
+            boxPart({
+                size,
+                position: [drawerPosition.x + px, drawerPosition.y + py, drawerPosition.z + pz],
+            })
         );
-        const divider = new THREE.Mesh(dividerGeometry, dividerMaterial);
-        divider.position.set(0, cajoneraHeight * (2 / 3), 0);
-        divider.castShadow = true;
-        divider.receiveShadow = true;
-        cajoneraGroup.add(divider);
-
-        // Position the drawer.
-        cajoneraGroup.position.copy(position);
-
-        return cajoneraGroup;
     }
 
-    // Create left drawer.
-    const leftCajonera = createCajonera(new THREE.Vector3(x - cajoneraSpacing / 2, y, z));
+    // The drawers keep their own groups, empty: the handles are positioned relative to them.
+    const leftCajonera = new THREE.Group();
+    leftCajonera.position.set(x - cajoneraSpacing / 2, y, z);
     deskGroup.add(leftCajonera);
 
-    // Create right drawer.
-    const rightCajonera = createCajonera(new THREE.Vector3(x + cajoneraSpacing / 2, y, z));
+    const rightCajonera = new THREE.Group();
+    rightCajonera.position.set(x + cajoneraSpacing / 2, y, z);
     deskGroup.add(rightCajonera);
 
-    // Create desk top.
-    const deskTopGeometry = new THREE.BoxGeometry(deskTopWidth, 0.05, deskTopDepth);
-    const deskTop = new THREE.Mesh(
-        deskTopGeometry,
-        new THREE.MeshStandardMaterial({ color: 0xacbac1 })
+    const deskTop = boxPart({
+        size: [deskTopWidth, 0.05, deskTopDepth],
+        position: [x, cajoneraHeight, z],
+    });
+
+    const body = new THREE.Mesh(
+        mergeParts([
+            ...drawerGeometries(leftCajonera.position),
+            ...drawerGeometries(rightCajonera.position),
+            deskTop,
+        ]),
+        getSceneMaterials().paint
     );
-    deskTop.position.set(x, cajoneraHeight, z);
-    deskTop.castShadow = true;
-    deskTop.receiveShadow = true;
-    deskGroup.add(deskTop);
+    body.castShadow = true;
+    body.receiveShadow = true;
+    deskGroup.add(tagMesh(body, 'desk-body', { bakeGroup: 'desk', isStatic: true }));
 
     deskGroup.userData.leftCajonera = leftCajonera;
     deskGroup.userData.rightCajonera = rightCajonera;
