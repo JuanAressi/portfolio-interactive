@@ -47,9 +47,15 @@ export interface PerfRecording {
     frames: FrameInfo[];
 }
 
-// Viewports the camera path is checked from. The touch one never sways with the mouse.
+// Viewports the camera path is checked from. The touch one never sways with the mouse. The
+// ultrawide one has the widest frustum a visitor is likely to have: anything the narrower
+// viewports see is inside it, so it is what makes a face safe to delete.
+// Meshes with fewer indices than this are checked triangle by triangle.
+const FACE_LEVEL_MAX_INDICES = 1500;
+
 const INVENTORY_VIEWPORTS = [
     { name: 'desktop', aspect: 1440 / 900, mouse: [-1, 0, 1] },
+    { name: 'ultrawide', aspect: 2560 / 1080, mouse: [-1, 0, 1] },
     { name: 'mobile', aspect: 390 / 844, mouse: [0] },
 ];
 
@@ -57,10 +63,8 @@ function originOfMesh(mesh: THREE.Mesh, { room, desk, monitor }: PerfDebugContex
     for (let node: THREE.Object3D | null = mesh; node; node = node.parent) {
         if (node === room) return 'room.ts';
         if (node === monitor) return 'monitor.js';
-        if (node === desk) {
-            // The handles on the drawers are the one GLB hanging from the desk.
-            return mesh.geometry.type === 'BufferGeometry' ? 'desk.js (door_handle.glb)' : 'desk.js';
-        }
+        // The handles on the drawers are the one GLB merged into the desk.
+        if (node === desk) return mesh.name === 'desk-handles' ? 'desk.js (door_handle.glb)' : 'desk.js';
         if (node.parent?.type === 'Scene' && node.name) return `${node.name}.glb`;
     }
     return 'unknown';
@@ -171,8 +175,11 @@ export function installPerfDebug({ renderer, scene, camera, parts }: PerfDebugCo
                 fov: camera.fov,
                 near: camera.near,
                 far: camera.far,
-                // Everything built here is a handful of boxes; the GLBs are checked per mesh.
-                faceLevel: mesh => mesh.geometry.type !== 'BufferGeometry',
+                // What is built here is a few hundred triangles; the models are checked per mesh.
+                faceLevel: mesh =>
+                    mesh.userData.bakeGroup !== 'props' &&
+                    (mesh.geometry.getIndex()?.count ?? mesh.geometry.getAttribute('position').count) <
+                        FACE_LEVEL_MAX_INDICES,
                 originOf: mesh => originOfMesh(mesh, parts),
             });
         },
