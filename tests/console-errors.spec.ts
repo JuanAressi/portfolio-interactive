@@ -1,5 +1,6 @@
 import { expect, test } from '@playwright/test';
 import { collectConsoleProblems } from './console-problems.ts';
+import { waitForSceneRendered } from './scene-ready.ts';
 
 const VIEWPORTS = [
     { width: 1440, height: 900 },
@@ -19,7 +20,7 @@ for (const route of ROUTES) {
             await page.goto(route);
             // The scene loads after the first paint and its models after that; networkidle covers
             // their progress and error paths.
-            await expect(page.locator('#canvas-container canvas')).toHaveClass(/is-rendered/);
+            await waitForSceneRendered(page);
             await page.waitForLoadState('networkidle');
 
             expect(problems).toEqual([]);

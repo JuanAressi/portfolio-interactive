@@ -1,5 +1,6 @@
 import { expect, test, type Page, type Route } from '@playwright/test';
 import { collectConsoleProblems } from './console-problems.ts';
+import { waitForSceneRendered } from './scene-ready.ts';
 
 // One pixel either side would do. Same height and nearly the same width keep the same objects in
 // the camera, so a change in draw calls can only come from the tier.
@@ -109,7 +110,7 @@ test.describe('scene tier', () => {
     test('a phone gets the light scene: 1x, no shadows, no chair', async ({ page }) => {
         await page.setViewportSize({ width: 390, height: 844 });
         await page.goto('./');
-        await expect(page.locator(CANVAS)).toHaveClass(/is-rendered/);
+        await waitForSceneRendered(page);
         await expect.poll(() => requestedModels.length).toBe(4);
         await page.waitForLoadState('networkidle');
 
@@ -121,7 +122,7 @@ test.describe('scene tier', () => {
     test('a short desktop window counts as mobile', async ({ page }) => {
         await page.setViewportSize({ width: 1280, height: 599 });
         await page.goto('./');
-        await expect(page.locator(CANVAS)).toHaveClass(/is-rendered/);
+        await waitForSceneRendered(page);
         await expect.poll(() => requestedModels.length).toBe(4);
 
         expect(chairRequests()).toBe(0);
@@ -130,7 +131,7 @@ test.describe('scene tier', () => {
     async function openScene(page: Page, viewport: { width: number; height: number }) {
         await page.setViewportSize(viewport);
         await page.goto('./');
-        await expect(page.locator(CANVAS)).toHaveClass(/is-rendered/);
+        await waitForSceneRendered(page);
         await page.waitForLoadState('networkidle');
     }
 
@@ -193,7 +194,7 @@ test.describe('scene tier', () => {
         await expect.poll(() => chair).toBeDefined();
         await page.setViewportSize({ ...FULL, width: FULL.width + 40 });
         await page.setViewportSize(FULL);
-        await expect(page.locator(CANVAS)).toHaveClass(/is-rendered/);
+        await waitForSceneRendered(page);
 
         await chair!.continue();
         await page.waitForLoadState('networkidle');

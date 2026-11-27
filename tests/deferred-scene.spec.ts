@@ -1,4 +1,5 @@
 import { expect, test, type Page, type Route } from '@playwright/test';
+import { waitForSceneRendered } from './scene-ready.ts';
 
 const THREE_CHUNK = '**/_astro/three.*.js';
 const CANVAS = '#canvas-container canvas';
@@ -43,14 +44,14 @@ test('nav and language menu work while three.js is still on its way', async ({ p
 
     await expect(page.locator(CANVAS)).toHaveCount(0);
     await three!.continue();
-    await expect(page.locator(CANVAS)).toHaveClass(/is-rendered/);
+    await waitForSceneRendered(page);
 });
 
 test('the scene is requested after the first paint', async ({ page }) => {
     await recordFirstDraw(page);
     await page.setViewportSize({ width: 1280, height: 800 });
     await page.goto('./');
-    await expect(page.locator(CANVAS)).toHaveClass(/is-rendered/);
+    await waitForSceneRendered(page);
 
     const { firstPaint, sceneRequest } = await page.evaluate(() => ({
         firstPaint: performance.getEntriesByName('first-paint')[0].startTime,
@@ -74,7 +75,7 @@ for (const { reducedMotion, duration } of [
             await page.goto('./');
 
             const canvas = page.locator(CANVAS);
-            await expect(canvas).toHaveClass(/is-rendered/);
+            await waitForSceneRendered(page);
             await expect(canvas).toHaveCSS('transition-duration', duration);
             await expect(canvas).toHaveCSS('opacity', '1');
 
