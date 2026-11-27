@@ -1,0 +1,2524 @@
+{
+  "generatedAt": "2026-11-27T20:47:58.315Z",
+  "environment": {
+    "renderers": {
+      "gl-egl": "ANGLE (Intel, Mesa Intel(R) Iris(R) Xe Graphics (ADL GT2), OpenGL ES 3.2)",
+      "swiftshader": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)"
+    },
+    "chromium": "Chromium 149.0.7827.55",
+    "node": "v24.19.0",
+    "commit": "847e1bc"
+  },
+  "config": {
+    "modes": [
+      "gl-egl",
+      "swiftshader"
+    ],
+    "scrollMs": 5000,
+    "mobileCpuThrottle": 4
+  },
+  "results": [
+    {
+      "mode": "gl-egl",
+      "viewport": "desktop",
+      "section": "home",
+      "calls": 201,
+      "triangles": 95776,
+      "peak": {
+        "calls": 204,
+        "triangles": 95812
+      },
+      "main": {
+        "calls": 13,
+        "triangles": 136
+      },
+      "shadow": {
+        "calls": 188,
+        "triangles": 95640
+      },
+      "textures": 3,
+      "geometries": 53,
+      "programs": 4,
+      "renders": 290,
+      "frameMs": {
+        "n": 290,
+        "p50": 16.69999999999709,
+        "p95": 16.80000000000291,
+        "max": 66.60000000000582
+      },
+      "renderMs": {
+        "n": 290,
+        "p50": 2.4500000029802322,
+        "p95": 9.899999998509884,
+        "max": 24.299999997019768
+      },
+      "heapMB": 4.495822906494141
+    },
+    {
+      "mode": "gl-egl",
+      "viewport": "desktop",
+      "section": "work",
+      "calls": 215,
+      "triangles": 103964,
+      "peak": {
+        "calls": 241,
+        "triangles": 115920
+      },
+      "main": {
+        "calls": 27,
+        "triangles": 8324
+      },
+      "shadow": {
+        "calls": 188,
+        "triangles": 95640
+      },
+      "textures": 3,
+      "geometries": 53,
+      "programs": 4,
+      "renders": 294,
+      "frameMs": {
+        "n": 295,
+        "p50": 16.69999999999709,
+        "p95": 16.80000000000291,
+        "max": 33.40000000000873
+      },
+      "renderMs": {
+        "n": 294,
+        "p50": 3.350000001490116,
+        "p95": 11.699999998137354,
+        "max": 21.299999997019768
+      },
+      "heapMB": 4.798770904541016
+    },
+    {
+      "mode": "gl-egl",
+      "viewport": "desktop",
+      "section": "about",
+      "calls": 259,
+      "triangles": 127610,
+      "peak": {
+        "calls": 259,
+        "triangles": 127610
+      },
+      "main": {
+        "calls": 71,
+        "triangles": 31970
+      },
+      "shadow": {
+        "calls": 188,
+        "triangles": 95640
+      },
+      "textures": 3,
+      "geometries": 53,
+      "programs": 4,
+      "renders": 285,
+      "frameMs": {
+        "n": 285,
+        "p50": 16.69999999999709,
+        "p95": 29.999999999991456,
+        "max": 50
+      },
+      "renderMs": {
+        "n": 285,
+        "p50": 6.100000001490116,
+        "p95": 14.539999996125701,
+        "max": 27.80000000447035
+      },
+      "heapMB": 4.861885070800781
+    },
+    {
+      "mode": "gl-egl",
+      "viewport": "desktop",
+      "section": "contact",
+      "calls": 259,
+      "triangles": 127610,
+      "peak": {
+        "calls": 259,
+        "triangles": 127610
+      },
+      "main": {
+        "calls": 71,
+        "triangles": 31970
+      },
+      "shadow": {
+        "calls": 188,
+        "triangles": 95640
+      },
+      "textures": 3,
+      "geometries": 53,
+      "programs": 4,
+      "renders": 279,
+      "frameMs": {
+        "n": 280,
+        "p50": 16.69999999999709,
+        "p95": 33.30000000000291,
+        "max": 50.09999999999127
+      },
+      "renderMs": {
+        "n": 279,
+        "p50": 5.800000004470348,
+        "p95": 16.700000002980232,
+        "max": 34.29999999701977
+      },
+      "heapMB": 4.869365692138672
+    },
+    {
+      "mode": "gl-egl",
+      "viewport": "mobile",
+      "section": "home",
+      "calls": 9,
+      "triangles": 88,
+      "peak": {
+        "calls": 12,
+        "triangles": 124
+      },
+      "main": {
+        "calls": 9,
+        "triangles": 88
+      },
+      "shadow": {
+        "calls": 0,
+        "triangles": 0
+      },
+      "textures": 0,
+      "geometries": 12,
+      "programs": 3,
+      "renders": 256,
+      "frameMs": {
+        "n": 258,
+        "p50": 16.700000000000728,
+        "p95": 33.399999999999636,
+        "max": 50.100000000000364
+      },
+      "renderMs": {
+        "n": 256,
+        "p50": 4,
+        "p95": 14.12499999627471,
+        "max": 23.900000005960464
+      },
+      "heapMB": 3.998363494873047
+    },
+    {
+      "mode": "gl-egl",
+      "viewport": "mobile",
+      "section": "work",
+      "calls": 20,
+      "triangles": 8194,
+      "peak": {
+        "calls": 32,
+        "triangles": 8518
+      },
+      "main": {
+        "calls": 20,
+        "triangles": 8194
+      },
+      "shadow": {
+        "calls": 0,
+        "triangles": 0
+      },
+      "textures": 0,
+      "geometries": 25,
+      "programs": 3,
+      "renders": 233,
+      "frameMs": {
+        "n": 234,
+        "p50": 16.700000000000728,
+        "p95": 39.21000000000085,
+        "max": 83.40000000000146
+      },
+      "renderMs": {
+        "n": 233,
+        "p50": 3.3000000044703484,
+        "p95": 16.599999998509873,
+        "max": 48.30000000447035
+      },
+      "heapMB": 4.165599822998047
+    },
+    {
+      "mode": "gl-egl",
+      "viewport": "mobile",
+      "section": "about",
+      "calls": 39,
+      "triangles": 16570,
+      "peak": {
+        "calls": 47,
+        "triangles": 18762
+      },
+      "main": {
+        "calls": 39,
+        "triangles": 16570
+      },
+      "shadow": {
+        "calls": 0,
+        "triangles": 0
+      },
+      "textures": 0,
+      "geometries": 40,
+      "programs": 3,
+      "renders": 236,
+      "frameMs": {
+        "n": 236,
+        "p50": 16.700000000000728,
+        "p95": 37.55000000000109,
+        "max": 83.29999999999927
+      },
+      "renderMs": {
+        "n": 236,
+        "p50": 4.350000001490116,
+        "p95": 20.325000002980232,
+        "max": 41
+      },
+      "heapMB": 4.275432586669922
+    },
+    {
+      "mode": "gl-egl",
+      "viewport": "mobile",
+      "section": "contact",
+      "calls": 42,
+      "triangles": 16606,
+      "peak": {
+        "calls": 47,
+        "triangles": 18762
+      },
+      "main": {
+        "calls": 42,
+        "triangles": 16606
+      },
+      "shadow": {
+        "calls": 0,
+        "triangles": 0
+      },
+      "textures": 0,
+      "geometries": 40,
+      "programs": 3,
+      "renders": 235,
+      "frameMs": {
+        "n": 236,
+        "p50": 16.700000000000728,
+        "p95": 33.400000000001455,
+        "max": 50.10000000000218
+      },
+      "renderMs": {
+        "n": 235,
+        "p50": 5.4000000059604645,
+        "p95": 17.509999997913827,
+        "max": 30.099999994039536
+      },
+      "heapMB": 4.301586151123047
+    },
+    {
+      "mode": "swiftshader",
+      "viewport": "desktop",
+      "section": "home",
+      "calls": 198,
+      "triangles": 95740,
+      "peak": {
+        "calls": 199,
+        "triangles": 95752
+      },
+      "main": {
+        "calls": 10,
+        "triangles": 100
+      },
+      "shadow": {
+        "calls": 188,
+        "triangles": 95640
+      },
+      "textures": 3,
+      "geometries": 51,
+      "programs": 4,
+      "renders": 17,
+      "frameMs": {
+        "n": 18,
+        "p50": 16.75000000000091,
+        "p95": 3789.0499999999925,
+        "max": 8449.6
+      },
+      "renderMs": {
+        "n": 17,
+        "p50": 6.200000002980232,
+        "p95": 16.280000001192082,
+        "max": 27
+      },
+      "heapMB": 4.092082977294922
+    },
+    {
+      "mode": "swiftshader",
+      "viewport": "desktop",
+      "section": "work",
+      "calls": 203.5,
+      "triangles": 95806,
+      "peak": {
+        "calls": 204,
+        "triangles": 95812
+      },
+      "main": {
+        "calls": 15.5,
+        "triangles": 166
+      },
+      "shadow": {
+        "calls": 188,
+        "triangles": 95640
+      },
+      "textures": 3,
+      "geometries": 53,
+      "programs": 4,
+      "renders": 2,
+      "frameMs": {
+        "n": 1,
+        "p50": 4466.5,
+        "p95": 4466.5,
+        "max": 4466.5
+      },
+      "renderMs": {
+        "n": 2,
+        "p50": 11.300000000745058,
+        "p95": 15.889999998733401,
+        "max": 16.399999998509884
+      },
+      "heapMB": 3.9758033752441406
+    },
+    {
+      "mode": "swiftshader",
+      "viewport": "desktop",
+      "section": "about",
+      "calls": 208,
+      "triangles": 95860,
+      "peak": {
+        "calls": 214,
+        "triangles": 103906
+      },
+      "main": {
+        "calls": 20,
+        "triangles": 220
+      },
+      "shadow": {
+        "calls": 188,
+        "triangles": 95640
+      },
+      "textures": 3,
+      "geometries": 53,
+      "programs": 4,
+      "renders": 3,
+      "frameMs": {
+        "n": 2,
+        "p50": 1408.25,
+        "p95": 2630.6749999999997,
+        "max": 2766.5
+      },
+      "renderMs": {
+        "n": 3,
+        "p50": 2,
+        "p95": 38,
+        "max": 42
+      },
+      "heapMB": 4.032878875732422
+    },
+    {
+      "mode": "swiftshader",
+      "viewport": "desktop",
+      "section": "contact",
+      "calls": 236,
+      "triangles": 115860,
+      "peak": {
+        "calls": 242,
+        "triangles": 115932
+      },
+      "main": {
+        "calls": 48,
+        "triangles": 20220
+      },
+      "shadow": {
+        "calls": 188,
+        "triangles": 95640
+      },
+      "textures": 3,
+      "geometries": 53,
+      "programs": 4,
+      "renders": 3,
+      "frameMs": {
+        "n": 2,
+        "p50": 1324.9500000000007,
+        "p95": 2352.4349999999986,
+        "max": 2466.5999999999985
+      },
+      "renderMs": {
+        "n": 3,
+        "p50": 12.5,
+        "p95": 16.280000002682208,
+        "max": 16.700000002980232
+      },
+      "heapMB": 4.180381774902344
+    },
+    {
+      "mode": "swiftshader",
+      "viewport": "mobile",
+      "section": "home",
+      "calls": 8,
+      "triangles": 76,
+      "peak": {
+        "calls": 11,
+        "triangles": 112
+      },
+      "main": {
+        "calls": 8,
+        "triangles": 76
+      },
+      "shadow": {
+        "calls": 0,
+        "triangles": 0
+      },
+      "textures": 0,
+      "geometries": 11,
+      "programs": 3,
+      "renders": 35,
+      "frameMs": {
+        "n": 36,
+        "p50": 41.69999999999982,
+        "p95": 616.7250000000001,
+        "max": 916.7000000000007
+      },
+      "renderMs": {
+        "n": 35,
+        "p50": 6.899999998509884,
+        "p95": 41.20000000298023,
+        "max": 43.399999998509884
+      },
+      "heapMB": 3.768260955810547
+    },
+    {
+      "mode": "swiftshader",
+      "viewport": "mobile",
+      "section": "work",
+      "calls": 12,
+      "triangles": 124,
+      "peak": {
+        "calls": 21,
+        "triangles": 8206
+      },
+      "main": {
+        "calls": 12,
+        "triangles": 124
+      },
+      "shadow": {
+        "calls": 0,
+        "triangles": 0
+      },
+      "textures": 0,
+      "geometries": 21,
+      "programs": 3,
+      "renders": 13,
+      "frameMs": {
+        "n": 12,
+        "p50": 383.3000000000011,
+        "p95": 678.3549999999984,
+        "max": 733.2999999999993
+      },
+      "renderMs": {
+        "n": 13,
+        "p50": 6.399999998509884,
+        "p95": 67.7399999976158,
+        "max": 77.09999999403954
+      },
+      "heapMB": 3.862934112548828
+    },
+    {
+      "mode": "swiftshader",
+      "viewport": "mobile",
+      "section": "about",
+      "calls": 32.5,
+      "triangles": 8524,
+      "peak": {
+        "calls": 39,
+        "triangles": 16570
+      },
+      "main": {
+        "calls": 32.5,
+        "triangles": 8524
+      },
+      "shadow": {
+        "calls": 0,
+        "triangles": 0
+      },
+      "textures": 0,
+      "geometries": 32,
+      "programs": 3,
+      "renders": 8,
+      "frameMs": {
+        "n": 7,
+        "p50": 633.2999999999993,
+        "p95": 1039.9999999999998,
+        "max": 1100
+      },
+      "renderMs": {
+        "n": 8,
+        "p50": 10.5,
+        "p95": 115.60499999709423,
+        "max": 151.19999999552965
+      },
+      "heapMB": 3.9554100036621094
+    },
+    {
+      "mode": "swiftshader",
+      "viewport": "mobile",
+      "section": "contact",
+      "calls": 41,
+      "triangles": 16594,
+      "peak": {
+        "calls": 42,
+        "triangles": 16606
+      },
+      "main": {
+        "calls": 41,
+        "triangles": 16594
+      },
+      "shadow": {
+        "calls": 0,
+        "triangles": 0
+      },
+      "textures": 0,
+      "geometries": 35,
+      "programs": 3,
+      "renders": 13,
+      "frameMs": {
+        "n": 12,
+        "p50": 475,
+        "p95": 753.3149999999994,
+        "max": 900
+      },
+      "renderMs": {
+        "n": 13,
+        "p50": 7.199999995529652,
+        "p95": 28.640000002086154,
+        "max": 32.899999998509884
+      },
+      "heapMB": 4.026142120361328
+    }
+  ],
+  "inventory": {
+    "meshes": [
+      {
+        "path": "Group[0]/Mesh[0]",
+        "origin": "room.ts",
+        "geometry": "BoxGeometry",
+        "vertices": 24,
+        "triangles": 12,
+        "material": {
+          "id": "m1",
+          "type": "MeshStandardMaterial",
+          "color": "#acbac1",
+          "side": "double",
+          "metalness": 0,
+          "roughness": 1
+        },
+        "castShadow": true,
+        "receiveShadow": true,
+        "visible": true,
+        "seenFrom": {
+          "desktop": true,
+          "mobile": false
+        },
+        "faces": {
+          "hiddenTriangles": 11,
+          "hiddenFaces": [
+            "+x",
+            "-x",
+            "+y",
+            "-y",
+            "-z"
+          ]
+        }
+      },
+      {
+        "path": "Group[0]/Group[1]/Mesh[0]",
+        "origin": "room.ts",
+        "geometry": "BoxGeometry",
+        "vertices": 24,
+        "triangles": 12,
+        "material": {
+          "id": "m2",
+          "type": "MeshStandardMaterial",
+          "color": "#acbac1",
+          "side": "double",
+          "metalness": 0,
+          "roughness": 1
+        },
+        "castShadow": true,
+        "receiveShadow": true,
+        "visible": true,
+        "seenFrom": {
+          "desktop": false,
+          "mobile": false
+        },
+        "faces": {
+          "hiddenTriangles": 12,
+          "hiddenFaces": [
+            "+x",
+            "-x",
+            "+y",
+            "-y",
+            "+z",
+            "-z"
+          ]
+        }
+      },
+      {
+        "path": "Group[0]/Group[1]/Mesh[1]",
+        "origin": "room.ts",
+        "geometry": "BoxGeometry",
+        "vertices": 24,
+        "triangles": 12,
+        "material": {
+          "id": "m2",
+          "type": "MeshStandardMaterial",
+          "color": "#acbac1",
+          "side": "double",
+          "metalness": 0,
+          "roughness": 1
+        },
+        "castShadow": true,
+        "receiveShadow": true,
+        "visible": true,
+        "seenFrom": {
+          "desktop": false,
+          "mobile": false
+        },
+        "faces": {
+          "hiddenTriangles": 12,
+          "hiddenFaces": [
+            "+x",
+            "-x",
+            "+y",
+            "-y",
+            "+z",
+            "-z"
+          ]
+        }
+      },
+      {
+        "path": "Group[0]/Group[1]/Mesh[2]",
+        "origin": "room.ts",
+        "geometry": "BoxGeometry",
+        "vertices": 24,
+        "triangles": 12,
+        "material": {
+          "id": "m2",
+          "type": "MeshStandardMaterial",
+          "color": "#acbac1",
+          "side": "double",
+          "metalness": 0,
+          "roughness": 1
+        },
+        "castShadow": true,
+        "receiveShadow": true,
+        "visible": true,
+        "seenFrom": {
+          "desktop": true,
+          "mobile": false
+        },
+        "faces": {
+          "hiddenTriangles": 11,
+          "hiddenFaces": [
+            "+x",
+            "-x",
+            "+y",
+            "-y",
+            "+z"
+          ]
+        }
+      },
+      {
+        "path": "Group[0]/Mesh[2]",
+        "origin": "room.ts",
+        "geometry": "BoxGeometry",
+        "vertices": 24,
+        "triangles": 12,
+        "material": {
+          "id": "m2",
+          "type": "MeshStandardMaterial",
+          "color": "#acbac1",
+          "side": "double",
+          "metalness": 0,
+          "roughness": 1
+        },
+        "castShadow": true,
+        "receiveShadow": true,
+        "visible": true,
+        "seenFrom": {
+          "desktop": false,
+          "mobile": false
+        },
+        "faces": {
+          "hiddenTriangles": 12,
+          "hiddenFaces": [
+            "+x",
+            "-x",
+            "+y",
+            "-y",
+            "+z",
+            "-z"
+          ]
+        }
+      },
+      {
+        "path": "Group[0]/Mesh[3]",
+        "origin": "room.ts",
+        "geometry": "PlaneGeometry",
+        "vertices": 4,
+        "triangles": 2,
+        "material": {
+          "id": "m3",
+          "type": "MeshStandardMaterial",
+          "color": "#acbac1",
+          "side": "double",
+          "metalness": 0.1,
+          "roughness": 0.8
+        },
+        "castShadow": true,
+        "receiveShadow": true,
+        "visible": true,
+        "seenFrom": {
+          "desktop": true,
+          "mobile": false
+        },
+        "faces": {
+          "hiddenTriangles": 1,
+          "hiddenFaces": []
+        }
+      },
+      {
+        "path": "Group[1]/Group[0]/Mesh[0]",
+        "origin": "desk.js",
+        "geometry": "BoxGeometry",
+        "vertices": 24,
+        "triangles": 12,
+        "material": {
+          "id": "m4",
+          "type": "MeshStandardMaterial",
+          "color": "#acbac1",
+          "side": "front",
+          "metalness": 0,
+          "roughness": 1
+        },
+        "castShadow": true,
+        "receiveShadow": true,
+        "visible": true,
+        "seenFrom": {
+          "desktop": true,
+          "mobile": false
+        },
+        "faces": {
+          "hiddenTriangles": 10,
+          "hiddenFaces": [
+            "+x",
+            "-x",
+            "+y",
+            "-y",
+            "-z"
+          ]
+        }
+      },
+      {
+        "path": "Group[1]/Group[0]/Mesh[1]",
+        "origin": "desk.js",
+        "geometry": "BoxGeometry",
+        "vertices": 24,
+        "triangles": 12,
+        "material": {
+          "id": "m4",
+          "type": "MeshStandardMaterial",
+          "color": "#acbac1",
+          "side": "front",
+          "metalness": 0,
+          "roughness": 1
+        },
+        "castShadow": true,
+        "receiveShadow": true,
+        "visible": true,
+        "seenFrom": {
+          "desktop": true,
+          "mobile": true
+        },
+        "faces": {
+          "hiddenTriangles": 8,
+          "hiddenFaces": [
+            "-x",
+            "+y",
+            "-y",
+            "-z"
+          ]
+        }
+      },
+      {
+        "path": "Group[1]/Group[0]/Mesh[2]",
+        "origin": "desk.js",
+        "geometry": "BoxGeometry",
+        "vertices": 24,
+        "triangles": 12,
+        "material": {
+          "id": "m4",
+          "type": "MeshStandardMaterial",
+          "color": "#acbac1",
+          "side": "front",
+          "metalness": 0,
+          "roughness": 1
+        },
+        "castShadow": true,
+        "receiveShadow": true,
+        "visible": true,
+        "seenFrom": {
+          "desktop": true,
+          "mobile": true
+        },
+        "faces": {
+          "hiddenTriangles": 10,
+          "hiddenFaces": [
+            "-x",
+            "+y",
+            "-y",
+            "+z",
+            "-z"
+          ]
+        }
+      },
+      {
+        "path": "Group[1]/Group[0]/Mesh[3]",
+        "origin": "desk.js",
+        "geometry": "BoxGeometry",
+        "vertices": 24,
+        "triangles": 12,
+        "material": {
+          "id": "m5",
+          "type": "MeshStandardMaterial",
+          "color": "#acbac1",
+          "side": "front",
+          "metalness": 0,
+          "roughness": 1
+        },
+        "castShadow": true,
+        "receiveShadow": true,
+        "visible": true,
+        "seenFrom": {
+          "desktop": true,
+          "mobile": true
+        },
+        "faces": {
+          "hiddenTriangles": 10,
+          "hiddenFaces": [
+            "+x",
+            "-x",
+            "+y",
+            "-y",
+            "-z"
+          ]
+        }
+      },
+      {
+        "path": "Group[1]/Group[0]/Mesh[4]",
+        "origin": "desk.js",
+        "geometry": "BoxGeometry",
+        "vertices": 24,
+        "triangles": 12,
+        "material": {
+          "id": "m6",
+          "type": "MeshStandardMaterial",
+          "color": "#acbac1",
+          "side": "front",
+          "metalness": 0,
+          "roughness": 1
+        },
+        "castShadow": true,
+        "receiveShadow": true,
+        "visible": true,
+        "seenFrom": {
+          "desktop": true,
+          "mobile": false
+        },
+        "faces": {
+          "hiddenTriangles": 8,
+          "hiddenFaces": [
+            "-x",
+            "+y",
+            "-y",
+            "-z"
+          ]
+        }
+      },
+      {
+        "path": "Group[1]/Group[0]/Mesh[5]",
+        "origin": "desk.js",
+        "geometry": "BoxGeometry",
+        "vertices": 24,
+        "triangles": 12,
+        "material": {
+          "id": "m6",
+          "type": "MeshStandardMaterial",
+          "color": "#acbac1",
+          "side": "front",
+          "metalness": 0,
+          "roughness": 1
+        },
+        "castShadow": true,
+        "receiveShadow": true,
+        "visible": true,
+        "seenFrom": {
+          "desktop": true,
+          "mobile": true
+        },
+        "faces": {
+          "hiddenTriangles": 7,
+          "hiddenFaces": [
+            "-x",
+            "-y",
+            "-z"
+          ]
+        }
+      },
+      {
+        "path": "Group[1]/Group[0]/Mesh[6]",
+        "origin": "desk.js",
+        "geometry": "BoxGeometry",
+        "vertices": 24,
+        "triangles": 12,
+        "material": {
+          "id": "m5",
+          "type": "MeshStandardMaterial",
+          "color": "#acbac1",
+          "side": "front",
+          "metalness": 0,
+          "roughness": 1
+        },
+        "castShadow": true,
+        "receiveShadow": true,
+        "visible": true,
+        "seenFrom": {
+          "desktop": true,
+          "mobile": false
+        },
+        "faces": {
+          "hiddenTriangles": 10,
+          "hiddenFaces": [
+            "+x",
+            "-x",
+            "+y",
+            "-y",
+            "-z"
+          ]
+        }
+      },
+      {
+        "path": "Group[1]/Group[0]/Sketchfab_Scene/Object_4",
+        "origin": "desk.js (door_handle.glb)",
+        "geometry": "BufferGeometry",
+        "vertices": 1276,
+        "triangles": 1098,
+        "material": {
+          "id": "m7",
+          "type": "MeshStandardMaterial",
+          "color": "#acbac1",
+          "side": "front",
+          "metalness": 0.1,
+          "roughness": 0.8
+        },
+        "castShadow": true,
+        "receiveShadow": true,
+        "visible": true,
+        "seenFrom": {
+          "desktop": true,
+          "mobile": false
+        }
+      },
+      {
+        "path": "Group[1]/Group[0]/Sketchfab_Scene/Object_6",
+        "origin": "desk.js (door_handle.glb)",
+        "geometry": "BufferGeometry",
+        "vertices": 337,
+        "triangles": 424,
+        "material": {
+          "id": "m8",
+          "type": "MeshStandardMaterial",
+          "color": "#acbac1",
+          "side": "front",
+          "metalness": 0.1,
+          "roughness": 0.8
+        },
+        "castShadow": true,
+        "receiveShadow": true,
+        "visible": true,
+        "seenFrom": {
+          "desktop": true,
+          "mobile": false
+        }
+      },
+      {
+        "path": "Group[1]/Group[0]/Sketchfab_Scene/Object_8",
+        "origin": "desk.js (door_handle.glb)",
+        "geometry": "BufferGeometry",
+        "vertices": 414,
+        "triangles": 501,
+        "material": {
+          "id": "m9",
+          "type": "MeshStandardMaterial",
+          "color": "#acbac1",
+          "side": "front",
+          "metalness": 0.1,
+          "roughness": 0.8
+        },
+        "castShadow": true,
+        "receiveShadow": true,
+        "visible": true,
+        "seenFrom": {
+          "desktop": true,
+          "mobile": false
+        }
+      },
+      {
+        "path": "Group[1]/Group[0]/Sketchfab_Scene/Object_10",
+        "origin": "desk.js (door_handle.glb)",
+        "geometry": "BufferGeometry",
+        "vertices": 121,
+        "triangles": 121,
+        "material": {
+          "id": "m10",
+          "type": "MeshStandardMaterial",
+          "color": "#acbac1",
+          "side": "front",
+          "metalness": 0.1,
+          "roughness": 0.8
+        },
+        "castShadow": true,
+        "receiveShadow": true,
+        "visible": true,
+        "seenFrom": {
+          "desktop": true,
+          "mobile": false
+        }
+      },
+      {
+        "path": "Group[1]/Group[0]/Sketchfab_Scene/Object_4",
+        "origin": "desk.js (door_handle.glb)",
+        "geometry": "BufferGeometry",
+        "vertices": 1276,
+        "triangles": 1098,
+        "material": {
+          "id": "m11",
+          "type": "MeshStandardMaterial",
+          "color": "#acbac1",
+          "side": "front",
+          "metalness": 0.1,
+          "roughness": 0.8
+        },
+        "castShadow": true,
+        "receiveShadow": true,
+        "visible": true,
+        "seenFrom": {
+          "desktop": true,
+          "mobile": false
+        }
+      },
+      {
+        "path": "Group[1]/Group[0]/Sketchfab_Scene/Object_6",
+        "origin": "desk.js (door_handle.glb)",
+        "geometry": "BufferGeometry",
+        "vertices": 337,
+        "triangles": 424,
+        "material": {
+          "id": "m12",
+          "type": "MeshStandardMaterial",
+          "color": "#acbac1",
+          "side": "front",
+          "metalness": 0.1,
+          "roughness": 0.8
+        },
+        "castShadow": true,
+        "receiveShadow": true,
+        "visible": true,
+        "seenFrom": {
+          "desktop": true,
+          "mobile": false
+        }
+      },
+      {
+        "path": "Group[1]/Group[0]/Sketchfab_Scene/Object_8",
+        "origin": "desk.js (door_handle.glb)",
+        "geometry": "BufferGeometry",
+        "vertices": 414,
+        "triangles": 501,
+        "material": {
+          "id": "m13",
+          "type": "MeshStandardMaterial",
+          "color": "#acbac1",
+          "side": "front",
+          "metalness": 0.1,
+          "roughness": 0.8
+        },
+        "castShadow": true,
+        "receiveShadow": true,
+        "visible": true,
+        "seenFrom": {
+          "desktop": true,
+          "mobile": false
+        }
+      },
+      {
+        "path": "Group[1]/Group[0]/Sketchfab_Scene/Object_10",
+        "origin": "desk.js (door_handle.glb)",
+        "geometry": "BufferGeometry",
+        "vertices": 121,
+        "triangles": 121,
+        "material": {
+          "id": "m14",
+          "type": "MeshStandardMaterial",
+          "color": "#acbac1",
+          "side": "front",
+          "metalness": 0.1,
+          "roughness": 0.8
+        },
+        "castShadow": true,
+        "receiveShadow": true,
+        "visible": true,
+        "seenFrom": {
+          "desktop": true,
+          "mobile": false
+        }
+      },
+      {
+        "path": "Group[1]/Group[1]/Mesh[0]",
+        "origin": "desk.js",
+        "geometry": "BoxGeometry",
+        "vertices": 24,
+        "triangles": 12,
+        "material": {
+          "id": "m4",
+          "type": "MeshStandardMaterial",
+          "color": "#acbac1",
+          "side": "front",
+          "metalness": 0,
+          "roughness": 1
+        },
+        "castShadow": true,
+        "receiveShadow": true,
+        "visible": true,
+        "seenFrom": {
+          "desktop": true,
+          "mobile": true
+        },
+        "faces": {
+          "hiddenTriangles": 8,
+          "hiddenFaces": [
+            "+x",
+            "+y",
+            "-y",
+            "-z"
+          ]
+        }
+      },
+      {
+        "path": "Group[1]/Group[1]/Mesh[1]",
+        "origin": "desk.js",
+        "geometry": "BoxGeometry",
+        "vertices": 24,
+        "triangles": 12,
+        "material": {
+          "id": "m4",
+          "type": "MeshStandardMaterial",
+          "color": "#acbac1",
+          "side": "front",
+          "metalness": 0,
+          "roughness": 1
+        },
+        "castShadow": true,
+        "receiveShadow": true,
+        "visible": true,
+        "seenFrom": {
+          "desktop": true,
+          "mobile": false
+        },
+        "faces": {
+          "hiddenTriangles": 10,
+          "hiddenFaces": [
+            "+x",
+            "-x",
+            "+y",
+            "-y",
+            "-z"
+          ]
+        }
+      },
+      {
+        "path": "Group[1]/Group[1]/Mesh[2]",
+        "origin": "desk.js",
+        "geometry": "BoxGeometry",
+        "vertices": 24,
+        "triangles": 12,
+        "material": {
+          "id": "m4",
+          "type": "MeshStandardMaterial",
+          "color": "#acbac1",
+          "side": "front",
+          "metalness": 0,
+          "roughness": 1
+        },
+        "castShadow": true,
+        "receiveShadow": true,
+        "visible": true,
+        "seenFrom": {
+          "desktop": true,
+          "mobile": true
+        },
+        "faces": {
+          "hiddenTriangles": 10,
+          "hiddenFaces": [
+            "+x",
+            "+y",
+            "-y",
+            "+z",
+            "-z"
+          ]
+        }
+      },
+      {
+        "path": "Group[1]/Group[1]/Mesh[3]",
+        "origin": "desk.js",
+        "geometry": "BoxGeometry",
+        "vertices": 24,
+        "triangles": 12,
+        "material": {
+          "id": "m15",
+          "type": "MeshStandardMaterial",
+          "color": "#acbac1",
+          "side": "front",
+          "metalness": 0,
+          "roughness": 1
+        },
+        "castShadow": true,
+        "receiveShadow": true,
+        "visible": true,
+        "seenFrom": {
+          "desktop": true,
+          "mobile": false
+        },
+        "faces": {
+          "hiddenTriangles": 11,
+          "hiddenFaces": [
+            "+x",
+            "-x",
+            "+y",
+            "-y",
+            "-z"
+          ]
+        }
+      },
+      {
+        "path": "Group[1]/Group[1]/Mesh[4]",
+        "origin": "desk.js",
+        "geometry": "BoxGeometry",
+        "vertices": 24,
+        "triangles": 12,
+        "material": {
+          "id": "m16",
+          "type": "MeshStandardMaterial",
+          "color": "#acbac1",
+          "side": "front",
+          "metalness": 0,
+          "roughness": 1
+        },
+        "castShadow": true,
+        "receiveShadow": true,
+        "visible": true,
+        "seenFrom": {
+          "desktop": true,
+          "mobile": false
+        },
+        "faces": {
+          "hiddenTriangles": 8,
+          "hiddenFaces": [
+            "+x",
+            "+y",
+            "-y",
+            "-z"
+          ]
+        }
+      },
+      {
+        "path": "Group[1]/Group[1]/Mesh[5]",
+        "origin": "desk.js",
+        "geometry": "BoxGeometry",
+        "vertices": 24,
+        "triangles": 12,
+        "material": {
+          "id": "m16",
+          "type": "MeshStandardMaterial",
+          "color": "#acbac1",
+          "side": "front",
+          "metalness": 0,
+          "roughness": 1
+        },
+        "castShadow": true,
+        "receiveShadow": true,
+        "visible": true,
+        "seenFrom": {
+          "desktop": true,
+          "mobile": false
+        },
+        "faces": {
+          "hiddenTriangles": 7,
+          "hiddenFaces": [
+            "+x",
+            "-y",
+            "-z"
+          ]
+        }
+      },
+      {
+        "path": "Group[1]/Group[1]/Mesh[6]",
+        "origin": "desk.js",
+        "geometry": "BoxGeometry",
+        "vertices": 24,
+        "triangles": 12,
+        "material": {
+          "id": "m15",
+          "type": "MeshStandardMaterial",
+          "color": "#acbac1",
+          "side": "front",
+          "metalness": 0,
+          "roughness": 1
+        },
+        "castShadow": true,
+        "receiveShadow": true,
+        "visible": true,
+        "seenFrom": {
+          "desktop": true,
+          "mobile": false
+        },
+        "faces": {
+          "hiddenTriangles": 10,
+          "hiddenFaces": [
+            "+x",
+            "-x",
+            "+y",
+            "-y",
+            "-z"
+          ]
+        }
+      },
+      {
+        "path": "Group[1]/Group[1]/Sketchfab_Scene/Object_4",
+        "origin": "desk.js (door_handle.glb)",
+        "geometry": "BufferGeometry",
+        "vertices": 1276,
+        "triangles": 1098,
+        "material": {
+          "id": "m17",
+          "type": "MeshStandardMaterial",
+          "color": "#acbac1",
+          "side": "front",
+          "metalness": 0.1,
+          "roughness": 0.8
+        },
+        "castShadow": true,
+        "receiveShadow": true,
+        "visible": true,
+        "seenFrom": {
+          "desktop": true,
+          "mobile": false
+        }
+      },
+      {
+        "path": "Group[1]/Group[1]/Sketchfab_Scene/Object_6",
+        "origin": "desk.js (door_handle.glb)",
+        "geometry": "BufferGeometry",
+        "vertices": 337,
+        "triangles": 424,
+        "material": {
+          "id": "m18",
+          "type": "MeshStandardMaterial",
+          "color": "#acbac1",
+          "side": "front",
+          "metalness": 0.1,
+          "roughness": 0.8
+        },
+        "castShadow": true,
+        "receiveShadow": true,
+        "visible": true,
+        "seenFrom": {
+          "desktop": true,
+          "mobile": false
+        }
+      },
+      {
+        "path": "Group[1]/Group[1]/Sketchfab_Scene/Object_8",
+        "origin": "desk.js (door_handle.glb)",
+        "geometry": "BufferGeometry",
+        "vertices": 414,
+        "triangles": 501,
+        "material": {
+          "id": "m19",
+          "type": "MeshStandardMaterial",
+          "color": "#acbac1",
+          "side": "front",
+          "metalness": 0.1,
+          "roughness": 0.8
+        },
+        "castShadow": true,
+        "receiveShadow": true,
+        "visible": true,
+        "seenFrom": {
+          "desktop": true,
+          "mobile": false
+        }
+      },
+      {
+        "path": "Group[1]/Group[1]/Sketchfab_Scene/Object_10",
+        "origin": "desk.js (door_handle.glb)",
+        "geometry": "BufferGeometry",
+        "vertices": 121,
+        "triangles": 121,
+        "material": {
+          "id": "m20",
+          "type": "MeshStandardMaterial",
+          "color": "#acbac1",
+          "side": "front",
+          "metalness": 0.1,
+          "roughness": 0.8
+        },
+        "castShadow": true,
+        "receiveShadow": true,
+        "visible": true,
+        "seenFrom": {
+          "desktop": true,
+          "mobile": false
+        }
+      },
+      {
+        "path": "Group[1]/Group[1]/Sketchfab_Scene/Object_4",
+        "origin": "desk.js (door_handle.glb)",
+        "geometry": "BufferGeometry",
+        "vertices": 1276,
+        "triangles": 1098,
+        "material": {
+          "id": "m21",
+          "type": "MeshStandardMaterial",
+          "color": "#acbac1",
+          "side": "front",
+          "metalness": 0.1,
+          "roughness": 0.8
+        },
+        "castShadow": true,
+        "receiveShadow": true,
+        "visible": true,
+        "seenFrom": {
+          "desktop": false,
+          "mobile": false
+        }
+      },
+      {
+        "path": "Group[1]/Group[1]/Sketchfab_Scene/Object_6",
+        "origin": "desk.js (door_handle.glb)",
+        "geometry": "BufferGeometry",
+        "vertices": 337,
+        "triangles": 424,
+        "material": {
+          "id": "m22",
+          "type": "MeshStandardMaterial",
+          "color": "#acbac1",
+          "side": "front",
+          "metalness": 0.1,
+          "roughness": 0.8
+        },
+        "castShadow": true,
+        "receiveShadow": true,
+        "visible": true,
+        "seenFrom": {
+          "desktop": true,
+          "mobile": false
+        }
+      },
+      {
+        "path": "Group[1]/Group[1]/Sketchfab_Scene/Object_8",
+        "origin": "desk.js (door_handle.glb)",
+        "geometry": "BufferGeometry",
+        "vertices": 414,
+        "triangles": 501,
+        "material": {
+          "id": "m23",
+          "type": "MeshStandardMaterial",
+          "color": "#acbac1",
+          "side": "front",
+          "metalness": 0.1,
+          "roughness": 0.8
+        },
+        "castShadow": true,
+        "receiveShadow": true,
+        "visible": true,
+        "seenFrom": {
+          "desktop": true,
+          "mobile": false
+        }
+      },
+      {
+        "path": "Group[1]/Group[1]/Sketchfab_Scene/Object_10",
+        "origin": "desk.js (door_handle.glb)",
+        "geometry": "BufferGeometry",
+        "vertices": 121,
+        "triangles": 121,
+        "material": {
+          "id": "m24",
+          "type": "MeshStandardMaterial",
+          "color": "#acbac1",
+          "side": "front",
+          "metalness": 0.1,
+          "roughness": 0.8
+        },
+        "castShadow": true,
+        "receiveShadow": true,
+        "visible": true,
+        "seenFrom": {
+          "desktop": false,
+          "mobile": false
+        }
+      },
+      {
+        "path": "Group[1]/Mesh[2]",
+        "origin": "desk.js",
+        "geometry": "BoxGeometry",
+        "vertices": 24,
+        "triangles": 12,
+        "material": {
+          "id": "m25",
+          "type": "MeshStandardMaterial",
+          "color": "#acbac1",
+          "side": "front",
+          "metalness": 0,
+          "roughness": 1
+        },
+        "castShadow": true,
+        "receiveShadow": true,
+        "visible": true,
+        "seenFrom": {
+          "desktop": true,
+          "mobile": true
+        },
+        "faces": {
+          "hiddenTriangles": 8,
+          "hiddenFaces": [
+            "+x",
+            "-x",
+            "-y",
+            "-z"
+          ]
+        }
+      },
+      {
+        "path": "Group[2]/Group[0]/Mesh[0]",
+        "origin": "monitor.js",
+        "geometry": "BoxGeometry",
+        "vertices": 24,
+        "triangles": 12,
+        "material": {
+          "id": "m26",
+          "type": "MeshStandardMaterial",
+          "color": "#acbac1",
+          "side": "front",
+          "metalness": 0.1,
+          "roughness": 0.8
+        },
+        "castShadow": false,
+        "receiveShadow": false,
+        "visible": true,
+        "seenFrom": {
+          "desktop": true,
+          "mobile": true
+        },
+        "faces": {
+          "hiddenTriangles": 2,
+          "hiddenFaces": [
+            "-z"
+          ]
+        }
+      },
+      {
+        "path": "Group[2]/Group[0]/Mesh[2]",
+        "origin": "monitor.js",
+        "geometry": "BoxGeometry",
+        "vertices": 24,
+        "triangles": 12,
+        "material": {
+          "id": "m26",
+          "type": "MeshStandardMaterial",
+          "color": "#acbac1",
+          "side": "front",
+          "metalness": 0.1,
+          "roughness": 0.8
+        },
+        "castShadow": false,
+        "receiveShadow": false,
+        "visible": true,
+        "seenFrom": {
+          "desktop": true,
+          "mobile": true
+        },
+        "faces": {
+          "hiddenTriangles": 4,
+          "hiddenFaces": [
+            "-y",
+            "-z"
+          ]
+        }
+      },
+      {
+        "path": "Group[2]/Group[0]/Mesh[4]",
+        "origin": "monitor.js",
+        "geometry": "BoxGeometry",
+        "vertices": 24,
+        "triangles": 12,
+        "material": {
+          "id": "m26",
+          "type": "MeshStandardMaterial",
+          "color": "#acbac1",
+          "side": "front",
+          "metalness": 0.1,
+          "roughness": 0.8
+        },
+        "castShadow": false,
+        "receiveShadow": false,
+        "visible": true,
+        "seenFrom": {
+          "desktop": true,
+          "mobile": true
+        },
+        "faces": {
+          "hiddenTriangles": 6,
+          "hiddenFaces": [
+            "+y",
+            "-y",
+            "-z"
+          ]
+        }
+      },
+      {
+        "path": "Group[2]/Group[0]/Mesh[6]",
+        "origin": "monitor.js",
+        "geometry": "BoxGeometry",
+        "vertices": 24,
+        "triangles": 12,
+        "material": {
+          "id": "m26",
+          "type": "MeshStandardMaterial",
+          "color": "#acbac1",
+          "side": "front",
+          "metalness": 0.1,
+          "roughness": 0.8
+        },
+        "castShadow": false,
+        "receiveShadow": false,
+        "visible": true,
+        "seenFrom": {
+          "desktop": true,
+          "mobile": true
+        },
+        "faces": {
+          "hiddenTriangles": 6,
+          "hiddenFaces": [
+            "+y",
+            "-y",
+            "-z"
+          ]
+        }
+      },
+      {
+        "path": "Group[2]/Group[0]/Mesh[8]",
+        "origin": "monitor.js",
+        "geometry": "BoxGeometry",
+        "vertices": 24,
+        "triangles": 12,
+        "material": {
+          "id": "m27",
+          "type": "MeshStandardMaterial",
+          "color": "#a2afb5",
+          "side": "front",
+          "metalness": 0.2,
+          "roughness": 0.7
+        },
+        "castShadow": false,
+        "receiveShadow": false,
+        "visible": true,
+        "seenFrom": {
+          "desktop": false,
+          "mobile": false
+        },
+        "faces": {
+          "hiddenTriangles": 12,
+          "hiddenFaces": [
+            "+x",
+            "-x",
+            "+y",
+            "-y",
+            "+z",
+            "-z"
+          ]
+        }
+      },
+      {
+        "path": "Group[2]/Group[0]/Mesh[9]",
+        "origin": "monitor.js",
+        "geometry": "PlaneGeometry",
+        "vertices": 4,
+        "triangles": 2,
+        "material": {
+          "id": "m28",
+          "type": "MeshBasicMaterial",
+          "color": "#141414",
+          "side": "front",
+          "metalness": null,
+          "roughness": null
+        },
+        "castShadow": false,
+        "receiveShadow": false,
+        "visible": true,
+        "seenFrom": {
+          "desktop": true,
+          "mobile": true
+        },
+        "faces": {
+          "hiddenTriangles": 0,
+          "hiddenFaces": []
+        }
+      },
+      {
+        "path": "Group[2]/Group[1]/Mesh[0]",
+        "origin": "monitor.js",
+        "geometry": "BoxGeometry",
+        "vertices": 24,
+        "triangles": 12,
+        "material": {
+          "id": "m29",
+          "type": "MeshStandardMaterial",
+          "color": "#acbac1",
+          "side": "front",
+          "metalness": 0.3,
+          "roughness": 0.6
+        },
+        "castShadow": false,
+        "receiveShadow": false,
+        "visible": true,
+        "seenFrom": {
+          "desktop": true,
+          "mobile": true
+        },
+        "faces": {
+          "hiddenTriangles": 6,
+          "hiddenFaces": [
+            "+y",
+            "-y",
+            "-z"
+          ]
+        }
+      },
+      {
+        "path": "Group[2]/Group[1]/Mesh[1]",
+        "origin": "monitor.js",
+        "geometry": "BoxGeometry",
+        "vertices": 24,
+        "triangles": 12,
+        "material": {
+          "id": "m30",
+          "type": "MeshStandardMaterial",
+          "color": "#acbac1",
+          "side": "front",
+          "metalness": 0.1,
+          "roughness": 0.9
+        },
+        "castShadow": false,
+        "receiveShadow": false,
+        "visible": true,
+        "seenFrom": {
+          "desktop": true,
+          "mobile": true
+        },
+        "faces": {
+          "hiddenTriangles": 4,
+          "hiddenFaces": [
+            "-y",
+            "-z"
+          ]
+        }
+      },
+      {
+        "path": "Group[2]/Group[1]/Mesh[2]",
+        "origin": "monitor.js",
+        "geometry": "BoxGeometry",
+        "vertices": 24,
+        "triangles": 12,
+        "material": {
+          "id": "m30",
+          "type": "MeshStandardMaterial",
+          "color": "#acbac1",
+          "side": "front",
+          "metalness": 0.1,
+          "roughness": 0.9
+        },
+        "castShadow": false,
+        "receiveShadow": false,
+        "visible": true,
+        "seenFrom": {
+          "desktop": true,
+          "mobile": true
+        },
+        "faces": {
+          "hiddenTriangles": 4,
+          "hiddenFaces": [
+            "-y",
+            "-z"
+          ]
+        }
+      },
+      {
+        "path": "keyboard/GLTF_SceneRootNode/Cube001_22/Object_68",
+        "origin": "keyboard.glb",
+        "geometry": "BufferGeometry",
+        "vertices": 60,
+        "triangles": 30,
+        "material": {
+          "id": "m31",
+          "type": "MeshStandardMaterial",
+          "color": "#acbac1",
+          "side": "double",
+          "metalness": 0,
+          "roughness": 0.5
+        },
+        "castShadow": true,
+        "receiveShadow": true,
+        "visible": true,
+        "seenFrom": {
+          "desktop": true,
+          "mobile": true
+        }
+      },
+      {
+        "path": "keyboard/GLTF_SceneRootNode/Cube007_28/Object_80",
+        "origin": "keyboard.glb",
+        "geometry": "BufferGeometry",
+        "vertices": 64,
+        "triangles": 30,
+        "material": {
+          "id": "m32",
+          "type": "MeshStandardMaterial",
+          "color": "#acbac1",
+          "side": "double",
+          "metalness": 0,
+          "roughness": 0.5
+        },
+        "castShadow": true,
+        "receiveShadow": true,
+        "visible": true,
+        "seenFrom": {
+          "desktop": true,
+          "mobile": true
+        }
+      },
+      {
+        "path": "keyboard/GLTF_SceneRootNode/Cube051_52/Object_128",
+        "origin": "keyboard.glb",
+        "geometry": "BufferGeometry",
+        "vertices": 60,
+        "triangles": 30,
+        "material": {
+          "id": "m31",
+          "type": "MeshStandardMaterial",
+          "color": "#acbac1",
+          "side": "double",
+          "metalness": 0,
+          "roughness": 0.5
+        },
+        "castShadow": true,
+        "receiveShadow": true,
+        "visible": true,
+        "seenFrom": {
+          "desktop": true,
+          "mobile": true
+        }
+      },
+      {
+        "path": "keyboard/GLTF_SceneRootNode/Cube053_54/Object_132",
+        "origin": "keyboard.glb",
+        "geometry": "BufferGeometry",
+        "vertices": 60,
+        "triangles": 30,
+        "material": {
+          "id": "m31",
+          "type": "MeshStandardMaterial",
+          "color": "#acbac1",
+          "side": "double",
+          "metalness": 0,
+          "roughness": 0.5
+        },
+        "castShadow": true,
+        "receiveShadow": true,
+        "visible": true,
+        "seenFrom": {
+          "desktop": true,
+          "mobile": true
+        }
+      },
+      {
+        "path": "keyboard/GLTF_SceneRootNode/Cube055_56/Object_136",
+        "origin": "keyboard.glb",
+        "geometry": "BufferGeometry",
+        "vertices": 60,
+        "triangles": 30,
+        "material": {
+          "id": "m31",
+          "type": "MeshStandardMaterial",
+          "color": "#acbac1",
+          "side": "double",
+          "metalness": 0,
+          "roughness": 0.5
+        },
+        "castShadow": true,
+        "receiveShadow": true,
+        "visible": true,
+        "seenFrom": {
+          "desktop": true,
+          "mobile": true
+        }
+      },
+      {
+        "path": "keyboard/GLTF_SceneRootNode/Cube057_58/Object_140",
+        "origin": "keyboard.glb",
+        "geometry": "BufferGeometry",
+        "vertices": 60,
+        "triangles": 30,
+        "material": {
+          "id": "m31",
+          "type": "MeshStandardMaterial",
+          "color": "#acbac1",
+          "side": "double",
+          "metalness": 0,
+          "roughness": 0.5
+        },
+        "castShadow": true,
+        "receiveShadow": true,
+        "visible": true,
+        "seenFrom": {
+          "desktop": true,
+          "mobile": true
+        }
+      },
+      {
+        "path": "keyboard/GLTF_SceneRootNode/Cube062_63/Object_150",
+        "origin": "keyboard.glb",
+        "geometry": "BufferGeometry",
+        "vertices": 60,
+        "triangles": 30,
+        "material": {
+          "id": "m31",
+          "type": "MeshStandardMaterial",
+          "color": "#acbac1",
+          "side": "double",
+          "metalness": 0,
+          "roughness": 0.5
+        },
+        "castShadow": true,
+        "receiveShadow": true,
+        "visible": true,
+        "seenFrom": {
+          "desktop": true,
+          "mobile": true
+        }
+      },
+      {
+        "path": "keyboard/GLTF_SceneRootNode/Cube064_65/Object_154",
+        "origin": "keyboard.glb",
+        "geometry": "BufferGeometry",
+        "vertices": 60,
+        "triangles": 30,
+        "material": {
+          "id": "m31",
+          "type": "MeshStandardMaterial",
+          "color": "#acbac1",
+          "side": "double",
+          "metalness": 0,
+          "roughness": 0.5
+        },
+        "castShadow": true,
+        "receiveShadow": true,
+        "visible": true,
+        "seenFrom": {
+          "desktop": true,
+          "mobile": true
+        }
+      },
+      {
+        "path": "keyboard/GLTF_SceneRootNode/Cube071_72/Object_168",
+        "origin": "keyboard.glb",
+        "geometry": "BufferGeometry",
+        "vertices": 60,
+        "triangles": 30,
+        "material": {
+          "id": "m31",
+          "type": "MeshStandardMaterial",
+          "color": "#acbac1",
+          "side": "double",
+          "metalness": 0,
+          "roughness": 0.5
+        },
+        "castShadow": true,
+        "receiveShadow": true,
+        "visible": true,
+        "seenFrom": {
+          "desktop": true,
+          "mobile": true
+        }
+      },
+      {
+        "path": "keyboard/GLTF_SceneRootNode/Cube073_74/Object_172",
+        "origin": "keyboard.glb",
+        "geometry": "BufferGeometry",
+        "vertices": 60,
+        "triangles": 30,
+        "material": {
+          "id": "m31",
+          "type": "MeshStandardMaterial",
+          "color": "#acbac1",
+          "side": "double",
+          "metalness": 0,
+          "roughness": 0.5
+        },
+        "castShadow": true,
+        "receiveShadow": true,
+        "visible": true,
+        "seenFrom": {
+          "desktop": true,
+          "mobile": true
+        }
+      },
+      {
+        "path": "keyboard/Object_4",
+        "origin": "keyboard.glb",
+        "geometry": "BufferGeometry",
+        "vertices": 9608,
+        "triangles": 4954,
+        "material": {
+          "id": "m31",
+          "type": "MeshStandardMaterial",
+          "color": "#acbac1",
+          "side": "double",
+          "metalness": 0,
+          "roughness": 0.5
+        },
+        "castShadow": true,
+        "receiveShadow": true,
+        "visible": true,
+        "seenFrom": {
+          "desktop": true,
+          "mobile": true
+        }
+      },
+      {
+        "path": "keyboard/Object_5",
+        "origin": "keyboard.glb",
+        "geometry": "BufferGeometry",
+        "vertices": 5208,
+        "triangles": 2604,
+        "material": {
+          "id": "m33",
+          "type": "MeshStandardMaterial",
+          "color": "#acbac1",
+          "side": "double",
+          "metalness": 0,
+          "roughness": 0.5
+        },
+        "castShadow": true,
+        "receiveShadow": true,
+        "visible": true,
+        "seenFrom": {
+          "desktop": true,
+          "mobile": true
+        }
+      },
+      {
+        "path": "keyboard/Object_64",
+        "origin": "keyboard.glb",
+        "geometry": "BufferGeometry",
+        "vertices": 96,
+        "triangles": 44,
+        "material": {
+          "id": "m34",
+          "type": "MeshStandardMaterial",
+          "color": "#acbac1",
+          "side": "double",
+          "metalness": 0,
+          "roughness": 0.5
+        },
+        "castShadow": true,
+        "receiveShadow": true,
+        "visible": true,
+        "seenFrom": {
+          "desktop": true,
+          "mobile": true
+        }
+      },
+      {
+        "path": "keyboard/Object_72",
+        "origin": "keyboard.glb",
+        "geometry": "BufferGeometry",
+        "vertices": 896,
+        "triangles": 420,
+        "material": {
+          "id": "m32",
+          "type": "MeshStandardMaterial",
+          "color": "#acbac1",
+          "side": "double",
+          "metalness": 0,
+          "roughness": 0.5
+        },
+        "castShadow": true,
+        "receiveShadow": true,
+        "visible": true,
+        "seenFrom": {
+          "desktop": true,
+          "mobile": true
+        }
+      },
+      {
+        "path": "mouse/defaultMaterial",
+        "origin": "mouse.glb",
+        "geometry": "BufferGeometry",
+        "vertices": 1038,
+        "triangles": 1858,
+        "material": {
+          "id": "m35",
+          "type": "MeshStandardMaterial",
+          "color": "#acbac1",
+          "side": "front",
+          "metalness": 0.1,
+          "roughness": 0.8
+        },
+        "castShadow": true,
+        "receiveShadow": true,
+        "visible": true,
+        "seenFrom": {
+          "desktop": true,
+          "mobile": true
+        }
+      },
+      {
+        "path": "mouse/defaultMaterial_1",
+        "origin": "mouse.glb",
+        "geometry": "BufferGeometry",
+        "vertices": 1554,
+        "triangles": 2530,
+        "material": {
+          "id": "m36",
+          "type": "MeshStandardMaterial",
+          "color": "#acbac1",
+          "side": "front",
+          "metalness": 0.1,
+          "roughness": 0.8
+        },
+        "castShadow": true,
+        "receiveShadow": true,
+        "visible": true,
+        "seenFrom": {
+          "desktop": true,
+          "mobile": true
+        }
+      },
+      {
+        "path": "mouse/defaultMaterial_2",
+        "origin": "mouse.glb",
+        "geometry": "BufferGeometry",
+        "vertices": 2076,
+        "triangles": 3616,
+        "material": {
+          "id": "m37",
+          "type": "MeshStandardMaterial",
+          "color": "#acbac1",
+          "side": "front",
+          "metalness": 0.1,
+          "roughness": 0.8
+        },
+        "castShadow": true,
+        "receiveShadow": true,
+        "visible": true,
+        "seenFrom": {
+          "desktop": true,
+          "mobile": true
+        }
+      },
+      {
+        "path": "books/Sketchfab_model/Root/Cube/Cube_0",
+        "origin": "books.glb",
+        "geometry": "BufferGeometry",
+        "vertices": 82,
+        "triangles": 58,
+        "material": {
+          "id": "m38",
+          "type": "MeshStandardMaterial",
+          "color": "#acbac1",
+          "side": "double",
+          "metalness": 0,
+          "roughness": 0.6
+        },
+        "castShadow": true,
+        "receiveShadow": true,
+        "visible": true,
+        "seenFrom": {
+          "desktop": true,
+          "mobile": false
+        }
+      },
+      {
+        "path": "books/Sketchfab_model/Root/Cube/Cube_1",
+        "origin": "books.glb",
+        "geometry": "BufferGeometry",
+        "vertices": 24,
+        "triangles": 18,
+        "material": {
+          "id": "m39",
+          "type": "MeshStandardMaterial",
+          "color": "#acbac1",
+          "side": "double",
+          "metalness": 0,
+          "roughness": 0.6
+        },
+        "castShadow": true,
+        "receiveShadow": true,
+        "visible": true,
+        "seenFrom": {
+          "desktop": true,
+          "mobile": false
+        }
+      },
+      {
+        "path": "books/Sketchfab_model/Root/Cube/Cube_2",
+        "origin": "books.glb",
+        "geometry": "BufferGeometry",
+        "vertices": 56,
+        "triangles": 34,
+        "material": {
+          "id": "m40",
+          "type": "MeshStandardMaterial",
+          "color": "#acbac1",
+          "side": "double",
+          "metalness": 0,
+          "roughness": 0.6
+        },
+        "castShadow": true,
+        "receiveShadow": true,
+        "visible": true,
+        "seenFrom": {
+          "desktop": true,
+          "mobile": false
+        }
+      },
+      {
+        "path": "books/Sketchfab_model/Root/Cube/Cube_3",
+        "origin": "books.glb",
+        "geometry": "BufferGeometry",
+        "vertices": 24,
+        "triangles": 18,
+        "material": {
+          "id": "m41",
+          "type": "MeshStandardMaterial",
+          "color": "#acbac1",
+          "side": "double",
+          "metalness": 0,
+          "roughness": 0.6
+        },
+        "castShadow": true,
+        "receiveShadow": true,
+        "visible": true,
+        "seenFrom": {
+          "desktop": true,
+          "mobile": false
+        }
+      },
+      {
+        "path": "books/Sketchfab_model/Root/Cube/Cube_4",
+        "origin": "books.glb",
+        "geometry": "BufferGeometry",
+        "vertices": 38,
+        "triangles": 24,
+        "material": {
+          "id": "m42",
+          "type": "MeshStandardMaterial",
+          "color": "#acbac1",
+          "side": "double",
+          "metalness": 0,
+          "roughness": 0.6
+        },
+        "castShadow": true,
+        "receiveShadow": true,
+        "visible": true,
+        "seenFrom": {
+          "desktop": true,
+          "mobile": false
+        }
+      },
+      {
+        "path": "books/Sketchfab_model/Root/Cube/Cube_5",
+        "origin": "books.glb",
+        "geometry": "BufferGeometry",
+        "vertices": 94,
+        "triangles": 58,
+        "material": {
+          "id": "m43",
+          "type": "MeshStandardMaterial",
+          "color": "#acbac1",
+          "side": "double",
+          "metalness": 0,
+          "roughness": 0.6
+        },
+        "castShadow": true,
+        "receiveShadow": true,
+        "visible": true,
+        "seenFrom": {
+          "desktop": true,
+          "mobile": false
+        }
+      },
+      {
+        "path": "books/Sketchfab_model/Root/Cube/Cube_6",
+        "origin": "books.glb",
+        "geometry": "BufferGeometry",
+        "vertices": 24,
+        "triangles": 18,
+        "material": {
+          "id": "m44",
+          "type": "MeshStandardMaterial",
+          "color": "#acbac1",
+          "side": "double",
+          "metalness": 0,
+          "roughness": 0.6
+        },
+        "castShadow": true,
+        "receiveShadow": true,
+        "visible": true,
+        "seenFrom": {
+          "desktop": true,
+          "mobile": false
+        }
+      },
+      {
+        "path": "chair/Chair_Back_0",
+        "origin": "chair.glb",
+        "geometry": "BufferGeometry",
+        "vertices": 1709,
+        "triangles": 3410,
+        "material": {
+          "id": "m45",
+          "type": "MeshStandardMaterial",
+          "color": "#acbac1",
+          "side": "front",
+          "metalness": 0.1,
+          "roughness": 0.8
+        },
+        "castShadow": true,
+        "receiveShadow": true,
+        "visible": true,
+        "seenFrom": {
+          "desktop": true,
+          "mobile": true
+        }
+      },
+      {
+        "path": "chair/Chair_Legs_0",
+        "origin": "chair.glb",
+        "geometry": "BufferGeometry",
+        "vertices": 1553,
+        "triangles": 3102,
+        "material": {
+          "id": "m46",
+          "type": "MeshStandardMaterial",
+          "color": "#acbac1",
+          "side": "front",
+          "metalness": 0.1,
+          "roughness": 0.8
+        },
+        "castShadow": true,
+        "receiveShadow": true,
+        "visible": true,
+        "seenFrom": {
+          "desktop": true,
+          "mobile": true
+        }
+      }
+    ],
+    "lights": [
+      {
+        "path": "Group[0]/DirectionalLight[4]",
+        "type": "DirectionalLight",
+        "color": "#ffffff",
+        "intensity": 0.33,
+        "castShadow": true,
+        "shadowMapSize": 512
+      },
+      {
+        "path": "Group[2]/Group[0]/RectAreaLight[1]",
+        "type": "RectAreaLight",
+        "color": "#acbac1",
+        "intensity": 1,
+        "castShadow": false,
+        "shadowMapSize": null
+      },
+      {
+        "path": "Group[2]/Group[0]/RectAreaLight[3]",
+        "type": "RectAreaLight",
+        "color": "#acbac1",
+        "intensity": 1,
+        "castShadow": false,
+        "shadowMapSize": null
+      },
+      {
+        "path": "Group[2]/Group[0]/RectAreaLight[5]",
+        "type": "RectAreaLight",
+        "color": "#acbac1",
+        "intensity": 1,
+        "castShadow": false,
+        "shadowMapSize": null
+      },
+      {
+        "path": "Group[2]/Group[0]/RectAreaLight[7]",
+        "type": "RectAreaLight",
+        "color": "#acbac1",
+        "intensity": 1,
+        "castShadow": false,
+        "shadowMapSize": null
+      },
+      {
+        "path": "Group[2]/Group[0]/SpotLight[11]",
+        "type": "SpotLight",
+        "color": "#f5f5f0",
+        "intensity": 0,
+        "castShadow": false,
+        "shadowMapSize": 512
+      },
+      {
+        "path": "HemisphereLight[3]",
+        "type": "HemisphereLight",
+        "color": "#ffffff",
+        "intensity": 0.2,
+        "castShadow": false,
+        "shadowMapSize": null
+      },
+      {
+        "path": "SpotLight[4]",
+        "type": "SpotLight",
+        "color": "#ffffff",
+        "intensity": 1,
+        "castShadow": true,
+        "shadowMapSize": 512
+      },
+      {
+        "path": "SpotLight[5]",
+        "type": "SpotLight",
+        "color": "#a5804a",
+        "intensity": 2,
+        "castShadow": true,
+        "shadowMapSize": 512
+      }
+    ]
+  }
+}

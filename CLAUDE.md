@@ -81,6 +81,18 @@ keys (`src/i18n/dictionaries.test.ts`). The monitor's job cards stay in `src/js/
   Playwright's paused clock and `Math.random` is seeded, so two runs give the same frames. Needs
   network; takes a few minutes
 
+- `npm run scene:profile [-- --modes gl-egl,swiftshader] [--out docs/perf/<name>]` — measures the
+  scene per section (Home, Work, About, Contact) at 1440×900 and 390×844 (CPU 4× slower), on the
+  real GPU (`--use-angle=gl-egl`) and on SwiftShader: draw calls and triangles (shadow passes
+  included), textures, frame and render time p50/p95 over 5 s of scroll, JS heap, plus an inventory
+  of every mesh with what the camera path never sees. Needs a fresh build; writes
+  `docs/perf/baseline.{json,md}` (the T13 numbers and the proposed budget). Takes about 10 minutes,
+  most of it SwiftShader; do not run anything else meanwhile or the times are not comparable
+
+Loading any page with `?debug=perf` loads `src/js/perf-debug.ts` (a separate chunk) and exposes
+`window.__perf` (`snapshot()`, `start()`/`stop()` for a recording, `inventory()`). A normal visit
+neither loads nor exposes it (`tests/perf-debug.spec.ts`).
+
 Absolute URLs (canonical, hreflang, `og:image`, JSON-LD, robots, sitemap) come from `site` and
 `base` in `astro.config.mjs`. The head text is under `meta` in the dictionaries, and the links
 shared by Contact and the JSON-LD are in `src/data/profile.ts`.
@@ -156,3 +168,15 @@ Phase B — redesign
 - [ ] T11 About and Contact
 - [ ] T12 Final QA and Lighthouse
   - npm audit: 15 dev-only vulnerabilities (eslint, @gltf-transform/cli).
+
+Phase C — scene performance (no visual changes; compare against `main` with screenshots)
+
+- [x] T13 Measurement: `?debug=perf` hook, `npm run scene:profile`, baseline and budget in `docs/perf/`
+- [ ] T14 Geometry: merge static pieces by material, drop never-seen faces and meshes, bake-ready names and `userData`
+- [ ] T15 Baked lights
+- [ ] T16 Adaptive quality
+
+Phase D — client pages
+
+- [ ] T9b One page per project
+- [ ] T12b "How it's made" page
