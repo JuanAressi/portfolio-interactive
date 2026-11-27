@@ -63,6 +63,13 @@ describe('loadModel', () => {
         expect(model.rotation.y).toBe(-1.25);
     });
 
+    it('names the root of the model', async () => {
+        const pending = loadModel('model.glb', { name: 'keyboard' });
+        resolveLoad();
+
+        expect((await pending).name).toBe('keyboard');
+    });
+
     it('leaves transforms at their defaults when they are not given', async () => {
         const pending = loadModel('model.glb');
         resolveLoad();

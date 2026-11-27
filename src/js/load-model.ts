@@ -9,6 +9,8 @@ export type ModelMaterial =
     | { replace: THREE.MeshStandardMaterialParameters };
 
 export interface LoadModelOptions {
+    /** Name of the model's root, so it can be told apart in the scene graph. */
+    name?: string;
     position?: THREE.Vector3Tuple;
     scale?: number;
     rotation?: THREE.Vector3Tuple;
@@ -29,13 +31,14 @@ function applyMaterial(mesh: THREE.Mesh, material: ModelMaterial): void {
 
 export function loadModel(
     url: string,
-    { position, scale, rotation, material }: LoadModelOptions = {}
+    { name, position, scale, rotation, material }: LoadModelOptions = {}
 ): Promise<THREE.Group> {
     return new Promise((resolve, reject) => {
         loader.load(
             url,
             gltf => {
                 const model = gltf.scene;
+                if (name) model.name = name;
                 if (position) model.position.set(...position);
                 if (scale !== undefined) model.scale.setScalar(scale);
                 if (rotation) model.rotation.set(...rotation);
