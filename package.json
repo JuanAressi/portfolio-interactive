@@ -24,7 +24,9 @@
         "icons:generate": "node scripts/generate-icons.mjs",
         "og:generate": "node scripts/generate-og.mjs",
         "captures:generate": "node scripts/generate-captures.mjs",
-        "scene:profile": "node scripts/profile-scene.mjs"
+        "scene:profile": "node scripts/profile-scene.mjs",
+        "scene:capture": "node scripts/capture-scene.mjs",
+        "scene:diff": "node scripts/diff-captures.mjs"
     },
     "devDependencies": {
         "@astrojs/check": "^0.9.12",
