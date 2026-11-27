@@ -1,0 +1,1170 @@
+{
+  "generatedAt": "2026-11-27T22:12:23.321Z",
+  "environment": {
+    "renderers": {
+      "gl-egl": "ANGLE (Intel, Mesa Intel(R) Iris(R) Xe Graphics (ADL GT2), OpenGL ES 3.2)",
+      "swiftshader": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)"
+    },
+    "chromium": "Chromium 149.0.7827.55",
+    "node": "v24.19.0",
+    "commit": "e22e153"
+  },
+  "config": {
+    "modes": [
+      "gl-egl",
+      "swiftshader"
+    ],
+    "scrollMs": 5000,
+    "mobileCpuThrottle": 4
+  },
+  "results": [
+    {
+      "mode": "gl-egl",
+      "viewport": "desktop",
+      "section": "home",
+      "calls": 31,
+      "triangles": 89724,
+      "peak": {
+        "calls": 32,
+        "triangles": 89740
+      },
+      "main": {
+        "calls": 7,
+        "triangles": 5160
+      },
+      "shadow": {
+        "calls": 24,
+        "triangles": 84564
+      },
+      "textures": 3,
+      "geometries": 12,
+      "programs": 4,
+      "renders": 299,
+      "frameMs": {
+        "n": 299,
+        "p50": 16.69999999999709,
+        "p95": 16.799999999999272,
+        "max": 33.30000000000291
+      },
+      "renderMs": {
+        "n": 299,
+        "p50": 0.5,
+        "p95": 0.9000000059604645,
+        "max": 1.5
+      },
+      "heapMB": 4.100795745849609
+    },
+    {
+      "mode": "gl-egl",
+      "viewport": "desktop",
+      "section": "work",
+      "calls": 34,
+      "triangles": 98290,
+      "peak": {
+        "calls": 36,
+        "triangles": 112806
+      },
+      "main": {
+        "calls": 10,
+        "triangles": 13726
+      },
+      "shadow": {
+        "calls": 24,
+        "triangles": 84564
+      },
+      "textures": 3,
+      "geometries": 12,
+      "programs": 4,
+      "renders": 300,
+      "frameMs": {
+        "n": 300,
+        "p50": 16.700000000000728,
+        "p95": 16.700000000000728,
+        "max": 16.799999999999272
+      },
+      "renderMs": {
+        "n": 300,
+        "p50": 0.5,
+        "p95": 0.7000000029802322,
+        "max": 1.7000000029802322
+      },
+      "heapMB": 4.295429229736328
+    },
+    {
+      "mode": "gl-egl",
+      "viewport": "desktop",
+      "section": "about",
+      "calls": 36,
+      "triangles": 112806,
+      "peak": {
+        "calls": 36,
+        "triangles": 112806
+      },
+      "main": {
+        "calls": 12,
+        "triangles": 28242
+      },
+      "shadow": {
+        "calls": 24,
+        "triangles": 84564
+      },
+      "textures": 3,
+      "geometries": 12,
+      "programs": 4,
+      "renders": 299,
+      "frameMs": {
+        "n": 300,
+        "p50": 16.69999999999709,
+        "p95": 16.799999999995634,
+        "max": 16.80000000000291
+      },
+      "renderMs": {
+        "n": 299,
+        "p50": 0.5,
+        "p95": 0.7999999970197678,
+        "max": 1.5
+      },
+      "heapMB": 4.146369934082031
+    },
+    {
+      "mode": "gl-egl",
+      "viewport": "desktop",
+      "section": "contact",
+      "calls": 36,
+      "triangles": 112806,
+      "peak": {
+        "calls": 36,
+        "triangles": 112806
+      },
+      "main": {
+        "calls": 12,
+        "triangles": 28242
+      },
+      "shadow": {
+        "calls": 24,
+        "triangles": 84564
+      },
+      "textures": 3,
+      "geometries": 12,
+      "programs": 4,
+      "renders": 299,
+      "frameMs": {
+        "n": 300,
+        "p50": 16.69999999999709,
+        "p95": 16.799999999995634,
+        "max": 16.80000000000291
+      },
+      "renderMs": {
+        "n": 299,
+        "p50": 0.5,
+        "p95": 1.0099999994039501,
+        "max": 1.2999999970197678
+      },
+      "heapMB": 4.169635772705078
+    },
+    {
+      "mode": "gl-egl",
+      "viewport": "mobile",
+      "section": "home",
+      "calls": 7,
+      "triangles": 5160,
+      "peak": {
+        "calls": 8,
+        "triangles": 5176
+      },
+      "main": {
+        "calls": 7,
+        "triangles": 5160
+      },
+      "shadow": {
+        "calls": 0,
+        "triangles": 0
+      },
+      "textures": 0,
+      "geometries": 8,
+      "programs": 3,
+      "renders": 299,
+      "frameMs": {
+        "n": 300,
+        "p50": 16.69999999999891,
+        "p95": 16.799999999999272,
+        "max": 16.80000000000109
+      },
+      "renderMs": {
+        "n": 299,
+        "p50": 1,
+        "p95": 1.6999999955296516,
+        "max": 2.2999999970197678
+      },
+      "heapMB": 3.7040328979492188
+    },
+    {
+      "mode": "gl-egl",
+      "viewport": "mobile",
+      "section": "work",
+      "calls": 9,
+      "triangles": 13498,
+      "peak": {
+        "calls": 9,
+        "triangles": 13498
+      },
+      "main": {
+        "calls": 9,
+        "triangles": 13498
+      },
+      "shadow": {
+        "calls": 0,
+        "triangles": 0
+      },
+      "textures": 0,
+      "geometries": 9,
+      "programs": 3,
+      "renders": 300,
+      "frameMs": {
+        "n": 300,
+        "p50": 16.69999999999891,
+        "p95": 16.700000000000728,
+        "max": 16.80000000000109
+      },
+      "renderMs": {
+        "n": 300,
+        "p50": 0.8999999985098839,
+        "p95": 1.5049999997019778,
+        "max": 2.600000001490116
+      },
+      "heapMB": 3.813518524169922
+    },
+    {
+      "mode": "gl-egl",
+      "viewport": "mobile",
+      "section": "about",
+      "calls": 10,
+      "triangles": 21502,
+      "peak": {
+        "calls": 10,
+        "triangles": 21502
+      },
+      "main": {
+        "calls": 10,
+        "triangles": 21502
+      },
+      "shadow": {
+        "calls": 0,
+        "triangles": 0
+      },
+      "textures": 0,
+      "geometries": 10,
+      "programs": 3,
+      "renders": 300,
+      "frameMs": {
+        "n": 300,
+        "p50": 16.700000000000728,
+        "p95": 16.799999999999272,
+        "max": 16.80000000000291
+      },
+      "renderMs": {
+        "n": 300,
+        "p50": 0.8999999985098839,
+        "p95": 1.7000000029802322,
+        "max": 2.7999999970197678
+      },
+      "heapMB": 3.738361358642578
+    },
+    {
+      "mode": "gl-egl",
+      "viewport": "mobile",
+      "section": "contact",
+      "calls": 10,
+      "triangles": 21502,
+      "peak": {
+        "calls": 10,
+        "triangles": 21502
+      },
+      "main": {
+        "calls": 10,
+        "triangles": 21502
+      },
+      "shadow": {
+        "calls": 0,
+        "triangles": 0
+      },
+      "textures": 0,
+      "geometries": 10,
+      "programs": 3,
+      "renders": 299,
+      "frameMs": {
+        "n": 300,
+        "p50": 16.69999999999709,
+        "p95": 16.700000000000728,
+        "max": 16.80000000000291
+      },
+      "renderMs": {
+        "n": 299,
+        "p50": 0.8000000044703484,
+        "p95": 1.6999999962747097,
+        "max": 2.600000001490116
+      },
+      "heapMB": 3.740184783935547
+    },
+    {
+      "mode": "swiftshader",
+      "viewport": "desktop",
+      "section": "home",
+      "calls": 30,
+      "triangles": 89718,
+      "peak": {
+        "calls": 31,
+        "triangles": 89724
+      },
+      "main": {
+        "calls": 6,
+        "triangles": 5154
+      },
+      "shadow": {
+        "calls": 24,
+        "triangles": 84564
+      },
+      "textures": 3,
+      "geometries": 11,
+      "programs": 4,
+      "renders": 31,
+      "frameMs": {
+        "n": 32,
+        "p50": 16.699999999999818,
+        "p95": 933.2999999999993,
+        "max": 1133.300000000001
+      },
+      "renderMs": {
+        "n": 31,
+        "p50": 1.6000000014901161,
+        "p95": 4.899999994784594,
+        "max": 8
+      },
+      "heapMB": 3.718994140625
+    },
+    {
+      "mode": "swiftshader",
+      "viewport": "desktop",
+      "section": "work",
+      "calls": 32,
+      "triangles": 89740,
+      "peak": {
+        "calls": 32,
+        "triangles": 89740
+      },
+      "main": {
+        "calls": 8,
+        "triangles": 5176
+      },
+      "shadow": {
+        "calls": 24,
+        "triangles": 84564
+      },
+      "textures": 3,
+      "geometries": 12,
+      "programs": 4,
+      "renders": 4,
+      "frameMs": {
+        "n": 3,
+        "p50": 2016.5999999999985,
+        "p95": 2061.5999999999985,
+        "max": 2066.5999999999985
+      },
+      "renderMs": {
+        "n": 4,
+        "p50": 1.0499999970197678,
+        "p95": 6.554999999329445,
+        "max": 7.5
+      },
+      "heapMB": 3.67852783203125
+    },
+    {
+      "mode": "swiftshader",
+      "viewport": "desktop",
+      "section": "about",
+      "calls": 35.5,
+      "triangles": 109550,
+      "peak": {
+        "calls": 36,
+        "triangles": 112806
+      },
+      "main": {
+        "calls": 11.5,
+        "triangles": 24986
+      },
+      "shadow": {
+        "calls": 24,
+        "triangles": 84564
+      },
+      "textures": 3,
+      "geometries": 12,
+      "programs": 4,
+      "renders": 6,
+      "frameMs": {
+        "n": 5,
+        "p50": 966.7000000000007,
+        "p95": 1023.2799999999995,
+        "max": 1033.2999999999993
+      },
+      "renderMs": {
+        "n": 6,
+        "p50": 2.9500000029802322,
+        "p95": 18.87500000372529,
+        "max": 23.80000000447035
+      },
+      "heapMB": 3.792797088623047
+    },
+    {
+      "mode": "swiftshader",
+      "viewport": "desktop",
+      "section": "contact",
+      "calls": 36,
+      "triangles": 112806,
+      "peak": {
+        "calls": 36,
+        "triangles": 112806
+      },
+      "main": {
+        "calls": 12,
+        "triangles": 28242
+      },
+      "shadow": {
+        "calls": 24,
+        "triangles": 84564
+      },
+      "textures": 3,
+      "geometries": 12,
+      "programs": 4,
+      "renders": 3,
+      "frameMs": {
+        "n": 2,
+        "p50": 1966.550000000003,
+        "p95": 2071.6250000000027,
+        "max": 2083.300000000003
+      },
+      "renderMs": {
+        "n": 3,
+        "p50": 1.1000000014901161,
+        "p95": 3.7100000001490114,
+        "max": 4
+      },
+      "heapMB": 3.8188629150390625
+    },
+    {
+      "mode": "swiftshader",
+      "viewport": "mobile",
+      "section": "home",
+      "calls": 6,
+      "triangles": 5154,
+      "peak": {
+        "calls": 8,
+        "triangles": 5176
+      },
+      "main": {
+        "calls": 6,
+        "triangles": 5154
+      },
+      "shadow": {
+        "calls": 0,
+        "triangles": 0
+      },
+      "textures": 0,
+      "geometries": 8,
+      "programs": 3,
+      "renders": 50,
+      "frameMs": {
+        "n": 52,
+        "p50": 33.24999999999909,
+        "p95": 322.4999999999998,
+        "max": 350
+      },
+      "renderMs": {
+        "n": 50,
+        "p50": 5.299999997019768,
+        "p95": 14.525000002980228,
+        "max": 21.200000002980232
+      },
+      "heapMB": 3.5368614196777344
+    },
+    {
+      "mode": "swiftshader",
+      "viewport": "mobile",
+      "section": "work",
+      "calls": 9,
+      "triangles": 13498,
+      "peak": {
+        "calls": 9,
+        "triangles": 13498
+      },
+      "main": {
+        "calls": 9,
+        "triangles": 13498
+      },
+      "shadow": {
+        "calls": 0,
+        "triangles": 0
+      },
+      "textures": 0,
+      "geometries": 9,
+      "programs": 3,
+      "renders": 37,
+      "frameMs": {
+        "n": 36,
+        "p50": 149.90000000000055,
+        "p95": 250.02499999999964,
+        "max": 266.60000000000036
+      },
+      "renderMs": {
+        "n": 37,
+        "p50": 3.399999998509884,
+        "p95": 14.299999999999928,
+        "max": 33.29999999701977
+      },
+      "heapMB": 3.6065902709960938
+    },
+    {
+      "mode": "swiftshader",
+      "viewport": "mobile",
+      "section": "about",
+      "calls": 9,
+      "triangles": 13498,
+      "peak": {
+        "calls": 10,
+        "triangles": 21502
+      },
+      "main": {
+        "calls": 9,
+        "triangles": 13498
+      },
+      "shadow": {
+        "calls": 0,
+        "triangles": 0
+      },
+      "textures": 0,
+      "geometries": 10,
+      "programs": 3,
+      "renders": 20,
+      "frameMs": {
+        "n": 19,
+        "p50": 316.6000000000022,
+        "p95": 473.27000000000174,
+        "max": 533.2999999999993
+      },
+      "renderMs": {
+        "n": 20,
+        "p50": 7.900000002235174,
+        "p95": 25.375000000000014,
+        "max": 42
+      },
+      "heapMB": 3.6790504455566406
+    },
+    {
+      "mode": "swiftshader",
+      "viewport": "mobile",
+      "section": "contact",
+      "calls": 10,
+      "triangles": 21502,
+      "peak": {
+        "calls": 10,
+        "triangles": 21502
+      },
+      "main": {
+        "calls": 10,
+        "triangles": 21502
+      },
+      "shadow": {
+        "calls": 0,
+        "triangles": 0
+      },
+      "textures": 0,
+      "geometries": 10,
+      "programs": 3,
+      "renders": 32,
+      "frameMs": {
+        "n": 31,
+        "p50": 133.29999999999927,
+        "p95": 308.35000000000036,
+        "max": 366.6999999999971
+      },
+      "renderMs": {
+        "n": 32,
+        "p50": 2.800000000745058,
+        "p95": 9.145000003650782,
+        "max": 11
+      },
+      "heapMB": 3.721302032470703
+    }
+  ],
+  "inventory": {
+    "meshes": [
+      {
+        "path": "Group[0]/room-walls",
+        "origin": "room.ts",
+        "geometry": "BufferGeometry",
+        "vertices": 120,
+        "triangles": 60,
+        "material": {
+          "id": "m1",
+          "type": "MeshStandardMaterial",
+          "color": "#acbac1",
+          "side": "double",
+          "metalness": 0,
+          "roughness": 1
+        },
+        "castShadow": true,
+        "receiveShadow": true,
+        "visible": true,
+        "seenFrom": {
+          "desktop": true,
+          "ultrawide": true,
+          "mobile": false
+        },
+        "faces": {
+          "hiddenTriangles": 53,
+          "hiddenFaces": [
+            "tri0",
+            "tri1",
+            "tri2",
+            "tri3",
+            "tri4",
+            "tri5",
+            "tri6",
+            "tri7",
+            "tri10",
+            "tri11",
+            "tri12",
+            "tri13",
+            "tri14",
+            "tri15",
+            "tri16",
+            "tri17",
+            "tri18",
+            "tri19",
+            "tri20",
+            "tri21",
+            "tri22",
+            "tri23",
+            "tri24",
+            "tri25",
+            "tri26",
+            "tri27",
+            "tri28",
+            "tri30",
+            "tri31",
+            "tri32",
+            "tri33",
+            "tri35",
+            "tri36",
+            "tri37",
+            "tri40",
+            "tri41",
+            "tri42",
+            "tri43",
+            "tri44",
+            "tri45",
+            "tri46",
+            "tri48",
+            "tri49",
+            "tri50",
+            "tri51",
+            "tri52",
+            "tri53",
+            "tri54",
+            "tri55",
+            "tri56",
+            "tri57",
+            "tri58",
+            "tri59"
+          ]
+        }
+      },
+      {
+        "path": "Group[0]/room-floor",
+        "origin": "room.ts",
+        "geometry": "PlaneGeometry",
+        "vertices": 4,
+        "triangles": 2,
+        "material": {
+          "id": "m2",
+          "type": "MeshStandardMaterial",
+          "color": "#acbac1",
+          "side": "double",
+          "metalness": 0.1,
+          "roughness": 0.8
+        },
+        "castShadow": true,
+        "receiveShadow": true,
+        "visible": true,
+        "seenFrom": {
+          "desktop": true,
+          "ultrawide": true,
+          "mobile": false
+        },
+        "faces": {
+          "hiddenTriangles": 1,
+          "hiddenFaces": []
+        }
+      },
+      {
+        "path": "Group[1]/desk-body",
+        "origin": "desk.js",
+        "geometry": "BufferGeometry",
+        "vertices": 360,
+        "triangles": 180,
+        "material": {
+          "id": "m3",
+          "type": "MeshStandardMaterial",
+          "color": "#acbac1",
+          "side": "front",
+          "metalness": 0,
+          "roughness": 1
+        },
+        "castShadow": true,
+        "receiveShadow": true,
+        "visible": true,
+        "seenFrom": {
+          "desktop": true,
+          "ultrawide": true,
+          "mobile": true
+        },
+        "faces": {
+          "hiddenTriangles": 135,
+          "hiddenFaces": [
+            "tri0",
+            "tri1",
+            "tri2",
+            "tri3",
+            "tri4",
+            "tri5",
+            "tri6",
+            "tri7",
+            "tri10",
+            "tri11",
+            "tri14",
+            "tri15",
+            "tri16",
+            "tri17",
+            "tri18",
+            "tri19",
+            "tri22",
+            "tri23",
+            "tri26",
+            "tri27",
+            "tri28",
+            "tri29",
+            "tri30",
+            "tri31",
+            "tri32",
+            "tri33",
+            "tri34",
+            "tri35",
+            "tri36",
+            "tri37",
+            "tri38",
+            "tri39",
+            "tri40",
+            "tri41",
+            "tri42",
+            "tri43",
+            "tri46",
+            "tri47",
+            "tri50",
+            "tri51",
+            "tri52",
+            "tri53",
+            "tri54",
+            "tri55",
+            "tri58",
+            "tri59",
+            "tri62",
+            "tri63",
+            "tri64",
+            "tri66",
+            "tri67",
+            "tri70",
+            "tri71",
+            "tri72",
+            "tri73",
+            "tri74",
+            "tri75",
+            "tri76",
+            "tri77",
+            "tri78",
+            "tri79",
+            "tri82",
+            "tri83",
+            "tri84",
+            "tri85",
+            "tri88",
+            "tri89",
+            "tri90",
+            "tri91",
+            "tri94",
+            "tri95",
+            "tri96",
+            "tri97",
+            "tri98",
+            "tri99",
+            "tri100",
+            "tri101",
+            "tri102",
+            "tri103",
+            "tri106",
+            "tri107",
+            "tri108",
+            "tri109",
+            "tri112",
+            "tri113",
+            "tri114",
+            "tri115",
+            "tri116",
+            "tri117",
+            "tri118",
+            "tri119",
+            "tri120",
+            "tri121",
+            "tri122",
+            "tri123",
+            "tri124",
+            "tri125",
+            "tri126",
+            "tri127",
+            "tri128",
+            "tri130",
+            "tri131",
+            "tri132",
+            "tri133",
+            "tri136",
+            "tri137",
+            "tri138",
+            "tri139",
+            "tri142",
+            "tri143",
+            "tri144",
+            "tri145",
+            "tri148",
+            "tri150",
+            "tri151",
+            "tri154",
+            "tri155",
+            "tri156",
+            "tri157",
+            "tri158",
+            "tri159",
+            "tri160",
+            "tri161",
+            "tri162",
+            "tri163",
+            "tri166",
+            "tri167",
+            "tri168",
+            "tri169",
+            "tri170",
+            "tri171",
+            "tri174",
+            "tri175",
+            "tri178",
+            "tri179"
+          ]
+        }
+      },
+      {
+        "path": "Group[1]/desk-handles",
+        "origin": "desk.js (door_handle.glb)",
+        "geometry": "BufferGeometry",
+        "vertices": 5544,
+        "triangles": 4880,
+        "material": {
+          "id": "m4",
+          "type": "MeshStandardMaterial",
+          "color": "#acbac1",
+          "side": "front",
+          "metalness": 0.1,
+          "roughness": 0.8
+        },
+        "castShadow": true,
+        "receiveShadow": true,
+        "visible": true,
+        "seenFrom": {
+          "desktop": true,
+          "ultrawide": true,
+          "mobile": false
+        }
+      },
+      {
+        "path": "Group[2]/Group[0]/monitor-bezel",
+        "origin": "monitor.js",
+        "geometry": "BufferGeometry",
+        "vertices": 60,
+        "triangles": 30,
+        "material": {
+          "id": "m4",
+          "type": "MeshStandardMaterial",
+          "color": "#acbac1",
+          "side": "front",
+          "metalness": 0.1,
+          "roughness": 0.8
+        },
+        "castShadow": false,
+        "receiveShadow": false,
+        "visible": true,
+        "seenFrom": {
+          "desktop": true,
+          "ultrawide": true,
+          "mobile": true
+        },
+        "faces": {
+          "hiddenTriangles": 0,
+          "hiddenFaces": []
+        }
+      },
+      {
+        "path": "Group[2]/Group[0]/monitor-screen",
+        "origin": "monitor.js",
+        "geometry": "PlaneGeometry",
+        "vertices": 4,
+        "triangles": 2,
+        "material": {
+          "id": "m5",
+          "type": "MeshBasicMaterial",
+          "color": "#141414",
+          "side": "front",
+          "metalness": null,
+          "roughness": null
+        },
+        "castShadow": false,
+        "receiveShadow": false,
+        "visible": true,
+        "seenFrom": {
+          "desktop": true,
+          "ultrawide": true,
+          "mobile": true
+        },
+        "faces": {
+          "hiddenTriangles": 0,
+          "hiddenFaces": []
+        }
+      },
+      {
+        "path": "Group[2]/Group[1]/monitor-stand",
+        "origin": "monitor.js",
+        "geometry": "BufferGeometry",
+        "vertices": 12,
+        "triangles": 6,
+        "material": {
+          "id": "m6",
+          "type": "MeshStandardMaterial",
+          "color": "#acbac1",
+          "side": "front",
+          "metalness": 0.3,
+          "roughness": 0.6
+        },
+        "castShadow": false,
+        "receiveShadow": false,
+        "visible": true,
+        "seenFrom": {
+          "desktop": true,
+          "ultrawide": true,
+          "mobile": true
+        },
+        "faces": {
+          "hiddenTriangles": 0,
+          "hiddenFaces": []
+        }
+      },
+      {
+        "path": "Group[2]/Group[1]/monitor-base",
+        "origin": "monitor.js",
+        "geometry": "BufferGeometry",
+        "vertices": 32,
+        "triangles": 16,
+        "material": {
+          "id": "m7",
+          "type": "MeshStandardMaterial",
+          "color": "#acbac1",
+          "side": "front",
+          "metalness": 0.1,
+          "roughness": 0.9
+        },
+        "castShadow": false,
+        "receiveShadow": false,
+        "visible": true,
+        "seenFrom": {
+          "desktop": true,
+          "ultrawide": true,
+          "mobile": true
+        },
+        "faces": {
+          "hiddenTriangles": 0,
+          "hiddenFaces": []
+        }
+      },
+      {
+        "path": "keyboard/keyboard-00",
+        "origin": "keyboard.glb",
+        "geometry": "BufferGeometry",
+        "vertices": 16412,
+        "triangles": 8322,
+        "material": {
+          "id": "m8",
+          "type": "MeshStandardMaterial",
+          "color": "#acbac1",
+          "side": "double",
+          "metalness": 0,
+          "roughness": 0.5
+        },
+        "castShadow": true,
+        "receiveShadow": true,
+        "visible": true,
+        "seenFrom": {
+          "desktop": true,
+          "ultrawide": true,
+          "mobile": true
+        }
+      },
+      {
+        "path": "mouse/mouse-00",
+        "origin": "mouse.glb",
+        "geometry": "BufferGeometry",
+        "vertices": 4668,
+        "triangles": 8004,
+        "material": {
+          "id": "m9",
+          "type": "MeshStandardMaterial",
+          "color": "#acbac1",
+          "side": "front",
+          "metalness": 0.1,
+          "roughness": 0.8
+        },
+        "castShadow": true,
+        "receiveShadow": true,
+        "visible": true,
+        "seenFrom": {
+          "desktop": true,
+          "ultrawide": true,
+          "mobile": true
+        }
+      },
+      {
+        "path": "books/books-00",
+        "origin": "books.glb",
+        "geometry": "BufferGeometry",
+        "vertices": 342,
+        "triangles": 228,
+        "material": {
+          "id": "m10",
+          "type": "MeshStandardMaterial",
+          "color": "#acbac1",
+          "side": "double",
+          "metalness": 0,
+          "roughness": 0.6
+        },
+        "castShadow": true,
+        "receiveShadow": true,
+        "visible": true,
+        "seenFrom": {
+          "desktop": true,
+          "ultrawide": true,
+          "mobile": false
+        }
+      },
+      {
+        "path": "chair/chair-00",
+        "origin": "chair.glb",
+        "geometry": "BufferGeometry",
+        "vertices": 3262,
+        "triangles": 6512,
+        "material": {
+          "id": "m11",
+          "type": "MeshStandardMaterial",
+          "color": "#acbac1",
+          "side": "front",
+          "metalness": 0.1,
+          "roughness": 0.8
+        },
+        "castShadow": true,
+        "receiveShadow": true,
+        "visible": true,
+        "seenFrom": {
+          "desktop": true,
+          "ultrawide": true,
+          "mobile": true
+        }
+      }
+    ],
+    "lights": [
+      {
+        "path": "Group[0]/room-window-light",
+        "type": "DirectionalLight",
+        "color": "#ffffff",
+        "intensity": 0.33,
+        "castShadow": true,
+        "shadowMapSize": 512
+      },
+      {
+        "path": "Group[2]/Group[0]/monitor-line-light-top",
+        "type": "RectAreaLight",
+        "color": "#acbac1",
+        "intensity": 1,
+        "castShadow": false,
+        "shadowMapSize": null
+      },
+      {
+        "path": "Group[2]/Group[0]/monitor-line-light-bottom",
+        "type": "RectAreaLight",
+        "color": "#acbac1",
+        "intensity": 1,
+        "castShadow": false,
+        "shadowMapSize": null
+      },
+      {
+        "path": "Group[2]/Group[0]/monitor-line-light-left",
+        "type": "RectAreaLight",
+        "color": "#acbac1",
+        "intensity": 1,
+        "castShadow": false,
+        "shadowMapSize": null
+      },
+      {
+        "path": "Group[2]/Group[0]/monitor-line-light-right",
+        "type": "RectAreaLight",
+        "color": "#acbac1",
+        "intensity": 1,
+        "castShadow": false,
+        "shadowMapSize": null
+      },
+      {
+        "path": "Group[2]/Group[0]/monitor-glow-light",
+        "type": "SpotLight",
+        "color": "#f5f5f0",
+        "intensity": 0,
+        "castShadow": false,
+        "shadowMapSize": 512
+      },
+      {
+        "path": "HemisphereLight[3]",
+        "type": "HemisphereLight",
+        "color": "#ffffff",
+        "intensity": 0.2,
+        "castShadow": false,
+        "shadowMapSize": null
+      },
+      {
+        "path": "SpotLight[4]",
+        "type": "SpotLight",
+        "color": "#ffffff",
+        "intensity": 1,
+        "castShadow": true,
+        "shadowMapSize": 512
+      },
+      {
+        "path": "SpotLight[5]",
+        "type": "SpotLight",
+        "color": "#a5804a",
+        "intensity": 2,
+        "castShadow": true,
+        "shadowMapSize": 512
+      }
+    ]
+  }
+}

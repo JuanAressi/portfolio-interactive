@@ -65,7 +65,9 @@ keys (`src/i18n/dictionaries.test.ts`). The monitor's job cards stay in `src/js/
   Production deploys come from `.github/workflows/deploy.yml` on push to `main`; pull requests run
   the same pipeline without the deploy step
 - `npm run models:optimize` — rebuilds every model in `src/assets/models` from the originals in
-  `assets-src/models` (out of the bundle); each model's steps are in `scripts/optimize-models.mjs`
+  `assets-src/models` (out of the bundle); each model's steps are in `scripts/optimize-models.mjs`.
+  Every model ends as one mesh per material (`join`, `prune`); the keyboard and the books share one
+  material because the scene overrides their color (`merge-materials`)
 - `npm run og:generate` — captures the internal `/og/<locale>/` pages into `public/og-<locale>.png`
   (1200×630) over its own dev server. Rerun it when the name, the role (`meta.role`) or the scene
   change; the PNGs are committed and neither the build nor CI generates them
@@ -90,6 +92,12 @@ keys (`src/i18n/dictionaries.test.ts`). The monitor's job cards stay in `src/js/
   docs/perf/baseline.json` also writes `<out>-comparison.md`; `--inventory-only` prints just the
   inventory. Takes about 10 minutes,
   most of it SwiftShader; do not run anything else meanwhile or the times are not comparable
+
+- `npm run scene:capture -- --out <dir> [--dist dist] [--viewport desktop|mobile] [--points 6,7]` —
+  screenshots of the scene at nine points of the camera path, 1440×900 and 390×844, on the real GPU,
+  from any built `dist/` (to compare against `main`, build it in a worktree and pass its `dist`).
+  `npm run scene:diff -- <dirA> <dirB> [--out <dir>]` counts the pixels that differ per image and
+  writes a side-by-side of each pair. Two captures of the same build differ by at most 1 level
 
 Scene conventions (T14): the procedural pieces are merged by material (`src/js/geometry-parts.ts`,
 shared materials in `src/js/scene-materials.ts`). Every mesh has a stable `name` and
@@ -180,6 +188,7 @@ Phase C — scene performance (no visual changes; compare against `main` with sc
 
 - [x] T13 Measurement: `?debug=perf` hook, `npm run scene:profile`, baseline and budget in `docs/perf/`
 - [x] T14 Geometry: static pieces merged by material (draw calls −52% on desktop), monitor's hidden faces dropped, bake-ready names and `userData`. Walls and desk keep their hidden faces: they draw the shadow maps (`docs/perf/geometry-notes.md`)
+- [x] T14b Props: every GLB is one mesh (keyboard, mouse, books, chair, handles), handles 2,144 → 1,220 triangles; desktop 31–36 draw calls (`docs/perf/props-notes.md`)
 - [ ] T15 Baked lights
 - [ ] T16 Adaptive quality
 
